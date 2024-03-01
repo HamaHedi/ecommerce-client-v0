@@ -61,13 +61,14 @@ export const authReducer = (state = { user: {} }, action) => {
 				user: action.payload,
 
 			}
-
-		case LOGOUT_SUCCESS:
-			return {
-				loading: false,
-				isAuthenticated: false,
-				user: null,
-			}
+			case LOGOUT_SUCCESS:
+				localStorage.removeItem("token");
+				return {
+					loading: false,
+					isAuthenticated: false,
+					user: null,
+				};
+			
 
 		case LOAD_USER_FAIL:
 			return {
