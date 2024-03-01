@@ -1,0 +1,13 @@
+  .navigation-item {
+    color: #111;
+    font-size: 1.2em;
+    font-weight: 600;
+    text-decoration: none;
+    line-height: 6.6666666667em;
+    transition: .2s ease-in-out;
+    cursor: pointer;
+    display: block;
+    position: relative;
+    overflow: hidden;
+   
+}
