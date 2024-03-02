@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -12,6 +12,20 @@ const Header = () => {
 const navigate =useNavigate()
   const { user, loading } = useSelector((state) => state.auth);
   const { keyword, setKeyword } = useGlobalState();
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup the event listener
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []); // Empty dependency array ensures this effect runs only once
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -61,32 +75,7 @@ const navigate =useNavigate()
             style={{ color: "#A0A0A0" }}
           ></i>
         </button>
-        <div
-          className="navbar-nav-items"
-          style={{
-            width: "50%",
-            display: "flex",
-            justifyContent: "center",
-            gap: "25px",
-          }}
-        >
-          <span className="navigation-item">Home</span>
-
-          <span className="navigation-item">About</span>
-          <Dropdown
-            overlay={<CategoriesItem />}
-            placement="bottom"
-            arrow
-            overlayStyle={{
-              borderRadius: "5px",
-              background: "white",
-              padding: "25px",
-              boxShadow:"rgba(0, 0, 0, 0.24) 0px 3px 8px"
-            }}
-          >
-            <span className="navigation-item">Categories</span>
-          </Dropdown>
-        </div>
+      
         <div className="collapse navbar-collapse" id="navbar-default">
           <div className="navbar-collapse-header">
             <div className="row">
@@ -114,7 +103,32 @@ const navigate =useNavigate()
               </div>
             </div>
           </div>
+          {  <div
+          className="navbar-nav-items"
+          style={{
+            width: "50%",
+            display: "flex",
+            justifyContent: "center",
+            gap: "25px",
+          }}
+        >
+          <span className="navigation-item">Home</span>
 
+          <span className="navigation-item">About</span>
+          <Dropdown
+            overlay={<CategoriesItem />}
+            placement="bottom"
+            arrow
+            overlayStyle={{
+              borderRadius: "5px",
+              background: "white",
+              padding: "25px",
+              boxShadow:"rgba(0, 0, 0, 0.24) 0px 3px 8px"
+            }}
+          >
+            <span className="navigation-item">Categories</span>
+          </Dropdown>
+        </div>}
           <ul className="navbar-nav ml-lg-auto">
             <li className="nav-item">
               <Link to="/cart" className="nav-link nav-link-icon mt-3 mt-lg-0">
@@ -129,12 +143,13 @@ const navigate =useNavigate()
               <li className="nav-item dropdown">
                 <span
                   className="nav-link nav-link-icon"
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer",display:"flex" }}
                   id="navbar-default_dropdown_1"
                   role="button"
                   data-toggle="dropdown"
                   aria-haspopup="true"
                   aria-expanded="false"
+                
                 >
                   <img
                     src={user && `${user.avatar}`}
@@ -209,6 +224,8 @@ const navigate =useNavigate()
               )
             )}
           </ul>
+        
+         
         </div>
       </div>
     </nav>
