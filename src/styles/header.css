@@ -10,4 +10,32 @@
     position: relative;
     overflow: hidden;
    
+}.categories-list-container {
+  display: flex;
+ flex-direction: column;
+  width: 500px;
+  gap: 25px;
+  
+
+}.gategory-title {
+  color: #333;
+  display: inline-block;
+  font-size: 19px;
+  font-family: Montserrat;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 5px;
+  line-height: normal;
+}
+.gategory-title:hover {
+  color: #f9c3bb;
+   cursor: pointer;
+}
+.categories-items-container {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 25px;
+
 }

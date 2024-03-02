@@ -42,9 +42,17 @@ export const getCategory = () => async (dispatch) => {
 export const getCategoryDetails = (id) => async (dispatch) => {
 	try {
 		dispatch({ type: CATEGORY_DETAILS_REQUEST });
+		const token = localStorage.getItem('token');
 
+		const config = {
+			headers: {
+				"Authorization": token,
+				
+
+			},
+		};
 		const { data } = await axios.get(
-			`http://localhost:8000/api/admin/category/${id}`
+			`http://localhost:8000/api/admin/category/${id}`,config
 		);
 
 		dispatch({
@@ -94,10 +102,13 @@ export const newCategory = (categoryData) => async (dispatch) => {
 export const updateCategory = (id, categoryData) => async (dispatch) => {
 	try {
 		dispatch({ type: UPDATE_CATEGORY_REQUEST });
+		const token = localStorage.getItem('token');
 
 		const config = {
 			headers: {
 				"Content-Type": "application/json",
+				"Authorization": token,
+
 			},
 		};
 
@@ -122,9 +133,17 @@ export const updateCategory = (id, categoryData) => async (dispatch) => {
 export const deleteCategory = (id) => async (dispatch) => {
 	try {
 		dispatch({ type: DELETE_CATEGORY_REQUEST });
+		const token = localStorage.getItem('token');
 
+		const config = {
+			headers: {
+				"Authorization": token,
+				
+
+			},
+		}
 		const { data } = await axios.delete(
-			`http://localhost:8000/api/admin/category/${id}`
+			`http://localhost:8000/api/admin/category/${id}`,config
 		);
 
 		dispatch({

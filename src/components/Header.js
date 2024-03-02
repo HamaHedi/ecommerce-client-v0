@@ -1,13 +1,17 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { logout } from "../actions/userActions";
-import "../styles/header.css"
+import { Dropdown } from "antd";
+import "../styles/header.css";
+import { useGlobalState } from "../context/context";
+
 const Header = () => {
   const dispatch = useDispatch();
-
+const navigate =useNavigate()
   const { user, loading } = useSelector((state) => state.auth);
+  const { keyword, setKeyword } = useGlobalState();
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -16,9 +20,25 @@ const Header = () => {
       className: "m-2",
     });
   };
+  const { category: allCategory } = useSelector((state) => state.categorys);
 
+  const CategoriesItem = () => {
+    return (
+      <div className="categories-list-container">
+       
+        <div className="categories-items-container">{allCategory?.map((category) => (
+          <span className="gategory-title" onClick={()=>  setKeyword(category?.title)
+        }>{category?.title}</span>
+        ))}</div>
+        <img src="./assets/cover1.png" />
+      </div>
+    );
+  };
   return (
-    <nav className="navbar navbar-expand-lg navbar-defailt py-2 border-bottom" style={{height:"90px"}}>
+    <nav
+      className="navbar navbar-expand-lg navbar-defailt py-2 border-bottom"
+      style={{ height: "90px" }}
+    >
       <div className="container">
         <Link to="/" className="navbar-brand">
           {/* <img src='/assets/logo.png' alt='logo' /> */}
@@ -43,13 +63,29 @@ const Header = () => {
         </button>
         <div
           className="navbar-nav-items"
-          style={{ width: "50%", display: "flex", justifyContent: "center",gap:"25px" }}
+          style={{
+            width: "50%",
+            display: "flex",
+            justifyContent: "center",
+            gap: "25px",
+          }}
         >
           <span className="navigation-item">Home</span>
 
           <span className="navigation-item">About</span>
-		  <span className="navigation-item">Categories</span>
-
+          <Dropdown
+            overlay={<CategoriesItem />}
+            placement="bottom"
+            arrow
+            overlayStyle={{
+              borderRadius: "5px",
+              background: "white",
+              padding: "25px",
+              boxShadow:"rgba(0, 0, 0, 0.24) 0px 3px 8px"
+            }}
+          >
+            <span className="navigation-item">Categories</span>
+          </Dropdown>
         </div>
         <div className="collapse navbar-collapse" id="navbar-default">
           <div className="navbar-collapse-header">

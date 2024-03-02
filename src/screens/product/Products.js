@@ -7,13 +7,15 @@ import Message from '../../components/Message'
 import Banner from '../../components/Banner'
 import { getCategory } from '../../actions/categoryAction'
 import Pagination from 'react-js-pagination'
+import { useGlobalState } from '../../context/context'
 
 const Products = () => {
 	const [currentPage, setCurrentPage] = useState(1)
-	const [price, setPrice] = useState([1, 1000])
+	const [price, setPrice] = useState([0, 1000])
 	const [category, setCategory] = useState('')
 	const [rating, setRating] = useState(0)
-	const [keyword, setKeyword] = useState('')
+	// const [keyword, setKeyword] = useState('')
+	const { keyword, setKeyword } = useGlobalState();
 
 	const keywordRef = useRef('')
 	const minPriceRef = useRef(0)
@@ -45,7 +47,7 @@ const Products = () => {
 	const searchHandler = (e) => {
 		e.preventDefault()
 		setCurrentPage(1)
-		setPrice([1, 1000])
+		setPrice([1, 9000])
 		setCategory('')
 		setRating(0)
 		setKeyword(keywordRef.current.value)
@@ -63,12 +65,12 @@ const Products = () => {
 	return (
 		<section className={`${keyword ? 'container my-4' : ''}`}>
 			<div className='row'>
-				{keyword && (
+				 {keyword && (
 					<div className='col-12 col-md-3'>
 						<div className='p-2 h-100'>
 							<form onSubmit={submitHandler}>
 								<h6>
-									<b>Price Range: {price}</b>
+									<b>Price Range: {price[0]}-{price[1]}</b>
 								</h6>
 
 								<div className='row mt-3 mb-2'>
@@ -178,7 +180,7 @@ const Products = () => {
 							</ul>
 						</div>
 					</div>
-				)}
+				)} 
 
 				<div className={keyword ? 'col-12 col-md-9' : 'col'}>
 					{!keyword && <Banner />}
