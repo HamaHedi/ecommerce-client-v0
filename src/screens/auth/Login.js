@@ -4,7 +4,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
 import { login, clearErrors } from '../../actions/userActions'
-
+import "../../styles/login.css"
 const Login = () => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
@@ -40,23 +40,26 @@ const Login = () => {
 	}, [dispatch])
 
 	return (
+		<>
+		<div className='background-image-container'>
+			<span className='login-title'>ACCOUNT</span>
+			<span className='login-subtitle'>Home / Account</span>
+		</div>
+
 		<section className='container my-4'>
 			<div className='container py-5 h-100'>
 				<div className='row d-flex justify-content-center align-items-center h-100'>
 					<div className='col-12 col-md-8 col-lg-6 col-xl-5'>
-						<div className='card shadow-lg' style={{ borderRadius: '1rem' }}>
+						<div>
 							<div className='card-body p-5 text-center'>
-								<h3>
-									<b>Sign in</b>
-								</h3>
-								<p className='mb-4'>Welcome Back 👋</p>
+								
 
 								<form onSubmit={submitHandler}>
 									<div className='form-group mb-4'>
 										<input
 											type='email'
 											required
-											className='form-control form-control-alternative'
+											className='login-input'
 											placeholder='enter your email'
 											value={email}
 											onChange={(e) => setEmail(e.target.value)}
@@ -67,7 +70,7 @@ const Login = () => {
 										<input
 											type='password'
 											required
-											className='form-control form-control-alternative'
+											className='login-input'
 											placeholder='enter your password'
 											value={password}
 											onChange={(e) => setPassword(e.target.value)}
@@ -80,13 +83,13 @@ const Login = () => {
 									</div>
 
 									<div className='text-right mt-1 mb-3'>
-										<Link to='/forgot-password' type='submit'>
+										<Link to='/forgot-password' type='submit' className='login-link'>
 											Forgot password?
 										</Link>
 									</div>
 
 									<button
-										className='btn btn-primary btn-lg btn-block mb-4'
+										className='login-button'
 										type='submit'
 										disabled={loading ? true : false}
 									>
@@ -106,34 +109,19 @@ const Login = () => {
 
 								<span>
 									Not registered yet?{' '}
-									<Link to='/register'>Create an Account</Link>
+									<Link to='/register' className='login-link'>Create an Account</Link>
 								</span>
 
-								<hr className='my-4' />
 
-								<div>
-									<button
-										className='btn text-white'
-										style={{ backgroundColor: '#E34133' }}
-										type='submit'
-									>
-										<i className='fa fa-google' aria-hidden='true'></i>
-									</button>
-
-									<button
-										className='btn text-white'
-										style={{ backgroundColor: '#4064AC' }}
-										type='submit'
-									>
-										<i className='fa fa-facebook' aria-hidden='true'></i>
-									</button>
-								</div>
+							
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</section>
+		
+		</>
 	)
 }
 
