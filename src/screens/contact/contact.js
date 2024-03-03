@@ -28,7 +28,7 @@ const Contact = () => {
         />
         <Marker position={position} icon={defaultIcon}>
           <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
+            Our store location
           </Popup>
         </Marker>
       </MapContainer>
