@@ -37,6 +37,7 @@ import AdminUserUpdate from './screens/admin/AdminUserUpdate'
 import AdminCategory from './screens/admin/AdminCategory'
 import AdminCategoryAdd from './screens/admin/AdminCategoryAdd'
 import AdminCategoryUpdate from './screens/admin/AdminCategoryUpdate'
+import Contact from './screens/contact/contact'
 
 const App = () => {
 	useEffect(() => {
@@ -55,6 +56,7 @@ const App = () => {
 						<Route path='/cart' element={<Cart />} exact />
 						<Route path='/shipping' element={<Shipping />} exact />
 						<Route path='/confirm' element={<ConfirmOrder />} exact />
+						<Route path='/contact' element={<Contact />} exact />
 
 						<Route path='/login' element={<Login />} />
 						<Route path='/register' element={<Register />} />
