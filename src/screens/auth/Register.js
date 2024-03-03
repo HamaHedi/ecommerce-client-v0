@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { register, clearErrors } from '../../actions/userActions'
-
+import "../../styles/register.css"
 const Register = () => {
 	const [name, setName] = useState('')
 	const [email, setEmail] = useState('')
@@ -39,23 +39,25 @@ const Register = () => {
 	}, [dispatch])
 
 	return (
+		<>
+		<div className='background-image-container'>
+			<span className='login-title'>CREATE ACCOUNT</span>
+			<span className='login-subtitle'>Home / Create Account</span>
+		</div>
 		<section section className='container my-4'>
 			<div className='container py-5 h-100'>
 				<div className='row d-flex justify-content-center align-items-center h-100'>
 					<div className='col-12 col-md-8 col-lg-6 col-xl-5'>
-						<div className='card shadow-lg' style={{ borderRadius: '1rem' }}>
+						<div >
 							<div className='card-body p-5 text-center'>
-								<h3>
-									<b>Sign up</b>
-								</h3>
-								<p className='mb-4'>Adventure starts here 🚀</p>
+						
 
 								<form onSubmit={submitHandler}>
 									<div className='form-group mb-4'>
 										<input
 											type='text'
 											required
-											className='form-control form-control-alternative'
+											className='login-input'
 											placeholder='enter your name'
 											value={name}
 											onChange={(e) => setName(e.target.value)}
@@ -71,7 +73,7 @@ const Register = () => {
 										<input
 											type='email'
 											required
-											className='form-control form-control-alternative'
+											className='login-input'
 											placeholder='enter your email'
 											value={email}
 											onChange={(e) => setEmail(e.target.value)}
@@ -87,7 +89,7 @@ const Register = () => {
 										<input
 											type='password'
 											required
-											className='form-control form-control-alternative'
+											className='login-input'
 											placeholder='enter your password'
 											value={password}
 											onChange={(e) => setPassword(e.target.value)}
@@ -103,7 +105,7 @@ const Register = () => {
 										<input
 											type='password'
 											required
-											className='form-control form-control-alternative'
+											className='login-input'
 											placeholder='Confirm your password'
 											value={confirmPassword}
 											onChange={(e) => setConfirmPassword(e.target.value)}
@@ -116,7 +118,7 @@ const Register = () => {
 									</div>
 
 									<button
-										className='btn btn-primary btn-lg btn-block mb-4'
+										className='login-button'
 										type='submit'
 										disabled={loading ? true : false}
 									>
@@ -135,34 +137,17 @@ const Register = () => {
 								</form>
 
 								<span>
-									Already have an Account? <Link to='/login'>Sign in</Link>
+									Already have an Account? <Link to='/login' className='login-link'>Sign in</Link>
 								</span>
 
-								<hr className='my-4' />
 
-								<div>
-									<button
-										className='btn text-white'
-										style={{ backgroundColor: '#E34133' }}
-										type='submit'
-									>
-										<i className='fa fa-google' aria-hidden='true'></i>
-									</button>
-
-									<button
-										className='btn text-white'
-										style={{ backgroundColor: '#4064AC' }}
-										type='submit'
-									>
-										<i className='fa fa-facebook' aria-hidden='true'></i>
-									</button>
-								</div>
+							
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</section>
+		</section></>
 	)
 }
 
