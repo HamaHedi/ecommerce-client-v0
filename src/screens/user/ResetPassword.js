@@ -55,7 +55,7 @@ const ResetPassword = () => {
 			<span className='login-subtitle'>Home / Account</span>
 		</div>
 		<section className='container my-4'>
-			<div className='card-profile shadow-sm mt-5'>
+			<div className='card-profile'>
 			<div className='reset-header'>
 						<span className='reset-title'>Reset your password</span>
 
