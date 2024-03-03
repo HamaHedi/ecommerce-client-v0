@@ -49,18 +49,24 @@ const ResetPassword = () => {
 	}, [dispatch, error, success, isAuthenticated, navigate])
 
 	return (
+		<>
+		<div className='background-image-container'>
+			<span className='login-title'> ACCOUNT</span>
+			<span className='login-subtitle'>Home / Account</span>
+		</div>
 		<section className='container my-4'>
-			<div className='card card-profile shadow-sm mt-5'>
-				<div className='card-header text-center border-0'>
-					<b>Reset Password</b>
-				</div>
+			<div className='card-profile shadow-sm mt-5'>
+			<div className='reset-header'>
+						<span className='reset-title'>Reset your password</span>
+
+					</div>
 				<div className='card-body'>
 					<form onSubmit={submitHandler}>
 						<div className='form-group mb-4'>
 							<input
 								type='password'
 								required
-								className='form-control form-control-alternative'
+								className='login-input'
 								placeholder='enter your password'
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
@@ -76,7 +82,7 @@ const ResetPassword = () => {
 							<input
 								type='password'
 								required
-								className='form-control form-control-alternative'
+								className='login-input'
 								placeholder='Confirm your password'
 								value={confirmPassword}
 								onChange={(e) => setConfirmPassword(e.target.value)}
@@ -89,14 +95,15 @@ const ResetPassword = () => {
 						</div>
 
 						<div className='text-center'>
-							<button type='submit' className='btn btn-primary'>
+							<button type='submit' className='login-button'
+>
 								Submit
 							</button>
 						</div>
 					</form>
 				</div>
 			</div>
-		</section>
+		</section></>
 	)
 }
 

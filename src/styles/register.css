@@ -60,8 +60,6 @@
     text-transform: uppercase;
 }
 .login-button:hover {
-  
     background-color:#f9c3bb ;
     color: white;
-  
 }

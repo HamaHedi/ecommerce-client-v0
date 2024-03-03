@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
 import { forgotPassword, clearErrors } from '../../actions/userActions'
 import { useNavigate } from 'react-router-dom'
-
+import "../../styles/forgetPassword.css"
 const ForgotPassword = () => {
 	const [email, setEmail] = useState('')
 
@@ -42,13 +42,20 @@ const ForgotPassword = () => {
 	}, [dispatch, error, isAuthenticated, message, navigate])
 
 	return (
+		<>
+		<div className='background-image-container'>
+			<span className='login-title'> ACCOUNT</span>
+			<span className='login-subtitle'>Home / Account</span>
+		</div>
 		<section className='container my-4'>
 			{loading ? (
 				<Loader />
 			) : (
-				<div className='card card-profile shadow-sm mt-5'>
-					<div className='card-header text-center border-0'>
-						<b>Forgot Password</b>
+				<div className=' card-profile'>
+					<div className='reset-header'>
+						<span className='reset-title'>Reset your password</span>
+						<span className='reset-description'>We will send you an email to reset your password.</span>
+
 					</div>
 					<div className='card-body'>
 						<form onSubmit={submitHandler}>
@@ -57,7 +64,7 @@ const ForgotPassword = () => {
 								<input
 									type='email'
 									required
-									className='form-control form-control-alternative'
+									className='login-input'
 									placeholder='enter your email'
 									value={email}
 									onChange={(e) => setEmail(e.target.value)}
@@ -72,7 +79,7 @@ const ForgotPassword = () => {
 							<div className='text-center'>
 								<button
 									type='submit'
-									className='btn btn-primary'
+									className='login-button'
 									disabled={loading ? true : false}
 								>
 									{loading ? (
@@ -92,7 +99,7 @@ const ForgotPassword = () => {
 					</div>
 				</div>
 			)}
-		</section>
+		</section></>
 	)
 }
 
