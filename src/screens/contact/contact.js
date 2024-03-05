@@ -2,37 +2,71 @@ import React from "react";
 
 import "../../styles/contact.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import 'leaflet/dist/leaflet.css'
-import icon from 'leaflet/dist/images/marker-icon.png';
-import L from 'leaflet'; // Import Leaflet library
+import "leaflet/dist/leaflet.css";
+import icon from "leaflet/dist/images/marker-icon.png";
+import L from "leaflet"; // Import Leaflet library
+import { ReactComponent as EmailIcon } from "./envelope-solid.svg";
+import { ReactComponent as PhoneIcon } from "./mobile-screen-button-solid.svg";
+import { ReactComponent as AdressIcon } from "./location-arrow-solid.svg";
 
 const Contact = () => {
-    const position = [ 35.7291700, 10.5808200]
-    const defaultIcon = L.icon({
-        iconUrl: icon,
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-      }); 
+  const position = [35.72917, 10.58082];
+  const defaultIcon = L.icon({
+    iconUrl: icon,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+  });
   return (
     <>
       <div className="background-image-container">
         <span className="login-title">Contact</span>
         <span className="login-subtitle">Home / Contact</span>
       </div>
-      <div className="map-container"> 
+      <div className="map-container">
+        <MapContainer
+          center={position}
+          zoom={13}
+          scrollWheelZoom={false}
+          style={{ height: "500px", width: "70%" }}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <Marker position={position} icon={defaultIcon}>
+            <Popup>Our store location</Popup>
+          </Marker>
+        </MapContainer>
 
-      <MapContainer center={position} zoom={13} scrollWheelZoom={false} style={{ height: '500px', width: '70%' }}>
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <Marker position={position} icon={defaultIcon}>
-          <Popup>
-            Our store location
-          </Popup>
-        </Marker>
-      </MapContainer>
-    </div>
+        <div className="contact-info-container">
+          <div className="phone-contact">
+            <div className="icon-container">
+              <PhoneIcon />
+            </div>
+            <span className="title">PHONE</span>
+            <span>Toll-Free: 1800 - 234 - 5678</span>
+            <span>Fax: 1800 - 234 - 5678</span>
+          </div>
+          <div className="email-contact">
+            <div className="icon-container">
+              <EmailIcon />
+            </div>
+            <span className="title">EMAIL</span>
+
+            <span>buddha@example.com</span>
+            <span>support@example.com</span>
+          </div>
+          <div className="address-contact">
+            <div className="icon-container">
+              <AdressIcon />
+            </div>
+            <span className="title">ADDRESS</span>
+
+            <span>No: 58 A, East Madison Street,</span>
+            <span>Baltimore, MD, USA 4508</span>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

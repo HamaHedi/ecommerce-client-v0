@@ -2,6 +2,77 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     padding: 25px;
     width: 100%;
+}
+.contact-info-container {
+    display: flex;
+    width: 100%;
+    padding: 50px;
+    gap: 80px;
+    justify-content: center;
+   
+}
+.icon-container {
+    background: #333333;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    height: 50px;
+    border-radius: 50%;
+    align-items: center;
+}
+.icon-container:hover { background: #f9c3bb;}
+.phone-contact {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;   
+    gap: 10px;  
+}
+.email-contact {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;  
+
+}
+.address-contact {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; 
+    gap: 10px;  
+    
+}
+svg{
+    width: 25px;   
+    fill: white;     
+}
+svg:hover{
+    width: 25px;   
+    fill: #333333;  
+       
+}
+
+.title {
+    color: #1a1a1a;
+    font-family: Montserrat;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+.title:hover {
+    color: #f9c3bb;
+
+}
+span {
+    color: #6a6a6a;
+    letter-spacing: 0em;
+    font-family: Cardo;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.5;
 }
