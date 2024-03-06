@@ -1,0 +1,8 @@
+.footer-contact-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.footer-map-info {
+    width: 400px;
+}
