@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/footer.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -10,10 +10,35 @@ import { ReactComponent as PhoneIcon } from "../screens/contact/mobile-screen-bu
 import { ReactComponent as AdressIcon } from "../screens/contact/location-arrow-solid.svg";
 import { ReactComponent as FasebookIcon } from "./square-facebook.svg";
 import { ReactComponent as InstagramIcon } from "./instagram.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { clearErrors, newsletterSubscription } from "../actions/userActions";
+import { toast } from 'react-toastify'
+
 const Footer = () => {
   const position = [35.72917, 10.58082];
   const [email, setEmail] = useState("");
+  const dispatch = useDispatch()
+  const { error, message } = useSelector((state) => state.newsLetter)
+	useEffect(() => {
 
+		if (error) {
+			toast.error(error?.message, {
+				position: toast.POSITION.TOP_RIGHT,
+				className: 'm-2',
+			})
+			dispatch(clearErrors())
+		}
+
+		if (message) {
+			toast.success("Subscription done", {
+				position: toast.POSITION.TOP_RIGHT,
+				className: 'm-2',
+			})
+		}
+	}, [dispatch, error,message ])
+ const handleNewsletter =()=> {
+  dispatch(newsletterSubscription(email))
+ }
   const defaultIcon = L.icon({
     iconUrl: icon,
     iconSize: [25, 41],
@@ -168,7 +193,7 @@ const Footer = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <button  className="login-button">
+        <button  className="login-button" onClick={handleNewsletter}>
           Subscribe
         </button>
       </div>

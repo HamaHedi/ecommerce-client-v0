@@ -35,6 +35,9 @@ import {
 	DELETE_USER_FAIL,
 	LOGOUT_SUCCESS,
 	LOGOUT_FAIL,
+	SUBSCRIPTION_REQUEST,
+	SUBSCRIPTION_SUCCESS,
+	SUBSCRIPTION_FAIL,
 	CLEAR_ERRORS,
 } from "../constants/userConstants";
 
@@ -379,6 +382,29 @@ export const deleteUser = (id) => async (dispatch) => {
 		});
 	}
 };
+
+export const newsletterSubscription = (email) => async (dispatch) => {
+	try {
+		 dispatch({ type: SUBSCRIPTION_REQUEST });
+		// const token = localStorage.getItem('token');
+
+	
+		const { data } = await axios.post(
+			`http://localhost:8000/api/subscribe`,{email},
+		);
+
+		dispatch({
+			type: SUBSCRIPTION_SUCCESS,
+			payload: data.success,
+		});
+	} catch (error) {
+		dispatch({
+			 type: SUBSCRIPTION_FAIL,
+			payload: error.response.data.message,
+		});
+	}
+};
+
 
 // Clear Errors
 export const clearErrors = () => async (dispatch) => {

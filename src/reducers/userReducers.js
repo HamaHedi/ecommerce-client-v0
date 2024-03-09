@@ -38,6 +38,9 @@ import {
 	DELETE_USER_FAIL,
 	LOGOUT_SUCCESS,
 	LOGOUT_FAIL,
+	SUBSCRIPTION_REQUEST,
+	SUBSCRIPTION_SUCCESS,
+	SUBSCRIPTION_FAIL,
 	CLEAR_ERRORS,
 } from '../constants/userConstants'
 
@@ -270,6 +273,33 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
 				error: null,
 			}
 
+		default:
+			return state
+	}
+}
+
+export const newsLetterReducer = (state = {}, action) => {
+	switch (action.type) {
+		case SUBSCRIPTION_REQUEST:
+			return {
+				...state,
+				loading: true,
+				error: null,
+			}
+
+		case SUBSCRIPTION_SUCCESS:
+			return {
+				...state,
+				loading: false,
+				message: action.payload,
+			}
+
+			case SUBSCRIPTION_FAIL:
+				return {
+					...state,
+					loading: false,
+					error: action.payload,
+				}
 		default:
 			return state
 	}

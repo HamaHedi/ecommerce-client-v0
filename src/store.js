@@ -18,6 +18,7 @@ import {
 	forgotPasswordReducer,
 	allUsersReducer,
 	userDetailsReducer,
+	newsLetterReducer
 } from './reducers/userReducers'
 
 import { cartReducer } from './reducers/cartReducers'
@@ -60,6 +61,7 @@ const reducer = combineReducers({
 	categoryDetails: categoryDetailsReducer,
 	newCategory: newCategoryReducer,
 	category: categoryReducer,
+	newsLetter : newsLetterReducer
 })
 
 let initialState = {
