@@ -238,6 +238,7 @@ const Products = () => {
 					</section>
 				</div>
 			</div>
+			
 		</section>
 	)
 }

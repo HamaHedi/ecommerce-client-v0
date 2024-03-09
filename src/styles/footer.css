@@ -6,3 +6,25 @@
 .footer-map-info {
     width: 400px;
 }
+.newsletter-email {
+    background-color: unset;
+    border: 0px;
+    border-bottom: 1px solid white;
+    width:280px;
+    color: #6a6a6a;
+    letter-spacing: 0em;
+    font-family: Cardo;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+  
+}
+.newsletter-subscription-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 5px;
+}

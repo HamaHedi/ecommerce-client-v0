@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/footer.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -12,6 +12,8 @@ import { ReactComponent as FasebookIcon } from "./square-facebook.svg";
 import { ReactComponent as InstagramIcon } from "./instagram.svg";
 const Footer = () => {
   const position = [35.72917, 10.58082];
+  const [email, setEmail] = useState("");
+
   const defaultIcon = L.icon({
     iconUrl: icon,
     iconSize: [25, 41],
@@ -24,9 +26,9 @@ const Footer = () => {
         background: "#f9c3bb",
         display: "flex",
         alignItems: "center",
-       flexWrap: "wrap",
-	   gap:"25px",
-        justifyContent: "space-around",
+        flexWrap: "wrap",
+        gap: "100px",
+        justifyContent: "center",
       }}
     >
       <div
@@ -82,13 +84,15 @@ const Footer = () => {
           <PhoneIcon /> mail@example.com
         </span>
       </div>
-      <div   style={{
-            display: "flex",
-			flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "10px",
-          }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "10px",
+        }}
+      >
         <span
           style={{
             color: "#1a1a1a",
@@ -105,11 +109,10 @@ const Footer = () => {
         <div
           style={{
             display: "flex",
-			justifyContent:"center",
-			gap: "10px",
+            justifyContent: "center",
+            gap: "10px",
           }}
         >
-          
           <FasebookIcon />
           <InstagramIcon />
         </div>
@@ -129,6 +132,45 @@ const Footer = () => {
             <Popup>Our store location</Popup>
           </Marker>
         </MapContainer>
+      </div>
+      <div className="newsletter-subscription-container">
+        <span
+          style={{
+            color: "#1a1a1a",
+            fontSize: "25px",
+            position: "relative",
+            marginBottom: "15px",
+            fontWeight: "500",
+            letterSpacing: "0.9px",
+            fontFamily: "Montserrat",
+          }}
+        >
+          Newsletter{" "}
+        </span>
+        <p
+          style={{
+            color: "#1a1a1a",
+            fontSize: "16px",
+            position: "relative",
+            marginBottom: "5px",
+            fontWeight: "500",
+            letterSpacing: "0.9px",
+            fontFamily: "Montserrat",
+          }}
+        >
+          Subscribe our newsletter
+        </p>
+        <input
+          type="email"
+          required
+          className="newsletter-email"
+          placeholder="enter your email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <button  className="login-button">
+          Subscribe
+        </button>
       </div>
     </footer>
   );
