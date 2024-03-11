@@ -54,7 +54,7 @@ const Product = ({ product }) => {
             <img
               src={`${product && product.images[0] && product.images[0].path}`}
               alt="product"
-              className="w-100 mb-4"
+              className="product-image"
               style={{ borderRadius: "25px" }}
             />
           </Link>

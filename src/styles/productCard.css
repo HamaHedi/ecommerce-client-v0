@@ -9,6 +9,15 @@
 }
 .product-image-container{
     width: 220px;
+    height: 220px;
+
+}
+.product-image {
+    width: 220px;
+    height: 220px;
+    padding-bottom: 10px;
+    object-fit:cover;
+    
 }
 .product-card-body {
     display: flex;
