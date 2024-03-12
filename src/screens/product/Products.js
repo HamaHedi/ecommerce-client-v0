@@ -196,7 +196,7 @@ const Products = () => {
             <div className="about-container">
               <div className="about-images-container">
                 <img src="assets/img1.png" className="about-image-1"/>
-                <img src="assets/img1.png" className="about-image-2"/>
+                <img src="assets/img2.png" className="about-image-2"/>
               </div>
               <div className="info-container">
                 <span className="about-subtitle">ABOUT ELIAH</span>

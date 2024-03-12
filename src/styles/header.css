@@ -9,6 +9,7 @@
     display: block;
     position: relative;
     overflow: hidden;
+    cursor: pointer;
    
 }.categories-list-container {
   display: flex;
@@ -38,6 +39,9 @@
   align-items: center;
   gap: 25px;
 
+}
+.navigation-item:hover {
+  color: #f9c3bb;
 }
 @media (max-width: 992px) {
   .navigation-item {

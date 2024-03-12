@@ -56,7 +56,8 @@ const navigate =useNavigate()
       <div className="container">
         <Link to="/" className="navbar-brand">
           {/* <img src='/assets/logo.png' alt='logo' /> */}
-          <b>
+          <b   onClick={()=>  setKeyword()
+        }>
             <img src="/assets/logo.png" alt="logo" />
           </b>
         </Link>
@@ -112,9 +113,10 @@ const navigate =useNavigate()
             gap: "25px",
           }}
         >
-          <span className="navigation-item">Home</span>
+          <span className="navigation-item"  onClick={()=>  setKeyword()
+        }>Home</span>
 
-          <span className="navigation-item">About</span>
+          <span className="navigation-item" onClick={()=> navigate("/contact")}>Contact</span>
           <Dropdown
             overlay={<CategoriesItem />}
             placement="bottom"
