@@ -51,7 +51,7 @@ const navigate =useNavigate()
   return (
     <nav
       className="navbar navbar-expand-lg navbar-defailt py-2 border-bottom"
-      style={{ height: "90px" }}
+      style={{ height: "90px", position:"fixed", background:"white", width: "100%", zIndex:"100"}}
     >
       <div className="container">
         <Link to="/" className="navbar-brand">
