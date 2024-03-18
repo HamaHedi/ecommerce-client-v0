@@ -3,7 +3,7 @@ import "../styles/footer.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import icon from "leaflet/dist/images/marker-icon.png";
-import L from "leaflet"; // Import Leaflet library
+import L from "leaflet";
 // import "../styles/footer.css"
 import { ReactComponent as EmailIcon } from "../screens/contact/envelope-solid.svg";
 import { ReactComponent as PhoneIcon } from "../screens/contact/mobile-screen-button-solid.svg";
@@ -13,32 +13,35 @@ import { ReactComponent as InstagramIcon } from "./instagram.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, newsletterSubscription } from "../actions/userActions";
 import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 
 const Footer = () => {
   const position = [35.72917, 10.58082];
   const [email, setEmail] = useState("");
   const dispatch = useDispatch()
+  const { t } = useTranslation('footer')
+
   const { error, message } = useSelector((state) => state.newsLetter)
-	useEffect(() => {
+  useEffect(() => {
 
-		if (error) {
-			toast.error(error?.message, {
-				position: toast.POSITION.TOP_RIGHT,
-				className: 'm-2',
-			})
-			dispatch(clearErrors())
-		}
+    if (error) {
+      toast.error(error?.message, {
+        position: toast.POSITION.TOP_RIGHT,
+        className: 'm-2',
+      })
+      dispatch(clearErrors())
+    }
 
-		if (message) {
-			toast.success("Subscription done", {
-				position: toast.POSITION.TOP_RIGHT,
-				className: 'm-2',
-			})
-		}
-	}, [dispatch, error,message ])
- const handleNewsletter =()=> {
-  dispatch(newsletterSubscription(email))
- }
+    if (message) {
+      toast.success("Subscription done", {
+        position: toast.POSITION.TOP_RIGHT,
+        className: 'm-2',
+      })
+    }
+  }, [dispatch, error, message])
+  const handleNewsletter = () => {
+    dispatch(newsletterSubscription(email))
+  }
   const defaultIcon = L.icon({
     iconUrl: icon,
     iconSize: [25, 41],
@@ -76,7 +79,7 @@ const Footer = () => {
             letterSpacing: "0.9px",
           }}
         >
-          Contact us
+          {t("contact_us")}
         </span>
         <span
           style={{
@@ -129,7 +132,7 @@ const Footer = () => {
             fontFamily: "Montserrat",
           }}
         >
-          Share with us
+          {t("share_with_us")}
         </span>
         <div
           style={{
@@ -154,7 +157,8 @@ const Footer = () => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           <Marker position={position} icon={defaultIcon}>
-            <Popup>Our store location</Popup>
+            <Popup>          {t("our_store_location")}
+            </Popup>
           </Marker>
         </MapContainer>
       </div>
@@ -170,7 +174,7 @@ const Footer = () => {
             fontFamily: "Montserrat",
           }}
         >
-          Newsletter{" "}
+          {t("newsletter")}{" "}
         </span>
         <p
           style={{
@@ -183,8 +187,7 @@ const Footer = () => {
             fontFamily: "Montserrat",
           }}
         >
-          Subscribe our newsletter
-        </p>
+          {t("subscribe_our_newsletter")}        </p>
         <input
           type="email"
           required
@@ -193,8 +196,8 @@ const Footer = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <button  className="login-button" onClick={handleNewsletter}>
-          Subscribe
+        <button className="login-button" onClick={handleNewsletter}>
+          {t("subscribe")}
         </button>
       </div>
     </footer>
