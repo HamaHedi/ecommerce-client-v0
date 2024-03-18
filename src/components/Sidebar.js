@@ -1,7 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const Sidebar = ({ item }) => {
+	const { t } = useTranslation('sidebar')
+
 	return (
 		<nav>
 			<div className='row'>
@@ -22,7 +25,8 @@ const Sidebar = ({ item }) => {
 							/>
 						</div>
 						<div className='text-center mt-2'>
-							<strong className='text-white'>Dashboard</strong>
+							<strong className='text-white'>{
+								t("dashboard")}</strong>
 						</div>
 					</Link>
 				</div>
@@ -44,7 +48,8 @@ const Sidebar = ({ item }) => {
 							/>
 						</div>
 						<div className='text-center mt-2'>
-							<strong className='text-white'>Products</strong>
+							<strong className='text-white'>{
+								t("products")}</strong>
 						</div>
 					</Link>
 				</div>
@@ -66,7 +71,8 @@ const Sidebar = ({ item }) => {
 							/>
 						</div>
 						<div className='text-center mt-2'>
-							<strong className='text-white'>Orders</strong>
+							<strong className='text-white'>{
+								t("orders")}</strong>
 						</div>
 					</Link>
 				</div>
@@ -88,7 +94,8 @@ const Sidebar = ({ item }) => {
 							/>
 						</div>
 						<div className='text-center mt-2'>
-							<strong className='text-white'>Reviews</strong>
+							<strong className='text-white'>{
+								t("reviews")}</strong>
 						</div>
 					</Link>
 				</div>
@@ -110,7 +117,8 @@ const Sidebar = ({ item }) => {
 							/>
 						</div>
 						<div className='text-center mt-2'>
-							<strong className='text-white'>categories</strong>
+							<strong className='text-white'>{
+								t("categories")}</strong>
 						</div>
 					</Link>
 				</div>
@@ -132,7 +140,8 @@ const Sidebar = ({ item }) => {
 							/>
 						</div>
 						<div className='text-center mt-2'>
-							<strong className='text-white'>Users</strong>
+							<strong className='text-white'>{
+								t("users")}</strong>
 						</div>
 					</Link>
 				</div>
