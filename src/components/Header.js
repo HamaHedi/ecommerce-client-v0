@@ -3,13 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { logout } from "../actions/userActions";
-import { Dropdown } from "antd";
 import "../styles/header.css";
 import { useGlobalState } from "../context/context";
+import { useTranslation } from 'react-i18next'
+import { Button, Dropdown } from 'antd'
+
+
 
 const Header = () => {
   const dispatch = useDispatch();
-const navigate =useNavigate()
+  const navigate = useNavigate()
   const { user, loading } = useSelector((state) => state.auth);
   const { keyword, setKeyword } = useGlobalState();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -39,25 +42,58 @@ const navigate =useNavigate()
   const CategoriesItem = () => {
     return (
       <div className="categories-list-container">
-       
+
         <div className="categories-items-container">{allCategory?.map((category) => (
-          <span className="gategory-title" onClick={()=>  setKeyword(category?.title)
-        }>{category?.title}</span>
+          <span className="gategory-title" onClick={() => setKeyword(category?.title)
+          }>{category?.title}</span>
         ))}</div>
         <img src="./assets/cover1.png" />
       </div>
     );
   };
+  const { t, i18n } = useTranslation('header')
+
+  const [lang, setLang] = useState(i18n?.language?.toString())
+
+  const onChangeLanguage = (language) => {
+    i18n.changeLanguage(language)
+    setLang(language)
+  }
+
+  const languagesItems = [
+    {
+      key: '1',
+      label: (
+        <div className="navbar-flag-container" onClick={() => onChangeLanguage('en')}>
+          <img src={'./assets/en-flag.png'} alt="flag" className="navbar-flag" />
+          <p>{t('language.en')}</p>
+        </div>
+      ),
+    },
+    {
+      key: '2',
+      label: (
+        <div className="navbar-flag-container" onClick={() => onChangeLanguage('fr')}>
+          <img src={'./assets/fr-flag.png'} alt="flag" className="navbar-flag" />
+          <p>{t('language.fr')}</p>
+        </div>
+      ),
+    },
+
+  ]
+
   return (
     <nav
       className="navbar navbar-expand-lg navbar-defailt py-2 border-bottom"
-      style={{ height: "90px", position:"fixed", background:"white", width: "100%", zIndex:"100"}}
+      style={{ height: "90px" }}
     >
+
+
       <div className="container">
         <Link to="/" className="navbar-brand">
           {/* <img src='/assets/logo.png' alt='logo' /> */}
-          <b   onClick={()=>  setKeyword()
-        }>
+          <b onClick={() => setKeyword()
+          }>
             <img src="/assets/logo.png" alt="logo" />
           </b>
         </Link>
@@ -76,15 +112,14 @@ const navigate =useNavigate()
             style={{ color: "#A0A0A0" }}
           ></i>
         </button>
-      
+
         <div className="collapse navbar-collapse" id="navbar-default">
           <div className="navbar-collapse-header">
             <div className="row">
               <div className="col-6 collapse-brand">
                 <Link to="/">
-                  {/* <img src='/assets/img/brand/blue.png' alt='logo' /> */}
                   <b>
-                    <i className="ni ni-cart small"></i> ProShop
+                    <img src="/assets/logo.png" alt="logo" />
                   </b>
                 </Link>
               </div>
@@ -104,39 +139,39 @@ const navigate =useNavigate()
               </div>
             </div>
           </div>
-          {  <div
-          className="navbar-nav-items"
-          style={{
-            width: "50%",
-            display: "flex",
-            justifyContent: "center",
-            gap: "25px",
-          }}
-        >
-          <span className="navigation-item"  onClick={()=>  setKeyword()
-        }>Home</span>
-
-          <span className="navigation-item" onClick={()=> navigate("/contact")}>Contact</span>
-          <Dropdown
-            overlay={<CategoriesItem />}
-            placement="bottom"
-            arrow
-            overlayStyle={{
-              borderRadius: "5px",
-              background: "white",
-              padding: "25px",
-              boxShadow:"rgba(0, 0, 0, 0.24) 0px 3px 8px"
+          {<div
+            className="navbar-nav-items"
+            style={{
+              width: "50%",
+              display: "flex",
+              justifyContent: "center",
+              gap: "25px",
             }}
           >
-            <span className="navigation-item">Categories</span>
-          </Dropdown>
-        </div>}
+            <span className="navigation-item" onClick={() => setKeyword()
+            }>{t('home')}</span>
+
+            <span className="navigation-item" onClick={() => navigate("/contact")}>{t('contact')}</span>
+            <Dropdown
+              overlay={<CategoriesItem />}
+              placement="bottom"
+              arrow
+              overlayStyle={{
+                borderRadius: "5px",
+                background: "white",
+                padding: "25px",
+                boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px"
+              }}
+            >
+              <span className="navigation-item">{t('categories')}</span>
+            </Dropdown>
+          </div>}
           <ul className="navbar-nav ml-lg-auto">
             <li className="nav-item">
               <Link to="/cart" className="nav-link nav-link-icon mt-3 mt-lg-0">
                 <i className="ni ni-cart"></i>
                 <span className="nav-link-inner--text font-weight-bold">
-                  Cart
+                  {t('cart')}
                 </span>
               </Link>
             </li>
@@ -145,13 +180,13 @@ const navigate =useNavigate()
               <li className="nav-item dropdown">
                 <span
                   className="nav-link nav-link-icon"
-                  style={{ cursor: "pointer",display:"flex" }}
+                  style={{ cursor: "pointer", display: "flex" }}
                   id="navbar-default_dropdown_1"
                   role="button"
                   data-toggle="dropdown"
                   aria-haspopup="true"
                   aria-expanded="false"
-                
+
                 >
                   <img
                     src={user && `${user.avatar}`}
@@ -174,7 +209,8 @@ const navigate =useNavigate()
                       className="dropdown-item d-flex align-items-center"
                     >
                       <i className="fa fa-bar-chart" aria-hidden="true"></i>
-                      Dashboard
+                      {t('dashboard')}
+
                     </Link>
                   )}
 
@@ -183,7 +219,8 @@ const navigate =useNavigate()
                     className="dropdown-item d-flex align-items-center"
                   >
                     <i className="fa fa-credit-card-alt" aria-hidden="true"></i>
-                    Orders
+                    {t('orders')}
+
                   </Link>
 
                   <Link
@@ -191,7 +228,8 @@ const navigate =useNavigate()
                     className="dropdown-item d-flex align-items-center"
                   >
                     <i className="fa fa-user-circle" aria-hidden="true"></i>
-                    Profile
+                    {t('profile')}
+
                   </Link>
 
                   <Link
@@ -199,7 +237,7 @@ const navigate =useNavigate()
                     className="dropdown-item d-flex align-items-center"
                   >
                     <i className="fa fa-cog" aria-hidden="true"></i>
-                    Settings
+                    {t('settings')}
                   </Link>
 
                   <div className="dropdown-divider"></div>
@@ -209,7 +247,8 @@ const navigate =useNavigate()
                     onClick={logoutHandler}
                   >
                     <i className="fa fa-sign-out" aria-hidden="true"></i>
-                    Logout
+                    {t('logout')}
+
                   </button>
                 </div>
               </li>
@@ -219,16 +258,32 @@ const navigate =useNavigate()
                   <Link to="/login" className="nav-link nav-link-icon">
                     <i className="ni ni-single-02"></i>
                     <span className="nav-link-inner--text font-weight-bold">
-                      Sign in
+                      {t('sign_in')}
                     </span>
                   </Link>
                 </li>
               )
             )}
           </ul>
-        
-         
+
+
         </div>
+        <Dropdown
+          menu={{ items: languagesItems }}
+          trigger={['click']}
+          placement="bottomRight"
+          arrow
+        >
+          <Button type="link" shape="circle">
+            <div className="navbar-flag-container">
+              <img
+                src={lang === 'en' ? './assets/en-flag.png' : './assets/fr-flag.png'}
+                alt="flag"
+                className="navbar-flag"
+              />
+            </div>
+          </Button>
+        </Dropdown>
       </div>
     </nav>
   );

@@ -1,0 +1,17 @@
+{
+  "language": {
+    "en": "English",
+    "fr": "French",
+    "ar": "Arabic"
+  },
+  "home": "Home",
+  "contact": "Contact",
+  "categories": "Categories",
+  "cart": "Cart",
+  "dashboard": "Dashboard",
+  "orders": "Orders",
+  "profile": "Profile",
+  "settings": "Settings",
+  "logout": "Logout",
+  "sign_in": "Sign in"
+}

@@ -1,0 +1,17 @@
+{
+  "language": {
+    "en": "Anglais",
+    "fr": "Français",
+    "ar": "Arabe"
+  },
+  "home": "Accueil",
+  "contact": "Contact",
+  "categories": "Catégories",
+  "cart": "Panier",
+  "dashboard": "Tableau de bord",
+  "orders": "Commandes",
+  "profile": "Profil",
+  "settings": "Paramètres",
+  "logout": "Déconnexion",
+  "sign_in": "Se connecter"
+}
