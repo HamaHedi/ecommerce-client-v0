@@ -1,8 +1,12 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/productCard.css";
+import { useTranslation } from 'react-i18next'
+
 const Product = ({ product }) => {
-	const navigate =useNavigate()
+  const navigate = useNavigate()
+  const { t } = useTranslation('product')
+
   return (
     // <div className='col-12 col-sm-12 col-md-6 col-lg-4 mb-5'>
     // 	<div
@@ -81,10 +85,11 @@ const Product = ({ product }) => {
             ></div>
           </div>
           <small id="no_of_reviews">
-            &nbsp;({product.numOfReviews} Reviews)
+            &nbsp;({product.numOfReviews}           {t("reviews")}
+            )
           </small>
         </div>
-		<button className="view-details-button" onClick={()=> navigate(`/product/${product._id}`)}>View details</button>
+        <button className="view-details-button" onClick={() => navigate(`/product/${product._id}`)}> {t("view_details")}</button>
       </div>
     </div>
   );
