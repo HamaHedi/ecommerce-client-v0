@@ -3,10 +3,12 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { addItemToCart, removeItemFromCart } from '../../actions/cartActions'
+import { useTranslation } from 'react-i18next'
 
 const Cart = () => {
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
+	const { t } = useTranslation('cart')
 
 	const { cartItems } = useSelector((state) => state.cart)
 
@@ -49,10 +51,10 @@ const Cart = () => {
 										<div className='p-5'>
 											<div className='d-flex justify-content-between align-items-center mb-5'>
 												<h3 className='fw-bold mb-0 text-black'>
-													Shopping Cart
+													{t("Shopping_Cart")}
 												</h3>
 												<h6 className='mb-0 text-muted text-nowrap'>
-													{cartItems.length} items
+													{cartItems.length} {t("items")}
 												</h6>
 											</div>
 											<hr className='my-4' />
@@ -131,7 +133,7 @@ const Cart = () => {
 														<div className='col-md-3 col-lg-3 col-xl-3'>
 															<div className='d-flex justify-content-between'>
 																<h6 className='my-4'>
-																	$
+																	DT
 																	{item.price &&
 																		item.price.toFixed(2)}
 																</h6>
@@ -158,26 +160,26 @@ const Cart = () => {
 
 									<div className='col-12 col-sm-12 col-lg-4 summary'>
 										<div className='p-5'>
-											<h3 className='fw-bold mt-2 pt-1'>Summary</h3>
+											<h3 className='fw-bold mt-2 pt-1'>{t("Summary")}</h3>
 											<hr className='my-4' />
 
 											<div className='mb-4'>
-												<h5 className='text-uppercase'>Subtotal:</h5>
+												<h5 className='text-uppercase'>{t("Subtotal")}:</h5>
 												<h5>
 													{cartItems.reduce(
 														(acc, item) => acc + Number(item.quantity),
 														0
 													)}{' '}
-													(Units)
+													({t("Units")})
 												</h5>
 											</div>
 
 											<hr className='my-4' />
 
 											<div className='mb-5'>
-												<h5 className='text-uppercase'>Total price</h5>
+												<h5 className='text-uppercase'>{t("Total price")}</h5>
 												<h5>
-													${' '}
+													DT{' '}
 													{cartItems
 														.reduce(
 															(acc, item) =>
@@ -194,7 +196,7 @@ const Cart = () => {
 												onClick={checkoutHandler}
 												disabled={cartItems.length === 0 ? true : false}
 											>
-												CHECK OUT
+												{t("CHECK OUT")}
 											</button>
 										</div>
 									</div>

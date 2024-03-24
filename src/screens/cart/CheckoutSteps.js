@@ -1,7 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const CheckoutSteps = ({ shipping, confirmOrder, payment }) => {
+	const { t } = useTranslation('cart')
+
 	return (
 		<div className='checkout-progress d-flex justify-content-center mt-5'>
 			{shipping ? (
