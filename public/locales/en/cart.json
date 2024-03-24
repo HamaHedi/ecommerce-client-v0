@@ -5,5 +5,17 @@
     "Subtotal":"Subtotal",
     "Units":"Units",
     "Total price":"Total price",
-    "CHECK OUT" :"CHECK OUT"
+    "CHECK OUT" :"CHECK OUT",
+    "Shipping":"Shipping",
+    "Confirm Order" :"Confirm Order",
+    "Shipping Info":"Shipping Info",
+    "Name":"Name",
+    "Phone":"Phone",
+    "Address":"Address",
+    "Your Cart Items":"Your Cart Items",
+    "Order Summary":"Order Summary",
+    "Tax":"Tax",
+    "Total":"Total",
+    "Confirm":"Confirm"
+    
 }

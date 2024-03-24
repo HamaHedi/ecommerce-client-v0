@@ -5,5 +5,16 @@
     "Subtotal": "Sous-total",
     "Units": "Unités",
     "Total price": "Prix total",
-    "CHECK OUT": "PASSER À LA CAISSE"
+    "CHECK OUT": "PASSER À LA CAISSE",
+    "Shipping": "Expédition",
+    "Confirm Order": "Confirmer la commande",
+    "Shipping Info": "Informations de livraison",
+    "Name": "Nom",
+    "Phone": "Téléphone",
+    "Address": "Adresse",
+    "Your Cart Items": "Les articles de votre panier",
+    "Order Summary": "Résumé de la commande",
+    "Tax": "Taxe",
+    "Total": "Total",
+    "Confirm": "Confirmer"
     }

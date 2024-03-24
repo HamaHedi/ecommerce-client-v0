@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import CheckoutSteps from './CheckoutSteps'
 
 import { useDispatch, useSelector } from 'react-redux'
-
+import { useTranslation } from 'react-i18next'
 import { createOrder, clearErrors } from '../../actions/orderActions'
 import { toast } from 'react-toastify'
 
@@ -12,6 +12,7 @@ const ConfirmOrder = () => {
 	const { cartItems, shippingInfo } = useSelector((state) => state.cart)
 	const { user } = useSelector((state) => state.auth)
 	const { error } = useSelector((state) => state.newOrder)
+	const { t } = useTranslation('cart')
 
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
@@ -66,20 +67,20 @@ const ConfirmOrder = () => {
 
 			<div className='row d-flex justify-content-between'>
 				<div className='col-12 col-lg-8 mt-5 order-confirm'>
-					<h4 className='mb-3'>Shipping Info</h4>
+					<h4 className='mb-3'>{t("Shipping Info")}</h4>
 					<p>
-						<b>Name:</b> {user && user.name}
+						<b>{t("Name")}:</b> {user && user.name}
 					</p>
 					<p>
-						<b>Phone:</b> {shippingInfo.phoneNo}
+						<b>{t("Phone")}:</b> {shippingInfo.phoneNo}
 					</p>
 					<p className='mb-4'>
-						<b>Address:</b>{' '}
+						<b>{t("Address")}:</b>{' '}
 						{`${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.postalCode}, ${shippingInfo.country}`}
 					</p>
 
 					<hr />
-					<h4 className='mt-4'>Your Cart Items:</h4>
+					<h4 className='mt-4'>{t("Your Cart Items")}:</h4>
 
 					{cartItems.map((item) => (
 						<Fragment>
@@ -97,7 +98,7 @@ const ConfirmOrder = () => {
 									<div className='col-4 col-lg-4 mt-4 mt-lg-0'>
 										<p>
 											{item.quantity} x ${item.price && item.price.toFixed(2)}{' '}
-											= <b>${(item.quantity * item.price).toFixed(2)}</b>
+											= <b>DT{(item.quantity * item.price).toFixed(2)}</b>
 										</p>
 									</div>
 								</div>
@@ -109,33 +110,33 @@ const ConfirmOrder = () => {
 
 				<div className='col-12 col-lg-3 my-4'>
 					<div id='order_summary'>
-						<h4>Order Summary</h4>
+						<h4>{t("Order Summary")}</h4>
 						<hr />
 						<p>
-							Subtotal:{' '}
+						{t("Subtotal")}:{' '}
 							<span className='order-summary-values'>
-								${itemsPrice && itemsPrice.toFixed(2)}
+								DT {itemsPrice && itemsPrice.toFixed(2)}
 							</span>
 						</p>
 						<p>
-							Shipping:{' '}
+						{t("Shipping")}:{' '}
 							<span className='order-summary-values'>
-								${shippingPrice && shippingPrice.toFixed(2)}
+								DT {shippingPrice && shippingPrice.toFixed(2)}
 							</span>
 						</p>
 						<p>
-							Tax:{' '}
+						{t("Tax")}:{' '}
 							<span className='order-summary-values'>
-								${taxPrice && taxPrice.toFixed(2)}
+								DT{taxPrice && taxPrice.toFixed(2)}
 							</span>
 						</p>
 
 						<hr />
 
 						<p>
-							Total:{' '}
+						{t("Total")}:{' '}
 							<span className='order-summary-values'>
-								${totalPrice && totalPrice}
+								DT{totalPrice && totalPrice}
 							</span>
 						</p>
 
@@ -145,7 +146,7 @@ const ConfirmOrder = () => {
 							className='btn btn-primary btn-block'
 							onClick={processToPayment}
 						>
-							Confirm
+							{t("Confirm")}
 						</button>
 					</div>
 				</div>
