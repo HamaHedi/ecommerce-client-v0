@@ -3,10 +3,12 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
 import { resetPassword, clearErrors } from '../../actions/userActions'
+import { useTranslation } from 'react-i18next'
 
 const ResetPassword = () => {
 	const [password, setPassword] = useState('')
 	const [confirmPassword, setConfirmPassword] = useState('')
+	const { t } = useTranslation('user')
 
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
@@ -51,13 +53,13 @@ const ResetPassword = () => {
 	return (
 		<>
 		<div className='background-image-container'>
-			<span className='login-title'> ACCOUNT</span>
-			<span className='login-subtitle'>Home / Account</span>
+			<span className='login-title'> {t("ACCOUNT")}</span>
+			<span className='login-subtitle'>{t("Home")} / {t("Account")}</span>
 		</div>
 		<section className='container my-4'>
 			<div className='card-profile'>
 			<div className='reset-header'>
-						<span className='reset-title'>Reset your password</span>
+						<span className='reset-title'>{t("Reset your password")}</span>
 
 					</div>
 				<div className='card-body'>
@@ -67,7 +69,7 @@ const ResetPassword = () => {
 								type='password'
 								required
 								className='login-input'
-								placeholder='enter your password'
+								placeholder={t("enter your password")}
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
 							/>
@@ -83,7 +85,7 @@ const ResetPassword = () => {
 								type='password'
 								required
 								className='login-input'
-								placeholder='Confirm your password'
+								placeholder={t("Confirm your password")}
 								value={confirmPassword}
 								onChange={(e) => setConfirmPassword(e.target.value)}
 							/>
@@ -97,7 +99,7 @@ const ResetPassword = () => {
 						<div className='text-center'>
 							<button type='submit' className='login-button'
 >
-								Submit
+{t("Submit")}
 							</button>
 						</div>
 					</form>
