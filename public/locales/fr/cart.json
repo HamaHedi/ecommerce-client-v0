@@ -16,5 +16,10 @@
     "Order Summary": "Résumé de la commande",
     "Tax": "Taxe",
     "Total": "Total",
-    "Confirm": "Confirmer"
+    "Confirm": "Confirmer",
+    "City": "Ville",
+    "Phone No": "Numéro de téléphone",
+    "Postal Code": "Code postal",
+    "Country": "Pays",
+    "CONTINUE": "CONTINUER"
     }

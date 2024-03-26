@@ -16,6 +16,11 @@
     "Order Summary":"Order Summary",
     "Tax":"Tax",
     "Total":"Total",
-    "Confirm":"Confirm"
+    "Confirm":"Confirm",
+    "City":"City",
+    "Phone No" : "Phone No",
+    "Postal Code":"Postal Code",
+    "Country":"Country",
+    "CONTINUE":"CONTINUE"
     
 }
