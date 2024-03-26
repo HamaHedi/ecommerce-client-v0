@@ -5,8 +5,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { forgotPassword, clearErrors } from '../../actions/userActions'
 import { useNavigate } from 'react-router-dom'
 import "../../styles/forgetPassword.css"
+import { useTranslation } from 'react-i18next'
+
 const ForgotPassword = () => {
 	const [email, setEmail] = useState('')
+	const { t } = useTranslation('user')
 
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
@@ -44,8 +47,8 @@ const ForgotPassword = () => {
 	return (
 		<>
 		<div className='background-image-container'>
-			<span className='login-title'> ACCOUNT</span>
-			<span className='login-subtitle'>Home / Account</span>
+			<span className='login-title'> {t("ACCOUNT")}</span>
+			<span className='login-subtitle'>{t("Home")} / {t("Account")}</span>
 		</div>
 		<section className='container my-4'>
 			{loading ? (
@@ -53,14 +56,14 @@ const ForgotPassword = () => {
 			) : (
 				<div className=' card-profile'>
 					<div className='reset-header'>
-						<span className='reset-title'>Reset your password</span>
-						<span className='reset-description'>We will send you an email to reset your password.</span>
+						<span className='reset-title'>{t("Reset your password")}</span>
+						<span className='reset-description'>{t("We will send you")}</span>
 
 					</div>
 					<div className='card-body'>
 						<form onSubmit={submitHandler}>
 							<div className='form-group mb-4'>
-								<small className='mb-2 mx-1'>Email:</small>
+								<small className='mb-2 mx-1'>{t("Email")}:</small>
 								<input
 									type='email'
 									required
@@ -88,10 +91,10 @@ const ForgotPassword = () => {
 											role='status'
 											style={{ width: '22px', height: '22px' }}
 										>
-											<span className='sr-only'>Loading...</span>
+											<span className='sr-only'>{t("Loading")}</span>
 										</div>
 									) : (
-										'Submit'
+										t("Submit")
 									)}
 								</button>
 							</div>
