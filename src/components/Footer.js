@@ -192,7 +192,7 @@ const Footer = () => {
           type="email"
           required
           className="newsletter-email"
-          placeholder="enter your email"
+          placeholder= {t("enter your email")}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
