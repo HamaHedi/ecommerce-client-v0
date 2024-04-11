@@ -9,5 +9,18 @@
 "Submit": "Soumettre",
 "Confirm your password": "Confirmez votre mot de passe",
 "Enter your password": "Entrez votre mot de passe",
-"Enter your email": "Entrez votre email"
+"Enter your email": "Entrez votre email",
+"my_profile": "Mon Profil",
+"Joined On": "Rejoint le",
+"Update Profile": "Mettre à jour le profil",
+"Update Password": "Mettre à jour le mot de passe",
+"Profile info updated successfully": "Informations du profil mises à jour avec succès",
+"settings": "Paramètres",
+"Choose File": "Choisir un fichier",
+"Reset": "Réinitialiser",
+"Name": "Nom :",
+"enter your name": "Entrez votre nom",
+"email": "Email :",
+"Image": "Image :",
+"About": "À propos :"
 }

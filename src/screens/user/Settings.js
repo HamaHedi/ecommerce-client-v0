@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../../components/Loader'
+import { useTranslation } from 'react-i18next'
 
 import { toast } from 'react-toastify'
 import { updateProfile, loadUser, clearErrors } from '../../actions/userActions'
 import { UPDATE_PROFILE_RESET } from '../../constants/userConstants'
 
 const Settings = () => {
+	const { t } = useTranslation('user')
+
 	const [name, setName] = useState('')
 	const [email, setEmail] = useState('')
 	const [about, setAbout] = useState('')
@@ -67,7 +70,7 @@ const Settings = () => {
 		}
 
 		if (isUpdated) {
-			toast.success('Profile info updated successfully.', {
+			toast.success(t("Profile info updated successfully"), {
 				position: toast.POSITION.TOP_RIGHT,
 				className: 'm-2',
 			})
@@ -93,7 +96,7 @@ const Settings = () => {
 			) : (
 				<div className='card card-profile shadow-sm'>
 					<div className='card-header text-center border-0'>
-						<b>Settings</b>
+						<b>{t("settings")}</b>
 					</div>
 					<div className='card-body'>
 						<form encType='multipart/form-data' onSubmit={submitHandler}>
@@ -111,26 +114,26 @@ const Settings = () => {
 									htmlFor='myNewImage'
 									style={{ cursor: 'pointer' }}
 								>
-									Choose File
+									{t("Choose File")}
 								</label>
 								<label
 									className='btn btn-sm btn-dark'
 									onClick={resetFile}
 									style={{ cursor: 'pointer' }}
 								>
-									Reset
+									{t("Reset")}
 								</label>
 							</div>
 
 							<div className='row mt-4'>
 								<div className='col-12 col-sm-12 col-md-6'>
 									<div className='form-group mb-4'>
-										<small className='mb-2 mx-1'>Name:</small>
+										<small className='mb-2 mx-1'>{t("Name")}</small>
 										<input
 											type='text'
 											required
 											className='form-control'
-											placeholder='enter your name'
+											placeholder={t("enter your name")}
 											value={name}
 											onChange={(e) => setName(e.target.value)}
 										/>
@@ -139,12 +142,12 @@ const Settings = () => {
 
 								<div className='col-12 col-sm-12 col-md-6'>
 									<div className='form-group mb-4'>
-										<small className='mb-2 mx-1'>Email:</small>
+										<small className='mb-2 mx-1'>{t("email")}</small>
 										<input
 											type='email'
 											required
 											className='form-control'
-											placeholder='enter your email'
+											placeholder={t("enter your email")}
 											value={email}
 											onChange={(e) => setEmail(e.target.value)}
 										/>
@@ -153,7 +156,7 @@ const Settings = () => {
 							</div>
 
 							<div className='form-group mb-4 d-none'>
-								<small className='mb-2 mx-1'>Image:</small>
+								<small className='mb-2 mx-1'>{t("Image")}</small>
 								<input
 									type='file'
 									id='myNewImage'
@@ -164,7 +167,7 @@ const Settings = () => {
 							</div>
 
 							<div className='form-group mb-4'>
-								<small className='mb-2 mx-1'>About:</small>
+								<small className='mb-2 mx-1'>{t("About")}</small>
 								<textarea
 									className='form-control'
 									style={{ minHeight: '100px' }}
@@ -185,10 +188,10 @@ const Settings = () => {
 											role='status'
 											style={{ width: '22px', height: '22px' }}
 										>
-											<span className='sr-only'>Loading...</span>
+											<span className='sr-only'>{t("Loading")}</span>
 										</div>
 									) : (
-										'Submit'
+										t("Submit")
 									)}
 								</button>
 							</div>

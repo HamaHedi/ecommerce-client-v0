@@ -2,9 +2,11 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Loader from '../../components/Loader'
+import { useTranslation } from 'react-i18next'
 
 const Profile = () => {
 	const { user, loading } = useSelector((state) => state.auth)
+	const { t } = useTranslation('user')
 
 	return (
 		<section className='container my-4'>
@@ -13,7 +15,7 @@ const Profile = () => {
 			) : (
 				<div className='card card-profile shadow-sm'>
 					<div className='card-header text-center border-0'>
-						<b>My Profile</b>
+						<b>{t("my_profile")}</b>
 					</div>
 					<div className='card-body'>
 						<div className='text-center'>
@@ -28,17 +30,17 @@ const Profile = () => {
 							<h5>{user && user.name}</h5>
 							<div className='h6 font-weight-300'>{user && user.role}</div>
 							<div className='h6 mt-4'>{user && user.email}</div>
-							<div>Joined On - {String(user && user.createdAt).substring(0, 10)}</div>
+							<div>{t("Joined On")} - {String(user && user.createdAt).substring(0, 10)}</div>
 						</div>
 
 						<div className='text-center mt-4'>
 							<Link to='/settings' className='btn btn-sm btn-info'>
-								Update Profile
+							{t("Update Profile")}
 							</Link>
 						</div>
 						<div className='text-center mt-4'>
 							<Link to='/password-update' className='btn btn-sm btn-warning'>
-								Update Password
+							{t("Update Password")}
 							</Link>
 						</div>
 					</div>

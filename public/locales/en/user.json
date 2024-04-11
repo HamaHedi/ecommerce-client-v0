@@ -9,5 +9,18 @@
     "Submit":"Submit",
     "Confirm your password":"Confirm your password",
     "enter your password":"enter your password",
-    "enter your email":"enter your email"
+    "enter your email":"enter your email",
+    "my_profile":"My Profile",
+    "Joined On":"Joined On",
+    "Update Profile" :"Update Profile",
+    "Update Password":"Update Password",
+    "Profile info updated successfully":"Profile info updated successfully.",
+    "settings" :"Settings",
+    "Choose File":"Choose File",
+    "Reset":"Reset",
+    "Name" :"Name:",
+    "enter your name":"enter your name",
+    "email":"Email:",
+    "Image":"Image:",
+    "About":"About:"
 }
