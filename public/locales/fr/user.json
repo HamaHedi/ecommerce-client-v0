@@ -22,5 +22,11 @@
 "enter your name": "Entrez votre nom",
 "email": "Email :",
 "Image": "Image :",
-"About": "À propos :"
+"About": "À propos :",
+"Change Password": "Changer le mot de passe",
+"Old Password": "Ancien mot de passe :",
+"New Password": "Nouveau mot de passe :",
+"enter your old password": "Entrez votre ancien mot de passe",
+"enter your new password": "Entrez votre nouveau mot de passe",
+"Password updated successfully": "Mot de passe mis à jour avec succès"
 }

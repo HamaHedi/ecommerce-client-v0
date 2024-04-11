@@ -22,5 +22,11 @@
     "enter your name":"enter your name",
     "email":"Email:",
     "Image":"Image:",
-    "About":"About:"
+    "About":"About:",
+    "Change Password":"Change Password",
+    "Old Password":"Old Password:",
+    "New Password":"New Password:",
+    "enter your old password" :"enter your old password",
+    "enter your new password":"enter your new password",
+    "Password updated successfully":"Password updated successfully"
 }

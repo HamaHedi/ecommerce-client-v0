@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../../components/Loader'
+import { useTranslation } from 'react-i18next'
 
 import { toast } from 'react-toastify'
 import { updatePassword, clearErrors } from '../../actions/userActions'
@@ -10,6 +11,7 @@ import { UPDATE_PASSWORD_RESET } from '../../constants/userConstants'
 const UpdatePassword = () => {
 	const [oldPassword, setOldPassword] = useState('')
 	const [password, setPassword] = useState('')
+	const { t } = useTranslation('user')
 
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
@@ -26,7 +28,7 @@ const UpdatePassword = () => {
 
 	useEffect(() => {
 		if (isUpdated) {
-			toast.success('Password updated successfully', {
+			toast.success(t("Password updated successfully"), {
 				position: toast.POSITION.TOP_RIGHT,
 				className: 'm-2',
 			})
@@ -50,19 +52,19 @@ const UpdatePassword = () => {
 			) : (
 				<div className='card card-profile shadow-sm mt-5'>
 					<div className='card-header text-center border-0'>
-						<b>Change Password</b>
+						<b>{t("Change Password")}</b>
 					</div>
 					<div className='card-body'>
 						<form onSubmit={updatePasswordHandler}>
 							<div className='row mt-2'>
 								<div className='col-12 col-sm-12 col-md-6'>
 									<div className='form-group mb-4'>
-										<small className='mb-2 mx-1'>Old Password:</small>
+										<small className='mb-2 mx-1'>{t("Old Password")}</small>
 										<input
 											type='password'
 											required
 											className='form-control'
-											placeholder='enter your old password'
+											placeholder={t("enter your old password")}
 											value={oldPassword}
 											onChange={(e) => setOldPassword(e.target.value)}
 										/>
@@ -81,12 +83,12 @@ const UpdatePassword = () => {
 
 								<div className='col-12 col-sm-12 col-md-6'>
 									<div className='form-group mb-4'>
-										<small className='mb-2 mx-1'>New Password:</small>
+										<small className='mb-2 mx-1'>{t("New Password")}</small>
 										<input
 											type='password'
 											required
 											className='form-control'
-											placeholder='enter your new password'
+											placeholder={t("enter your new password")}
 											value={password}
 											onChange={(e) => setPassword(e.target.value)}
 										/>
@@ -111,10 +113,10 @@ const UpdatePassword = () => {
 											role='status'
 											style={{ width: '22px', height: '22px' }}
 										>
-											<span className='sr-only'>Loading...</span>
+											<span className='sr-only'>{t("Loading")}</span>
 										</div>
 									) : (
-										'Submit'
+										t("Submit")
 									)}
 								</button>
 							</div>
