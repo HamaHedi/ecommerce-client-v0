@@ -11,11 +11,13 @@ import { NEW_REVIEW_RESET } from '../../constants/productConstants'
 import ReactStars from 'react-rating-stars-component'
 import Swal from 'sweetalert2'
 import ListReviews from '../../components/ListReviews'
+import { useTranslation } from 'react-i18next'
 
 const ProductDetails = () => {
 	const [quantity, setQuantity] = useState(1)
 	const [rating, setRating] = useState(0)
 	const [comment, setComment] = useState('')
+	const { t } = useTranslation('product')
 
 	const dispatch = useDispatch()
 
@@ -46,7 +48,7 @@ const ProductDetails = () => {
 	const addToCart = () => {
 		dispatch(addItemToCart(id, quantity))
 
-		toast.success('Item Added to Cart.', {
+		toast.success(t("Item Added to Cart"), {
 			position: toast.POSITION.TOP_RIGHT,
 			className: 'm-2',
 		})
@@ -58,9 +60,9 @@ const ProductDetails = () => {
 		if (rating === 0 || comment === '') {
 			Swal.fire({
 				title: 'Error!',
-				text: 'Rating and Comment are Required!',
+				text: t("Rating and Comment are Required"),
 				icon: 'error',
-				confirmButtonText: 'Ok',
+				confirmButtonText: t("Ok"),
 			})
 		} else {
 			dispatch(
@@ -86,7 +88,7 @@ const ProductDetails = () => {
 		}
 
 		if (success) {
-			toast.success('Reivew posted successfully', {
+			toast.success(t('Reivew posted successfully'), {
 				position: toast.POSITION.TOP_RIGHT,
 				className: 'm-2',
 			})
@@ -113,18 +115,18 @@ const ProductDetails = () => {
 
 						<div className='col-12 col-lg-5 mt-4'>
 							<h3>{product.name}</h3>
-							<p>Product #{product._id}</p>
+							<p> {t("Product")} #{product._id}</p>
 
 							<hr />
 
 							<div className='d-flex align-items-end'>
 								<h4 className='mb-0'>
-									${product.price && product.price.toFixed(2)}
+									DT{product.price && product.price.toFixed(2)}
 								</h4>
 								&nbsp;
 								{product.oldPrice !== 0 && (
 									<h6 className='mb-0 text-muted'>
-										<del>${product.oldPrice}</del>
+										<del>DT{product.oldPrice}</del>
 									</h6>
 								)}
 							</div>
@@ -139,24 +141,24 @@ const ProductDetails = () => {
 									></div>
 								</div>
 								<small id='no_of_reviews'>
-									&nbsp;({product.numOfReviews} Reviews)
+									&nbsp;({product.numOfReviews} {t("Reviews")})
 								</small>
 							</div>
 
 							<hr />
 
 							<b>
-								Status:&nbsp;
+							{t("Status")}&nbsp;
 								<span
 									className={product.stock > 0 ? 'text-success' : 'text-danger'}
 								>
-									{product.stock > 0 ? 'In Stock' : 'Out of Stock'}
+									{product.stock > 0 ? t("In Stock") : t("Out of Stock")}
 								</span>
 							</b>
 
 							<hr />
 
-							<h4>Description:</h4>
+							<h4>{t("Description")}</h4>
 							<p>{product.description}</p>
 
 							<hr />
@@ -204,16 +206,16 @@ const ProductDetails = () => {
 										onClick={addToCart}
 									>
 										<i className='fa fa-shopping-cart' aria-hidden='true'></i>
-										&nbsp;&nbsp;Add to Cart
+										&nbsp;&nbsp;{t("Add to Cart")}
 									</button>
 								</div>
 							</div>
 
 							<hr />
 
-							<p>
+							{/* <p>
 								Sold by: <strong>{product.seller}</strong>
-							</p>
+							</p> */}
 						</div>
 					</div>
 
@@ -228,7 +230,7 @@ const ProductDetails = () => {
 								<div className='card-body p-4'>
 									{user ? (
 										<form onSubmit={submitHandler}>
-											<h5 className='text-center'>WRITE A REVIEW</h5>
+											<h5 className='text-center'>{t("WRITE A REVIEW")}</h5>
 
 											<div className='star-container text-center text-nowrap mb-3'>
 												<div
@@ -251,7 +253,7 @@ const ProductDetails = () => {
 											<div className='form-group'>
 												<textarea
 													className='form-control'
-													placeholder='Describe your experience.'
+													placeholder={t("Describe your experience.")}
 													style={{ minHeight: '100px' }}
 													value={comment}
 													onChange={(e) => setComment(e.target.value)}
@@ -267,14 +269,14 @@ const ProductDetails = () => {
 														borderRadius: '25px',
 													}}
 												>
-													Submit
+													{t("Submit")}
 												</button>
 											</div>
 										</form>
 									) : (
 										<Message
 											color='warning'
-											message='Login to post your review.'
+											message={t("Login to post your review.")}
 										/>
 									)}
 
@@ -283,7 +285,7 @@ const ProductDetails = () => {
 									{product && product.reviews && product.reviews.length > 0 ? (
 										<ListReviews reviews={product.reviews} />
 									) : (
-										<h6 className='text-center'>No Reviews found!</h6>
+										<h6 className='text-center'>{t("No Reviews found!")}</h6>
 									)}
 								</div>
 							</div>
