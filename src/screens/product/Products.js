@@ -215,7 +215,7 @@ const Products = () => {
                 {categoryLoading ? (
                   <div className="text-center my-3">
                     <div className="spinner-border" role="status">
-                      <span className="sr-only"> {t("Loading")}</span>
+                      <span className="sr-only"> {t("Loading")} </span>
                     </div>
                   </div>
                 ) : (
