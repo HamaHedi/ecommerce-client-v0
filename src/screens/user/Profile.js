@@ -20,7 +20,7 @@ const Profile = () => {
 					<div className='card-body'>
 						<div className='text-center'>
 							<img
-								src={user && 'https://api.lagha.shop/' + user.avatar}
+								src={user && 'https://api.lagha.shop' + user.avatar}
 								alt={user && user.name}
 								style={{ borderRadius: '50px', width: '250px' }}
 							/>
