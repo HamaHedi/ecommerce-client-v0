@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { MDBDataTable } from 'mdbreact'
 
@@ -9,16 +9,20 @@ import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
 import { allUsers, deleteUser, clearErrors } from '../../actions/userActions'
 import { DELETE_USER_RESET } from '../../constants/userConstants'
+import Pagination from 'react-js-pagination'
 
 const AdminUsers = () => {
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
+	const [currentPage, setCurrentPage] = useState(1);
 
-	const { loading, error, users } = useSelector((state) => state.allUsers)
+	const { loading, error, users, pagination } = useSelector((state) => state.allUsers)
 	const { isDeleted } = useSelector((state) => state.user)
-
+	function setCurrentPageNo(pageNumber) {
+		setCurrentPage(pageNumber);
+	}
 	useEffect(() => {
-		dispatch(allUsers())
+		dispatch(allUsers(currentPage))
 
 		if (error) {
 			toast.error(error, {
@@ -36,7 +40,7 @@ const AdminUsers = () => {
 			navigate('/admin/users')
 			dispatch({ type: DELETE_USER_RESET })
 		}
-	}, [dispatch, error, isDeleted, navigate])
+	}, [dispatch, error, isDeleted, navigate, currentPage])
 
 	const deleteUserHandler = (id) => {
 		dispatch(deleteUser(id))
@@ -144,7 +148,24 @@ const AdminUsers = () => {
 								/>
 							)}
 						</div>
-						<div className='card-footer'>Total: {users && users.length}</div>
+						<div className='card-footer'>Total: {pagination && pagination?.totalUsers}</div>
+						<div
+							className="d-flex justify-content-center"
+							style={{ paddingTop: "15px" }}
+						>
+							<Pagination
+								activePage={currentPage}
+								itemsCountPerPage={5}
+								totalItemsCount={pagination?.totalUsers}
+								onChange={setCurrentPageNo}
+								nextPageText={"›"}
+								prevPageText={"‹"}
+								firstPageText={"«"}
+								lastPageText={"»"}
+								itemClass="page-item"
+								linkClass="page-link"
+							/>
+						</div>
 					</div>
 				</div>
 			</div>

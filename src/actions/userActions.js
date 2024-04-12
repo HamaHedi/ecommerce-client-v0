@@ -269,7 +269,7 @@ export const resetPassword = (token, passwords) => async (dispatch) => {
 };
 
 // Get all users
-export const allUsers = () => async (dispatch) => {
+export const allUsers = (currentPage) => async (dispatch) => {
 	try {
 		dispatch({ type: ALL_USERS_REQUEST });
 		const token = localStorage.getItem('token');
@@ -281,11 +281,12 @@ export const allUsers = () => async (dispatch) => {
 
 			},
 		};
-		const { data } = await axios.get("http://localhost:8000/api/admin/users", config);
+		const { data } = await axios.get(`http://localhost:8000/api/admin/users?page=${currentPage}`, config);
 
 		dispatch({
 			type: ALL_USERS_SUCCESS,
 			payload: data.users,
+			pagination: data.pagination
 		});
 	} catch (error) {
 		dispatch({
@@ -385,12 +386,12 @@ export const deleteUser = (id) => async (dispatch) => {
 
 export const newsletterSubscription = (email) => async (dispatch) => {
 	try {
-		 dispatch({ type: SUBSCRIPTION_REQUEST });
+		dispatch({ type: SUBSCRIPTION_REQUEST });
 		// const token = localStorage.getItem('token');
 
-	
+
 		const { data } = await axios.post(
-			`http://localhost:8000/api/subscribe`,{email},
+			`http://localhost:8000/api/subscribe`, { email },
 		);
 
 		dispatch({
@@ -399,7 +400,7 @@ export const newsletterSubscription = (email) => async (dispatch) => {
 		});
 	} catch (error) {
 		dispatch({
-			 type: SUBSCRIPTION_FAIL,
+			type: SUBSCRIPTION_FAIL,
 			payload: error.response.data.message,
 		});
 	}

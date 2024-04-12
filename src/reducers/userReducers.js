@@ -64,14 +64,14 @@ export const authReducer = (state = { user: {} }, action) => {
 				user: action.payload,
 
 			}
-			case LOGOUT_SUCCESS:
-				localStorage.removeItem("token");
-				return {
-					loading: false,
-					isAuthenticated: false,
-					user: null,
-				};
-			
+		case LOGOUT_SUCCESS:
+			localStorage.removeItem("token");
+			return {
+				loading: false,
+				isAuthenticated: false,
+				user: null,
+			};
+
 
 		case LOAD_USER_FAIL:
 			return {
@@ -225,6 +225,7 @@ export const allUsersReducer = (state = { users: [] }, action) => {
 				...state,
 				loading: false,
 				users: action.payload,
+				pagination: action.pagination
 			}
 
 		case ALL_USERS_FAIL:
@@ -294,12 +295,12 @@ export const newsLetterReducer = (state = {}, action) => {
 				message: action.payload,
 			}
 
-			case SUBSCRIPTION_FAIL:
-				return {
-					...state,
-					loading: false,
-					error: action.payload,
-				}
+		case SUBSCRIPTION_FAIL:
+			return {
+				...state,
+				loading: false,
+				error: action.payload,
+			}
 		default:
 			return state
 	}
