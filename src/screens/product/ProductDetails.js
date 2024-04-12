@@ -108,7 +108,7 @@ const ProductDetails = () => {
 				<>
 					<div className='row d-flex justify-content-around'>
 						<div className='col-12 col-lg-5 img-fluid mt-4'>
-							<Slider images={product.images} />
+							<Slider images={'https://api.lagha.shop/' + product.images} />
 						</div>
 
 						<div className='col-12 col-lg-5 mt-4'>

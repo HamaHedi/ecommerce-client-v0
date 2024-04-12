@@ -63,7 +63,7 @@ const OrderDetails = () => {
 							<p
 								className={
 									order.orderStatus &&
-									String(order.orderStatus).includes('Delivered')
+										String(order.orderStatus).includes('Delivered')
 										? 'text-success'
 										: 'text-danger'
 								}
@@ -80,7 +80,7 @@ const OrderDetails = () => {
 										<div key={item.product} className='row my-5'>
 											<div className='col-4 col-lg-2'>
 												<img
-													src={item.image}
+													src={'https://api.lagha.shop/' + item.image}
 													alt={item.name}
 													height='45'
 													width='65'

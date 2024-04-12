@@ -190,7 +190,7 @@ const Header = () => {
 
                 >
                   <img
-                    src={user && `${user.avatar}`}
+                    src={user && `https://api.lagha.shop/${user.avatar}`}
                     alt="user"
                     className="rounded-circle"
                     style={{ width: "25px", height: "25px" }}

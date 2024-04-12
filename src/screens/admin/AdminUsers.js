@@ -87,7 +87,7 @@ const AdminUsers = () => {
 				id: user._id,
 				avatar: (
 					<img
-						src={user.avatar}
+						src={'https://api.lagha.shop/' + user.avatar}
 						alt={user.avatar}
 						style={{ width: '80px', height: '80px', borderRadius: '5px' }}
 					/>
