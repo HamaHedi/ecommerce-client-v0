@@ -8,14 +8,24 @@ i18n
     .use(LanguageDetector)
     .use(initReactI18next)
     .init({
-        fallbackLng: "fr",
+        fallbackLng: "en",
         debug: false,
-        lng: "fr",
-
+        lng: "en",
+        ns: [
+            "auth",
+            "cart",
+            "footer",
+            "header",
+            "product",
+            "sidebar",
+            "user",
+        ],
         interpolation: {
             escapeValue: false,
         },
-
+        backend: {
+            loadPath: "/locales/{{lng}}/{{ns}}.json",
+        },
         react: {
             useSuspense: false,
         },

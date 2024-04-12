@@ -64,21 +64,22 @@ const Header = () => {
     {
       key: '1',
       label: (
-        <div className="navbar-flag-container" onClick={() => onChangeLanguage('en')}>
-          <img src={'./assets/en-flag.png'} alt="flag" className="navbar-flag" />
-          <p>{t('language.en')}</p>
-        </div>
-      ),
-    },
-    {
-      key: '2',
-      label: (
         <div className="navbar-flag-container" onClick={() => onChangeLanguage('fr')}>
           <img src={'./assets/fr-flag.png'} alt="flag" className="navbar-flag" />
           <p>{t('language.fr')}</p>
         </div>
       ),
     },
+    {
+      key: '2',
+      label: (
+        <div className="navbar-flag-container" onClick={() => onChangeLanguage('en')}>
+          <img src={'./assets/en-flag.png'} alt="flag" className="navbar-flag" />
+          <p>{t('language.en')}</p>
+        </div>
+      ),
+    },
+
 
   ]
 
