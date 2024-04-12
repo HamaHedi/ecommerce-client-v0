@@ -8,6 +8,7 @@ import L from "leaflet"; // Import Leaflet library
 import { ReactComponent as EmailIcon } from "./envelope-solid.svg";
 import { ReactComponent as PhoneIcon } from "./mobile-screen-button-solid.svg";
 import { ReactComponent as AdressIcon } from "./location-arrow-solid.svg";
+import { useTranslation } from 'react-i18next'
 
 const Contact = () => {
   const position = [35.72917, 10.58082];
@@ -16,11 +17,13 @@ const Contact = () => {
     iconSize: [25, 41],
     iconAnchor: [12, 41],
   });
+  const { t } = useTranslation('contact')
+
   return (
     <>
       <div className="background-image-container">
-        <span className="login-title">Contact</span>
-        <span className="login-subtitle">Home / Contact</span>
+        <span className="login-title">{t("Contact")}</span>
+        <span className="login-subtitle">{t("Home")} / {t("Contact")}</span>
       </div>
       <div className="map-container">
         <MapContainer
@@ -34,7 +37,7 @@ const Contact = () => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           <Marker position={position} icon={defaultIcon}>
-            <Popup>Our store location</Popup>
+            <Popup>{t("Our store location")}</Popup>
           </Marker>
         </MapContainer>
 
@@ -43,7 +46,7 @@ const Contact = () => {
             <div className="icon-container">
               <PhoneIcon />
             </div>
-            <span className="title">PHONE</span>
+            <span className="title">{t("PHONE")}</span>
             <span>Toll-Free: 1800 - 234 - 5678</span>
             <span>Fax: 1800 - 234 - 5678</span>
           </div>
@@ -51,7 +54,7 @@ const Contact = () => {
             <div className="icon-container">
               <EmailIcon />
             </div>
-            <span className="title">EMAIL</span>
+            <span className="title">{t("EMAIL")}</span>
 
             <span>buddha@example.com</span>
             <span>support@example.com</span>
@@ -60,7 +63,7 @@ const Contact = () => {
             <div className="icon-container">
               <AdressIcon />
             </div>
-            <span className="title">ADDRESS</span>
+            <span className="title">{t("ADDRESS")}</span>
 
             <span>No: 58 A, East Madison Street,</span>
             <span>Baltimore, MD, USA 4508</span>

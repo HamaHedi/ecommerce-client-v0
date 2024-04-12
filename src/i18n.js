@@ -19,6 +19,7 @@ i18n
             "product",
             "sidebar",
             "user",
+            "contact"
         ],
         interpolation: {
             escapeValue: false,
