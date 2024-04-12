@@ -10,7 +10,9 @@ import Pagination from "react-js-pagination";
 import { useGlobalState } from "../../context/context";
 import "../../styles/product.css";
 import { useTranslation } from 'react-i18next'
-
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [price, setPrice] = useState([0, 1000]);
@@ -18,7 +20,76 @@ const Products = () => {
   const [rating, setRating] = useState(0);
   // const [keyword, setKeyword] = useState('')
   const { t } = useTranslation('product')
+  var settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 6,
+    slidesToScroll: 4,
+    initialSlide: 0,
 
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
+  };
+  var settings2 = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 4,
+    initialSlide: 0,
+
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
+  };
   const { keyword, setKeyword } = useGlobalState();
 
   const keywordRef = useRef("");
@@ -277,6 +348,70 @@ const Products = () => {
           </section>
         </div>
       </div>
+      <div className="slider-container" style={{padding:"25px"}}>
+      <Slider {...settings2}>
+        <div >
+        <img src="assets/InstagramImg3.webp" style={{padding:"5px"}} />
+        </div>
+        <div >
+
+        <img src="assets/InstagramImg1_68de9631-42a5-4d23-96cf-ca94d4fb3648.webp" style={{padding:"5px"}}/>
+        </div>
+        <div >
+
+        <img src="assets/InstagramImg2.webp" style={{padding:"5px"}} />
+        </div>
+        <div>
+
+        <img src="assets/InstagramImg7.webp" style={{padding:"5px"}}/>
+        </div>
+        <div >
+
+        <img src="assets/InstagramImg2.webp"style={{padding:"5px"}} />
+        </div>
+        <div >
+
+        <img src="assets/InstagramImg7.webp"style={{padding:"5px"}} />
+        </div>
+        <div >
+
+        <img src="assets/InstagramImg3.webp" style={{padding:"5px"}}/>
+        </div>
+        <div >
+
+        <img src="assets/InstagramImg7.webp" style={{padding:"5px"}}/>
+        </div>
+      </Slider>
+    </div>
+      <div className="slider-container" style={{padding:"25px"}}>
+      <Slider {...settings}>
+        <div>
+        <img src="assets/5_x150.webp" />
+        </div>
+        <div>
+        <img src="assets/3_x150.webp" />
+        </div>
+        <div>
+        <img src="assets/3_x150.webp" />
+        </div>
+        <div>
+        <img src="assets/5_x150.webp" />
+        </div>
+        <div>
+        <img src="assets/3_x150.webp" />
+        </div>
+        <div>
+        <img src="assets/5_x150.webp" />
+        </div>
+        <div>
+        <img src="assets/3_x150.webp" />
+        </div>
+        <div>
+        <img src="assets/5_x150.webp" />
+        </div>
+      </Slider>
+    </div>
+   
     </section>
   );
 };
