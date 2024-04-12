@@ -56,7 +56,7 @@ const Product = ({ product }) => {
         <div className="product-image-container">
           <Link to={`/product/${product._id}`}>
             <img
-              src={`${product && product.images[0] && 'https://api.lagha.shop' + product.images[0].path}`}
+              src={`${product && product.images[0] && product.images[0].path}`}
               alt="product"
               className="product-image"
               style={{ borderRadius: "25px" }}
