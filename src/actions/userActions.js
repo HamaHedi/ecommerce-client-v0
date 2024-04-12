@@ -65,7 +65,7 @@ export const login = (email, password) => async (dispatch) => {
 		};
 
 		const { data } = await axios.post(
-			`http://localhost:8000/api/login`,
+			`https://api.lagha.shop/api/login`,
 			{ email, password },
 			config
 		);
@@ -95,7 +95,7 @@ export const register = (name, email, password) => async (dispatch) => {
 		};
 
 		const { data } = await axios.post(
-			`http://localhost:8000/api/register`,
+			`https://api.lagha.shop/api/register`,
 			{ name, email, password },
 			config
 		);
@@ -123,7 +123,7 @@ export const loadUser = () => async (dispatch) => {
 			},
 		};
 
-		const { data } = await axios.get("http://localhost:8000/api/me", config);
+		const { data } = await axios.get("https://api.lagha.shop/api/me", config);
 
 		dispatch({
 			type: LOAD_USER_SUCCESS,
@@ -251,7 +251,7 @@ export const resetPassword = (token, passwords) => async (dispatch) => {
 		};
 
 		const { data } = await axios.put(
-			`http://localhost:8000/api/password/reset/${token}`,
+			`https://api.lagha.shop/api/password/reset/${token}`,
 			passwords,
 			config
 		);
@@ -281,7 +281,7 @@ export const allUsers = (currentPage) => async (dispatch) => {
 
 			},
 		};
-		const { data } = await axios.get(`http://localhost:8000/api/admin/users?page=${currentPage}`, config);
+		const { data } = await axios.get(`https://api.lagha.shop/api/admin/users?page=${currentPage}`, config);
 
 		dispatch({
 			type: ALL_USERS_SUCCESS,
@@ -311,7 +311,7 @@ export const updateUser = (id, userData) => async (dispatch) => {
 		};
 
 		const { data } = await axios.put(
-			`http://localhost:8000/api/admin/users/${id}`,
+			`https://api.lagha.shop/api/admin/users/${id}`,
 			userData,
 			config
 		);
@@ -341,7 +341,7 @@ export const getUserDetails = (id) => async (dispatch) => {
 			},
 		};
 		const { data } = await axios.get(
-			`http://localhost:8000/api/admin/users/${id}`, config
+			`https://api.lagha.shop/api/admin/users/${id}`, config
 		);
 
 		dispatch({
@@ -369,7 +369,7 @@ export const deleteUser = (id) => async (dispatch) => {
 			},
 		};
 		const { data } = await axios.delete(
-			`http://localhost:8000/api/admin/users/${id}`, config
+			`https://api.lagha.shop/api/admin/users/${id}`, config
 		);
 
 		dispatch({
@@ -391,7 +391,7 @@ export const newsletterSubscription = (email) => async (dispatch) => {
 
 
 		const { data } = await axios.post(
-			`http://localhost:8000/api/subscribe`, { email },
+			`https://api.lagha.shop/api/subscribe`, { email },
 		);
 
 		dispatch({

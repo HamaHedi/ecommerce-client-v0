@@ -88,7 +88,7 @@ const ConfirmOrder = () => {
 							<div className='cart-item my-1' key={item.product}>
 								<div className='row'>
 									<div className='col-4 col-lg-2'>
-										<img src={item.image} alt='Laptop' height='45' width='65' />
+										<img src={'https://api.lagha.shop/' + item.image} alt='Laptop' height='45' width='65' />
 									</div>
 
 									<div className='col-5 col-lg-6'>
@@ -113,19 +113,19 @@ const ConfirmOrder = () => {
 						<h4>{t("Order Summary")}</h4>
 						<hr />
 						<p>
-						{t("Subtotal")}:{' '}
+							{t("Subtotal")}:{' '}
 							<span className='order-summary-values'>
 								DT {itemsPrice && itemsPrice.toFixed(2)}
 							</span>
 						</p>
 						<p>
-						{t("Shipping")}:{' '}
+							{t("Shipping")}:{' '}
 							<span className='order-summary-values'>
 								DT {shippingPrice && shippingPrice.toFixed(2)}
 							</span>
 						</p>
 						<p>
-						{t("Tax")}:{' '}
+							{t("Tax")}:{' '}
 							<span className='order-summary-values'>
 								DT{taxPrice && taxPrice.toFixed(2)}
 							</span>
@@ -134,7 +134,7 @@ const ConfirmOrder = () => {
 						<hr />
 
 						<p>
-						{t("Total")}:{' '}
+							{t("Total")}:{' '}
 							<span className='order-summary-values'>
 								DT{totalPrice && totalPrice}
 							</span>

@@ -37,10 +37,10 @@ export const getProducts =
 			try {
 				dispatch({ type: ALL_PRODUCTS_REQUEST });
 
-				let link = `http://localhost:8000/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&ratings[gte]=${rating}`;
+				let link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&ratings[gte]=${rating}`;
 
 				if (category) {
-					link = `http://localhost:8000/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}&ratings[gte]=${rating}`;
+					link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}&ratings[gte]=${rating}`;
 				}
 
 				const { data } = await axios.get(link);
@@ -69,7 +69,7 @@ export const getProductDetails = (id) => async (dispatch) => {
 			},
 		};
 		const { data } = await axios.get(
-			`http://localhost:8000/api/products/${id}`, config
+			`https://api.lagha.shop/api/products/${id}`, config
 		);
 
 		dispatch({
@@ -98,7 +98,7 @@ export const newProduct = (productData) => async (dispatch) => {
 		};
 
 		const { data } = await axios.post(
-			`http://localhost:8000/api/admin/products`,
+			`https://api.lagha.shop/api/admin/products`,
 			productData,
 			config
 		);
@@ -128,7 +128,7 @@ export const deleteProduct = (id) => async (dispatch) => {
 			},
 		};
 		const { data } = await axios.delete(
-			`http://localhost:8000/api/admin/products/${id}`, config
+			`https://api.lagha.shop/api/admin/products/${id}`, config
 		);
 
 		dispatch({
@@ -159,7 +159,7 @@ export const updateProduct = (id, productData) => async (dispatch) => {
 		};
 
 		const { data } = await axios.put(
-			`http://localhost:8000/api/admin/products/${id}`,
+			`https://api.lagha.shop/api/admin/products/${id}`,
 			productData,
 			config
 		);
@@ -192,7 +192,7 @@ export const newReview = (reviewData) => async (dispatch) => {
 
 
 		const { data } = await axios.put(
-			`http://localhost:8000/api/review`,
+			`https://api.lagha.shop/api/review`,
 			reviewData,
 			config
 		);
@@ -223,7 +223,7 @@ export const getAdminProducts = (currentPage) => async (dispatch) => {
 		};
 
 		const { data } = await axios.get(
-			`http://localhost:8000/api/admin/products?page=${currentPage}`, config
+			`https://api.lagha.shop/api/admin/products?page=${currentPage}`, config
 		);
 
 		dispatch({
@@ -253,7 +253,7 @@ export const getProductReviews = (id) => async (dispatch) => {
 			},
 		};
 		const { data } = await axios.get(
-			`http://localhost:8000/api/reviews?id=${id}`, config
+			`https://api.lagha.shop/api/reviews?id=${id}`, config
 		);
 
 		dispatch({
@@ -282,7 +282,7 @@ export const deleteReview = (id, productId) => async (dispatch) => {
 			},
 		};
 		const { data } = await axios.delete(
-			`http://localhost:8000/api/reviews?id=${id}&productId=${productId}`, config
+			`https://api.lagha.shop/api/reviews?id=${id}&productId=${productId}`, config
 		);
 
 		dispatch({

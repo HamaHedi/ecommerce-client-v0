@@ -15,7 +15,7 @@ const Slider = ({ images }) => {
 			{images &&
 				images.map((image) => (
 					<div key={image._id}>
-						<img src={image.path} alt='product' className='w-100' />
+						<img src={'https://api.lagha.shop' + image.path} alt='product' className='w-100' />
 					</div>
 				))}
 		</Carousel>

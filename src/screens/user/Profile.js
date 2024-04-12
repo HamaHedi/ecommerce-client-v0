@@ -20,7 +20,7 @@ const Profile = () => {
 					<div className='card-body'>
 						<div className='text-center'>
 							<img
-								src={user && user.avatar}
+								src={user && 'https://api.lagha.shop' + user.avatar}
 								alt={user && user.name}
 								style={{ borderRadius: '50px', width: '250px' }}
 							/>
@@ -35,12 +35,12 @@ const Profile = () => {
 
 						<div className='text-center mt-4'>
 							<Link to='/settings' className='btn btn-sm btn-info'>
-							{t("Update Profile")}
+								{t("Update Profile")}
 							</Link>
 						</div>
 						<div className='text-center mt-4'>
 							<Link to='/password-update' className='btn btn-sm btn-warning'>
-							{t("Update Password")}
+								{t("Update Password")}
 							</Link>
 						</div>
 					</div>

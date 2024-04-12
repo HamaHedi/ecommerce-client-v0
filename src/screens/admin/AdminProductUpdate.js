@@ -273,7 +273,7 @@ const AdminProductUpdate = () => {
 										oldImages.map((img) => (
 											<img
 												key={img}
-												src={img.path}
+												src={'https://api.lagha.shop/' + img.path}
 												alt={img.path}
 												className='mt-3 mr-2'
 												width='55'

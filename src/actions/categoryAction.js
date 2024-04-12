@@ -24,7 +24,7 @@ export const getCategory = () => async (dispatch) => {
 		dispatch({ type: ALL_CATEGORY_REQUEST });
 
 		const { data } = await axios.get(
-			`http://localhost:8000/api/admin/category`
+			`https://api.lagha.shop/api/admin/category`
 		);
 
 		dispatch({
@@ -47,12 +47,12 @@ export const getCategoryDetails = (id) => async (dispatch) => {
 		const config = {
 			headers: {
 				"Authorization": token,
-				
+
 
 			},
 		};
 		const { data } = await axios.get(
-			`http://localhost:8000/api/admin/category/${id}`,config
+			`https://api.lagha.shop/api/admin/category/${id}`, config
 		);
 
 		dispatch({
@@ -82,7 +82,7 @@ export const newCategory = (categoryData) => async (dispatch) => {
 
 
 		const { data } = await axios.post(
-			`http://localhost:8000/api/admin/category`,
+			`https://api.lagha.shop/api/admin/category`,
 			categoryData,
 			config
 		);
@@ -113,7 +113,7 @@ export const updateCategory = (id, categoryData) => async (dispatch) => {
 		};
 
 		const { data } = await axios.put(
-			`http://localhost:8000/api/admin/category/${id}`,
+			`https://api.lagha.shop/api/admin/category/${id}`,
 			categoryData,
 			config
 		);
@@ -138,12 +138,12 @@ export const deleteCategory = (id) => async (dispatch) => {
 		const config = {
 			headers: {
 				"Authorization": token,
-				
+
 
 			},
 		}
 		const { data } = await axios.delete(
-			`http://localhost:8000/api/admin/category/${id}`,config
+			`https://api.lagha.shop/api/admin/category/${id}`, config
 		);
 
 		dispatch({

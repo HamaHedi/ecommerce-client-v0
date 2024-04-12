@@ -95,8 +95,8 @@ const AdminProducts = () => {
 				id: product._id,
 				image: (
 					<img
-						src={product && product.images[0] && product.images[0].path}
-						alt={product && product.images[0] && product.images[0]._id}
+						src={product && product.images[0] && 'https://api.lagha.shop/' + product.images[0].path}
+						alt={product && product.images[0] && 'https://api.lagha.shop/' + product.images[0]._id}
 						style={{ width: '100px', height: '100px' }}
 					/>
 				),

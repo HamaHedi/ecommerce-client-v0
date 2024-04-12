@@ -58,7 +58,7 @@ const Settings = () => {
 			setName(user.name || '')
 			setEmail(user.email || '')
 			setAbout(user.about || '')
-			setAvatarPreview(user.avatar || '')
+			setAvatarPreview('https://api.lagha.shop' + user.avatar || '')
 		}
 
 		if (error && error.message) {

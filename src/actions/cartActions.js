@@ -6,7 +6,7 @@ import {
 } from "../constants/cartConstants";
 
 export const addItemToCart = (id, quantity) => async (dispatch, getState) => {
-	const { data } = await axios.get(`http://localhost:8000/api/products/${id}`);
+	const { data } = await axios.get(`https://api.lagha.shop/api/products/${id}`);
 
 	dispatch({
 		type: ADD_TO_CART,

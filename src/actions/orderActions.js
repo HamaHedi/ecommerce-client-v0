@@ -93,7 +93,7 @@ export const getOrderDetails = (id) => async (dispatch) => {
 
 			},
 		};
-		const { data } = await axios.get(`http://localhost:8000/api/order/${id}`, config);
+		const { data } = await axios.get(`https://api.lagha.shop/api/order/${id}`, config);
 
 		dispatch({
 			type: ORDER_DETAILS_SUCCESS,
@@ -121,7 +121,7 @@ export const allOrders = () => async (dispatch) => {
 
 			},
 		};
-		const { data } = await axios.get(`http://localhost:8000/api/admin/orders`, config);
+		const { data } = await axios.get(`https://api.lagha.shop/api/admin/orders`, config);
 
 		dispatch({
 			type: ALL_ORDERS_SUCCESS,
@@ -150,7 +150,7 @@ export const updateOrder = (id, orderData) => async (dispatch) => {
 		};
 
 		const { data } = await axios.put(
-			`http://localhost:8000/api/admin/order/${id}`,
+			`https://api.lagha.shop/api/admin/order/${id}`,
 			orderData,
 			config
 		);
@@ -180,7 +180,7 @@ export const deleteOrder = (id) => async (dispatch) => {
 			},
 		};
 		const { data } = await axios.delete(
-			`http://localhost:8000/api/admin/order/${id}`, config
+			`https://api.lagha.shop/api/admin/order/${id}`, config
 		);
 
 		dispatch({
