@@ -81,7 +81,7 @@ const Products = () => {
               <form onSubmit={submitHandler}>
                 <h6>
                   <b>
-                   {t("Price Range")} {price[0]}-{price[1]}
+                    {t("Price Range")} {price[0]}-{price[1]}
                   </b>
                 </h6>
 
@@ -120,7 +120,7 @@ const Products = () => {
 
                 <div className="text-center">
                   <button type="submit" className="btnS btn-sm btn-success">
-                  {t("Search")}
+                    {t("Search")}
                   </button>
                 </div>
               </form>
@@ -137,7 +137,7 @@ const Products = () => {
                     onClick={() => setCategory("")}
                     style={{ cursor: "pointer" }}
                   >
-                     {t("All")}
+                    {t("All")}
                   </b>
                 </li>
 
@@ -199,19 +199,19 @@ const Products = () => {
           {!keyword && (
             <div className="about-container">
               <div className="about-images-container">
-                <img src="assets/img1.png" className="about-image-1"/>
-                <img src="assets/img2.png" className="about-image-2"/>
-                <img src="assets/bg1.png"/>
-                <img src="assets/bg2.png"/>
+                <img src="assets/img1.png" className="about-image-1" />
+                <img src="assets/img2.png" className="about-image-2" />
+                <img src="assets/bg1.png" />
+                <img src="assets/bg2.png" />
 
               </div>
               <div className="info-container">
                 <span className="about-subtitle">{t("ABOUT LAGHA")}</span>
                 <span className="about-title">
-                {t("When You Look Good You Feel Good")}
+                  {t("When You Look Good You Feel Good")}
                 </span>
                 <p className="about-paragraphe">
-                {t("The top three occupations in the Beauty")}
+                  {t("The top three occupations in the Beauty")}
 
                 </p>
               </div>

@@ -209,7 +209,7 @@ export const newReview = (reviewData) => async (dispatch) => {
 	}
 };
 
-export const getAdminProducts = () => async (dispatch) => {
+export const getAdminProducts = (currentPage) => async (dispatch) => {
 	try {
 		dispatch({ type: ADMIN_PRODUCTS_REQUEST });
 		const token = localStorage.getItem('token');
@@ -223,12 +223,13 @@ export const getAdminProducts = () => async (dispatch) => {
 		};
 
 		const { data } = await axios.get(
-			`http://localhost:8000/api/admin/products`, config
+			`http://localhost:8000/api/admin/products?page=${currentPage}`, config
 		);
 
 		dispatch({
 			type: ADMIN_PRODUCTS_SUCCESS,
 			payload: data.products,
+			pagination: data?.pagination
 		});
 	} catch (error) {
 		dispatch({

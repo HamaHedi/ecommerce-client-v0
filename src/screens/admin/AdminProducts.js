@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { MDBDataTable } from 'mdbreact'
 
 import Loader from '../../components/Loader'
 import Sidebar from '../../components/Sidebar'
+import Pagination from "react-js-pagination";
 
 import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,12 +14,15 @@ import { DELETE_PRODUCT_RESET } from '../../constants/productConstants'
 const AdminProducts = () => {
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
-
-	const { loading, error, products } = useSelector((state) => state.products)
+	const [currentPage, setCurrentPage] = useState(1);
+	const { loading, error, products, pagination } = useSelector((state) => state.products)
 	const { error: deleteError, isDeleted } = useSelector((state) => state.product)
 
+	function setCurrentPageNo(pageNumber) {
+		setCurrentPage(pageNumber);
+	}
 	useEffect(() => {
-		dispatch(getAdminProducts())
+		dispatch(getAdminProducts(currentPage))
 
 		if (error) {
 			toast.error(error, {
@@ -44,7 +48,7 @@ const AdminProducts = () => {
 			navigate('/admin/products')
 			dispatch({ type: DELETE_PRODUCT_RESET })
 		}
-	}, [dispatch, error, deleteError, isDeleted, navigate])
+	}, [dispatch, error, deleteError, isDeleted, navigate, currentPage])
 
 	const deleteProductHandler = (id) => {
 		dispatch(deleteProduct(id))
@@ -157,10 +161,28 @@ const AdminProducts = () => {
 								/>
 							)}
 						</div>
-						<div className='card-footer'>Total: {products && products.length}</div>
+						<div className='card-footer'>Total: {pagination && pagination?.totalProducts}</div>
+						<div
+							className="d-flex justify-content-center"
+							style={{ paddingTop: "15px" }}
+						>
+							<Pagination
+								activePage={currentPage}
+								itemsCountPerPage={5}
+								totalItemsCount={pagination?.totalProducts}
+								onChange={setCurrentPageNo}
+								nextPageText={"›"}
+								prevPageText={"‹"}
+								firstPageText={"«"}
+								lastPageText={"»"}
+								itemClass="page-item"
+								linkClass="page-link"
+							/>
+						</div>
 					</div>
 				</div>
 			</div>
+
 		</section>
 	)
 }
