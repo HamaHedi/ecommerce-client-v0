@@ -9,12 +9,16 @@ import { getCategory } from "../../actions/categoryAction";
 import Pagination from "react-js-pagination";
 import { useGlobalState } from "../../context/context";
 import "../../styles/product.css";
+import { useTranslation } from 'react-i18next'
+
 const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [price, setPrice] = useState([0, 1000]);
   const [category, setCategory] = useState("");
   const [rating, setRating] = useState(0);
   // const [keyword, setKeyword] = useState('')
+  const { t } = useTranslation('product')
+
   const { keyword, setKeyword } = useGlobalState();
 
   const keywordRef = useRef("");
@@ -77,7 +81,7 @@ const Products = () => {
               <form onSubmit={submitHandler}>
                 <h6>
                   <b>
-                    Price Range: {price[0]}-{price[1]}
+                   {t("Price Range")} {price[0]}-{price[1]}
                   </b>
                 </h6>
 
@@ -116,7 +120,7 @@ const Products = () => {
 
                 <div className="text-center">
                   <button type="submit" className="btnS btn-sm btn-success">
-                    Search
+                  {t("Search")}
                   </button>
                 </div>
               </form>
@@ -124,7 +128,7 @@ const Products = () => {
               <hr />
 
               <h6>
-                <b>Categories:</b>
+                <b> {t("Categories")}</b>
               </h6>
 
               <ul className="list-group">
@@ -133,14 +137,14 @@ const Products = () => {
                     onClick={() => setCategory("")}
                     style={{ cursor: "pointer" }}
                   >
-                    All
+                     {t("All")}
                   </b>
                 </li>
 
                 {categoryLoading ? (
                   <div className="text-center my-3">
                     <div className="spinner-border" role="status">
-                      <span className="sr-only">Loading...</span>
+                      <span className="sr-only"> {t("Loading")}</span>
                     </div>
                   </div>
                 ) : (
@@ -161,7 +165,7 @@ const Products = () => {
               <hr />
 
               <h6>
-                <b>Ratings:</b>
+                <b>{t("Ratings")}</b>
               </h6>
 
               <ul className="pl-0">
@@ -202,16 +206,13 @@ const Products = () => {
 
               </div>
               <div className="info-container">
-                <span className="about-subtitle">ABOUT ELIAH</span>
+                <span className="about-subtitle">{t("ABOUT LAGHA")}</span>
                 <span className="about-title">
-                  When You Look Good You Feel Good
+                {t("When You Look Good You Feel Good")}
                 </span>
                 <p className="about-paragraphe">
-                  The top three occupations in the Beauty salons Industry Group
-                  are Hairdressers, hairstylists, & cosmetologists, Manicurists
-                  and pedicurists, Receptionists & information clerks,
-                  Supervisors of personal care and service workers, and Skincare
-                  specialists.
+                {t("The top three occupations in the Beauty")}
+
                 </p>
               </div>
             </div>
@@ -222,7 +223,7 @@ const Products = () => {
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Search..."
+                  placeholder={t("search..")}
                   ref={keywordRef}
                 />
                 <div className="input-group-append">
@@ -236,7 +237,8 @@ const Products = () => {
             {loading ? (
               <Loader />
             ) : products && products.length === 0 ? (
-              <Message color="danger" message={"No Results Found!"} />
+              <Message color="danger" message={t("No Results Found")}
+              />
             ) : error ? (
               <Message color="danger" message={error} />
             ) : (
