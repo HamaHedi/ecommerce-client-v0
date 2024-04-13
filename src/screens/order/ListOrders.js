@@ -57,11 +57,11 @@ const ListOrders = () => {
 			rows: [],
 		}
 
-		orders.forEach((order) => {
-			data.rows.push({
+		orders?.forEach((order) => {
+			data?.rows?.push({
 				id: order._id,
-				numOfItems: order.orderItems.length,
-				amount: `$${order.totalPrice.toFixed(2)}`,
+				numOfItems: order?.orderItems.length,
+				amount: `$${order?.totalPrice.toFixed(2)}`,
 				status:
 					order.orderStatus && String(order.orderStatus).includes('Delivered') ? (
 						<p style={{ color: 'green' }}>{order.orderStatus}</p>
