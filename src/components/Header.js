@@ -95,7 +95,7 @@ const Header = () => {
           {/* <img src='/assets/logo.png' alt='logo' /> */}
           <b onClick={() => setKeyword()
           }>
-            <img src="/assets/logo.png" alt="logo" />
+            <img src="/assets/lagha-logo3.png" alt="logo" style={{height:"80px"}} />
           </b>
         </Link>
         <button
@@ -120,7 +120,7 @@ const Header = () => {
               <div className="col-6 collapse-brand">
                 <Link to="/">
                   <b>
-                    <img src="/assets/logo.png" alt="logo" />
+                    <img src="/assets/lagha-logo3.png" alt="logo" />
                   </b>
                 </Link>
               </div>
