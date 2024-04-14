@@ -22,12 +22,15 @@ const Products = () => {
   const { t } = useTranslation('product')
   var settings = {
     dots: false,
-    infinite: false,
-    speed: 500,
+ 
     slidesToShow: 6,
     slidesToScroll: 4,
     initialSlide: 0,
+    autoplay: true,
+    infinite: true,
 
+    speed: 4000,
+    autoplaySpeed: 4000,
     responsive: [
       {
         breakpoint: 1024,
@@ -57,12 +60,15 @@ const Products = () => {
   };
   var settings2 = {
     dots: false,
-    infinite: false,
-    speed: 500,
+ 
     slidesToShow: 4,
     slidesToScroll: 4,
     initialSlide: 0,
+    autoplay: true,
+    infinite: true,
 
+    speed: 4000,
+    autoplaySpeed: 4000,
     responsive: [
       {
         breakpoint: 1024,
