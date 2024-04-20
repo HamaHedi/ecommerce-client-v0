@@ -54,7 +54,7 @@ const OrderDetails = () => {
 								{shippingDetails}
 							</p>
 							<p>
-								<b>Amount:</b> DT{totalPrice && totalPrice.toFixed(2)}
+								<b>Amount:</b> DT {totalPrice && totalPrice.toFixed(2)}
 							</p>
 
 							<hr />
@@ -97,7 +97,7 @@ const OrderDetails = () => {
 											</div>
 
 											<div className='col-4 col-lg-2 mt-4 mt-lg-0'>
-												<p>DT{item.price && item.price.toFixed(2)}</p>
+												<p>DT {item.price && item.price.toFixed(2)}</p>
 											</div>
 
 											<div className='col-4 col-lg-3 mt-4 mt-lg-0'>

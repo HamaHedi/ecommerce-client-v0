@@ -97,8 +97,8 @@ const ConfirmOrder = () => {
 
 									<div className='col-4 col-lg-4 mt-4 mt-lg-0'>
 										<p>
-											{item.quantity} x DT{item.price && item.price.toFixed(2)}{' '}
-											= <b>DT{(item.quantity * item.price).toFixed(2)}</b>
+											{item.quantity} x DT {item.price && item.price.toFixed(2)}{' '}
+											= <b>DT {(item.quantity * item.price).toFixed(2)}</b>
 										</p>
 									</div>
 								</div>
@@ -127,7 +127,7 @@ const ConfirmOrder = () => {
 						<p>
 							{t("Tax")}:{' '}
 							<span className='order-summary-values'>
-								DT{taxPrice && taxPrice.toFixed(2)}
+								DT {taxPrice && taxPrice.toFixed(2)}
 							</span>
 						</p>
 
@@ -136,7 +136,7 @@ const ConfirmOrder = () => {
 						<p>
 							{t("Total")}:{' '}
 							<span className='order-summary-values'>
-								DT{totalPrice && totalPrice}
+								DT {totalPrice && totalPrice}
 							</span>
 						</p>
 

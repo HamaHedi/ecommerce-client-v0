@@ -121,12 +121,12 @@ const ProductDetails = () => {
 
 							<div className='d-flex align-items-end'>
 								<h4 className='mb-0'>
-									DT{product.price && product.price.toFixed(2)}
+									DT {product.price && product.price.toFixed(2)}
 								</h4>
 								&nbsp;
 								{product.oldPrice !== 0 && (
 									<h6 className='mb-0 text-muted'>
-										<del>DT{product.oldPrice}</del>
+										<del>DT {product.oldPrice}</del>
 									</h6>
 								)}
 							</div>
@@ -148,7 +148,7 @@ const ProductDetails = () => {
 							<hr />
 
 							<b>
-							{t("Status")}&nbsp;
+								{t("Status")}&nbsp;
 								<span
 									className={product.stock > 0 ? 'text-success' : 'text-danger'}
 								>

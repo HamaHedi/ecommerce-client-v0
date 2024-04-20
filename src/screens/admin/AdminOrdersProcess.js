@@ -84,7 +84,7 @@ const AdminOrdersProcess = () => {
 											{shippingDetails}
 										</p>
 										<p>
-											<b>Amount:</b> DT{totalPrice}
+											<b>Amount:</b> DT {totalPrice}
 										</p>
 
 										<hr />
@@ -127,7 +127,7 @@ const AdminOrdersProcess = () => {
 														</div>
 
 														<div className='col-4 col-lg-2 mt-4 mt-lg-0'>
-															<p>DT{item.price}</p>
+															<p>DT {item.price}</p>
 														</div>
 
 														<div className='col-4 col-lg-3 mt-4 mt-lg-0'>

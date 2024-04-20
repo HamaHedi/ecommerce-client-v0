@@ -69,11 +69,11 @@ const Product = ({ product }) => {
           </Link>
         </span>
         <div className="d-flex align-items-end">
-          <h5 className="mb-0">DT{product.price && product.price.toFixed(2)}</h5>
+          <h5 className="mb-0">DT {product.price && product.price.toFixed(2)}</h5>
           &nbsp;
           {product.oldPrice !== 0 && (
             <h6 className="mb-0 text-muted">
-              <del>DT{product.oldPrice && product.oldPrice.toFixed(2)}</del>
+              <del>DT {product.oldPrice && product.oldPrice.toFixed(2)}</del>
             </h6>
           )}
         </div>
