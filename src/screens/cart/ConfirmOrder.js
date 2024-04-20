@@ -97,7 +97,7 @@ const ConfirmOrder = () => {
 
 									<div className='col-4 col-lg-4 mt-4 mt-lg-0'>
 										<p>
-											{item.quantity} x ${item.price && item.price.toFixed(2)}{' '}
+											{item.quantity} x DT{item.price && item.price.toFixed(2)}{' '}
 											= <b>DT{(item.quantity * item.price).toFixed(2)}</b>
 										</p>
 									</div>

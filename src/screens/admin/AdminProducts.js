@@ -101,7 +101,7 @@ const AdminProducts = () => {
 					/>
 				),
 				name: product.name,
-				price: `$${product.price}`,
+				price: `DT${product.price}`,
 				stock: product.stock,
 				actions: (
 					<div className='d-flex text-nowrap'>

@@ -81,7 +81,7 @@ const Dashboard = () => {
 							<h5 className='text-white my-0'>Total Amount</h5>
 						</div>
 						<div className='card-footer bg-primary text-white py-2'>
-							${totalAmount && totalAmount.toFixed(2)}
+							DT{totalAmount && totalAmount.toFixed(2)}
 						</div>
 					</div>
 

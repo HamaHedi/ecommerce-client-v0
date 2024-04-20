@@ -82,7 +82,7 @@ const AdminOrders = () => {
 			data.rows.push({
 				id: order._id,
 				numofItems: order.orderItems.length,
-				amount: `$${order.totalPrice}`,
+				amount: `DT${order.totalPrice}`,
 				statusIcon:
 					order.orderStatus === 'Delivered' ? (
 						<i className='fa fa-check-circle text-success' aria-hidden='true'></i>
