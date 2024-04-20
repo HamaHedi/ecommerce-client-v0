@@ -392,13 +392,14 @@ const Products = () => {
       <div className="slider-container" style={{ padding: "25px" }}>
         <Slider {...settings}>
           <div>
-            <img src="assets/5_x150.webp" />
+            <img src="assets/nature.png" />
+          </div>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <img src="assets/logo-anea.png" style={{ height: "60px", marginLeft: "60px" }} />
+
           </div>
           <div>
-            <img src="assets/3_x150.webp" />
-          </div>
-          <div>
-            <img src="assets/3_x150.webp" />
+            <img src="assets/nevitaly.png" />
           </div>
           <div>
             <img src="assets/5_x150.webp" />
