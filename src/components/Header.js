@@ -95,7 +95,7 @@ const Header = () => {
           {/* <img src='/assets/logo.png' alt='logo' /> */}
           <b onClick={() => setKeyword()
           }>
-            <img src="/assets/lagha-logo3.png" alt="logo" style={{height:"80px"}} />
+            <img src="/assets/lagha-logo3.png" alt="logo" style={{ height: "80px" }} />
           </b>
         </Link>
         <button
@@ -149,8 +149,9 @@ const Header = () => {
               gap: "25px",
             }}
           >
-            <span className="navigation-item" onClick={() => setKeyword()
-            }>{t('home')}</span>
+            <Link to="/" >    <span className="navigation-item" onClick={() => setKeyword()
+            }>{t('home')}</span></Link>
+
 
             <span className="navigation-item" onClick={() => navigate("/contact")}>{t('contact')}</span>
             <Dropdown

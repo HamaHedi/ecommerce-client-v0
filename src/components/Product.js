@@ -64,7 +64,7 @@ const Product = ({ product }) => {
           </Link>
         </div>
         <span className="product-title">
-          <Link to={`/product/${product._id}`} className="text-dark">
+          <Link to={`/product/${product._id}`} className="text-dark" >
             {product.name}
           </Link>
         </span>

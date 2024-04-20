@@ -1,65 +1,64 @@
 .product-card-container {
-    padding: 15px;
-    border-radius: 5px;
-    border: 1px solid #e4e4e4;
+  padding: 15px;
+  border-radius: 5px;
+  min-width: 330px;
+  border: 1px solid #e4e4e4;
 }
 .product-card-container:hover {
-  
-    border: 1px solid #f9c3bb;
+  border: 1px solid #f9c3bb;
 }
-.product-image-container{
-    width: 220px;
-    height: 220px;
-
+.product-image-container {
+  width: 220px;
+  height: 220px;
 }
 .product-image {
-    width: 220px;
-    height: 220px;
-    padding-bottom: 10px;
-    object-fit:cover;
-    
+  width: 220px;
+  height: 220px;
+  padding-bottom: 10px;
+  object-fit: cover;
 }
 .product-card-body {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-}.product-title {
-    color: #333;
-    display: inline-block;
-    font-size: 20px;
-    font-family: Montserrat;
-    font-weight: 700;
-    width: 100%;
-text-align: center;
-    margin: 0 0 5px;
-    line-height: normal;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.product-title {
+  color: #333;
+  display: inline-block;
+  font-size: 20px;
+  font-family: Montserrat;
+  font-weight: 700;
+  width: 100%;
+  overflow: hidden;
+  width: 300px;
+  text-align: center;
+  margin: 0 0 5px;
+  line-height: normal;
 }
 
 .view-details-button {
-    margin-top: 15px;
-    border: 1px solid #f9c3bb;
-    border-radius: 5px;
-    color: #333;
-    display: inline-block;
-    line-height: normal;
-    z-index: 1;
-    overflow: hidden;
-    position: relative;
-    padding: 15px 20px;
-   
-    text-decoration: none;
-    text-align: center;
-    vertical-align: middle;
-    white-space: nowrap;
-    cursor: pointer;
-    font-family: Montserrat;
-    font-weight: 600;
-    text-transform: uppercase;
+  margin-top: 15px;
+  border: 1px solid #f9c3bb;
+  border-radius: 5px;
+  color: #333;
+  display: inline-block;
+  line-height: normal;
+  z-index: 1;
+  overflow: hidden;
+  position: relative;
+  padding: 15px 20px;
+
+  text-decoration: none;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  cursor: pointer;
+  font-family: Montserrat;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 .view-details-button:hover {
-  
-    background-color:#f9c3bb ;
-    color: white;
-  
+  background-color: #f9c3bb;
+  color: white;
 }

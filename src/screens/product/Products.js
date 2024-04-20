@@ -22,7 +22,7 @@ const Products = () => {
   const { t } = useTranslation('product')
   var settings = {
     dots: false,
- 
+
     slidesToShow: 6,
     slidesToScroll: 4,
     initialSlide: 0,
@@ -60,7 +60,7 @@ const Products = () => {
   };
   var settings2 = {
     dots: false,
- 
+
     slidesToShow: 4,
     slidesToScroll: 4,
     initialSlide: 0,
@@ -354,70 +354,70 @@ const Products = () => {
           </section>
         </div>
       </div>
-      <div className="slider-container" style={{padding:"25px"}}>
-      <Slider {...settings2}>
-        <div >
-        <img src="assets/InstagramImg3.webp" style={{padding:"5px"}} />
-        </div>
-        <div >
+      <div className="slider-container" style={{ padding: "25px" }}>
+        <Slider {...settings2}>
+          <div >
+            <img src="assets/2-0-seaforce-lotion-100ml.jpg" style={{ padding: "5px" }} />
+          </div>
+          <div >
 
-        <img src="assets/InstagramImg1_68de9631-42a5-4d23-96cf-ca94d4fb3648.webp" style={{padding:"5px"}}/>
-        </div>
-        <div >
+            <img src="assets/2-0-seaforce-lotion.jpg" style={{ padding: "5px" }} />
+          </div>
+          <div >
 
-        <img src="assets/InstagramImg2.webp" style={{padding:"5px"}} />
-        </div>
-        <div>
+            <img src="assets/20150.jpg" style={{ padding: "5px" }} />
+          </div>
+          <div>
 
-        <img src="assets/InstagramImg7.webp" style={{padding:"5px"}}/>
-        </div>
-        <div >
+            <img src="assets/20180-purepigments-neutral.jpg" style={{ padding: "5px" }} />
+          </div>
+          <div >
 
-        <img src="assets/InstagramImg2.webp"style={{padding:"5px"}} />
-        </div>
-        <div >
+            <img src="assets/colorsave-hairmask250.jpg" style={{ padding: "5px" }} />
+          </div>
+          <div >
 
-        <img src="assets/InstagramImg7.webp"style={{padding:"5px"}} />
-        </div>
-        <div >
+            <img src="assets/colorsave-shampoo-2501.jpg" style={{ padding: "5px" }} />
+          </div>
+          <div >
 
-        <img src="assets/InstagramImg3.webp" style={{padding:"5px"}}/>
-        </div>
-        <div >
+            <img src="assets/newave-perm-kit-web.png" style={{ padding: "5px" }} />
+          </div>
+          <div >
 
-        <img src="assets/InstagramImg7.webp" style={{padding:"5px"}}/>
-        </div>
-      </Slider>
-    </div>
-      <div className="slider-container" style={{padding:"25px"}}>
-      <Slider {...settings}>
-        <div>
-        <img src="assets/5_x150.webp" />
-        </div>
-        <div>
-        <img src="assets/3_x150.webp" />
-        </div>
-        <div>
-        <img src="assets/3_x150.webp" />
-        </div>
-        <div>
-        <img src="assets/5_x150.webp" />
-        </div>
-        <div>
-        <img src="assets/3_x150.webp" />
-        </div>
-        <div>
-        <img src="assets/5_x150.webp" />
-        </div>
-        <div>
-        <img src="assets/3_x150.webp" />
-        </div>
-        <div>
-        <img src="assets/5_x150.webp" />
-        </div>
-      </Slider>
-    </div>
-   
+            <img src="assets/orange-render.jpg" style={{ padding: "5px" }} />
+          </div>
+        </Slider>
+      </div>
+      <div className="slider-container" style={{ padding: "25px" }}>
+        <Slider {...settings}>
+          <div>
+            <img src="assets/5_x150.webp" />
+          </div>
+          <div>
+            <img src="assets/3_x150.webp" />
+          </div>
+          <div>
+            <img src="assets/3_x150.webp" />
+          </div>
+          <div>
+            <img src="assets/5_x150.webp" />
+          </div>
+          <div>
+            <img src="assets/3_x150.webp" />
+          </div>
+          <div>
+            <img src="assets/5_x150.webp" />
+          </div>
+          <div>
+            <img src="assets/3_x150.webp" />
+          </div>
+          <div>
+            <img src="assets/5_x150.webp" />
+          </div>
+        </Slider>
+      </div>
+
     </section>
   );
 };

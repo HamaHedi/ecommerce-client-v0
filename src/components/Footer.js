@@ -141,8 +141,8 @@ const Footer = () => {
             gap: "10px",
           }}
         >
-          <FasebookIcon />
-          <InstagramIcon />
+          <a href="https://www.facebook.com/lagha.shop1/"><FasebookIcon /></a>
+          <a href="https://www.instagram.com/laghashop/"><InstagramIcon /></a>
         </div>
       </div>
       <div className="footer-map-info">
@@ -192,7 +192,7 @@ const Footer = () => {
           type="email"
           required
           className="newsletter-email"
-          placeholder= {t("enter your email")}
+          placeholder={t("enter your email")}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
