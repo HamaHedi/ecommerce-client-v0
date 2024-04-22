@@ -37,7 +37,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
 			},
 		};
 
-		const { data } = await axios.post("/api/order/new", order, config);
+		const { data } = await axios.post("https://api.lagha.shop/api/order/new", order, config);
 
 		dispatch({
 			type: CREATE_ORDER_SUCCESS,
@@ -65,7 +65,7 @@ export const myOrders = () => async (dispatch) => {
 
 			},
 		};
-		const { data } = await axios.get("/api/orders/me", config);
+		const { data } = await axios.get("https://api.lagha.shop/api/orders/me", config);
 
 		dispatch({
 			type: MY_ORDERS_SUCCESS,

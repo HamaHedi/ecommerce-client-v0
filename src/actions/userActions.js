@@ -168,7 +168,7 @@ export const updateProfile = (userData) => async (dispatch) => {
 		};
 
 
-		const { data } = await axios.put("/api/me/update", userData, config);
+		const { data } = await axios.put("https://api.lagha.shop/api/me/update", userData, config);
 
 		dispatch({
 			type: UPDATE_PROFILE_SUCCESS,
