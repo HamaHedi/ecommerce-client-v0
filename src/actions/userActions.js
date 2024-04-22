@@ -197,7 +197,7 @@ export const updatePassword = (oldPassword, password) => async (dispatch) => {
 		};
 
 		const { data } = await axios.put(
-			"/api/password/update",
+			"https://api.lagha.shop/api/password/update",
 			{ oldPassword, password },
 			config
 		);
@@ -225,7 +225,7 @@ export const forgotPassword = (email) => async (dispatch) => {
 			},
 		};
 
-		const { data } = await axios.post("/api/password/forgot", email, config);
+		const { data } = await axios.post("https://api.lagha.shop/api/password/forgot", email, config);
 
 		dispatch({
 			type: FORGOT_PASSWORD_SUCCESS,
