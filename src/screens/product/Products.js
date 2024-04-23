@@ -13,6 +13,9 @@ import { useTranslation } from 'react-i18next'
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { Dropdown, Menu } from "antd";
+import { DownOutlined } from '@ant-design/icons';
+
 const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [price, setPrice] = useState([0, 1000]);
@@ -151,6 +154,28 @@ const Products = () => {
 
   return (
     <section className={`${keyword ? "container my-4" : ""}`}>
+      <div className="categories-container" >
+        
+      {allCategory?.map((category) => (
+          <span className="category-title" key={category.title}>
+            <Dropdown
+              overlay={ 
+                <Menu>
+                  {category?.subcategories?.map((subCategory) => (
+                    <Menu.Item key={subCategory} className="gategory-title">{subCategory}</Menu.Item>
+                  ))}
+                </Menu>
+              }
+              placement="bottom"
+              arrow
+            
+            >
+              <span onClick={() => setKeyword(category?.title)} className="category-title">{category?.title} <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 1024 1024"><path fill="currentColor" d="M104.704 338.752a64 64 0 0 1 90.496 0l316.8 316.8l316.8-316.8a64 64 0 0 1 90.496 90.496L557.248 791.296a64 64 0 0 1-90.496 0L104.704 429.248a64 64 0 0 1 0-90.496"></path></svg></span>
+            </Dropdown>
+          </span>
+        ))}
+        
+      </div>
       <div className="row">
         {keyword && (
           <div className="col-12 col-md-3">

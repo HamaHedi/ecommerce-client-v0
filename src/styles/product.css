@@ -7,7 +7,29 @@
 padding-bottom: 30px;
     
 }
-
+.categories-container {
+    display: flex;
+    padding: 20px 0px;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    background-color: #f3c69b;
+}
+.anticon-down{
+    fill: #111;
+}
+.category-title {
+    color: #333;
+    display: inline-block;
+    font-size: 16px;
+    font-family: Montserrat;
+    font-weight: 700;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin: 0 0 5px;
+    line-height: normal;
+  }
 .info-container {
     display: flex;
     flex-direction: column;

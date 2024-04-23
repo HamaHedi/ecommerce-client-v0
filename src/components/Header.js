@@ -6,7 +6,7 @@ import { logout } from "../actions/userActions";
 import "../styles/header.css";
 import { useGlobalState } from "../context/context";
 import { useTranslation } from 'react-i18next'
-import { Button, Dropdown } from 'antd'
+import { Button, Dropdown, Menu } from 'antd'
 
 
 
@@ -42,13 +42,28 @@ const Header = () => {
   const CategoriesItem = () => {
     return (
       <div className="categories-list-container">
-
-        <div className="categories-items-container">{allCategory?.map((category) => (
-          <span className="gategory-title" onClick={() => setKeyword(category?.title)
-          }>{category?.title}</span>
-        ))}</div>
-        <img src="./assets/cover1.png" />
+      <div className="categories-items-container">
+        {allCategory?.map((category) => (
+          <span className="category-title" key={category.title}>
+            <Dropdown
+              overlay={ 
+                <Menu>
+                  {category?.subcategories?.map((subCategory) => (
+                    <Menu.Item key={subCategory} className="gategory-title">{subCategory}</Menu.Item>
+                  ))}
+                </Menu>
+              }
+              placement="bottom"
+              arrow
+            
+            >
+              <span onClick={() => setKeyword(category?.title)} className="gategory-title">{category?.title}</span>
+            </Dropdown>
+          </span>
+        ))}
       </div>
+      <img src="./assets/cover1.png" alt="Cover" /> 
+    </div>
     );
   };
   const { t, i18n } = useTranslation('header')
