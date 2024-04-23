@@ -99,7 +99,7 @@ const Footer = () => {
             gap: "10px",
           }}
         >
-          <EmailIcon /> +80 1234567890
+          <EmailIcon /> mail@example.com
         </span>
         <span
           style={{
@@ -109,7 +109,7 @@ const Footer = () => {
             gap: "10px",
           }}
         >
-          <PhoneIcon /> mail@example.com
+          <PhoneIcon /> +216 73258310
         </span>
       </div>
       <div

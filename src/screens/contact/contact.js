@@ -47,8 +47,8 @@ const Contact = () => {
               <PhoneIcon />
             </div>
             <span className="title">{t("PHONE")}</span>
-            <span>Toll-Free: 1800 - 234 - 5678</span>
-            <span>Fax: 1800 - 234 - 5678</span>
+            <span>Phone: 27220666</span>
+            <span>Fax: 73258310</span>
           </div>
           <div className="email-contact">
             <div className="icon-container">
@@ -65,8 +65,7 @@ const Contact = () => {
             </div>
             <span className="title">{t("ADDRESS")}</span>
 
-            <span>No: 58 A, East Madison Street,</span>
-            <span>Baltimore, MD, USA 4508</span>
+            <span>No: Cite commerciale msaken 4070</span>
           </div>
         </div>
       </div>
