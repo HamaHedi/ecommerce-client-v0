@@ -20,9 +20,9 @@ const AdminProductAdd = () => {
 	const [images, setImages] = useState([])
 	const [imagesPreview, setImagesPreview] = useState([])
 	const [category, setCategory] = useState('')
-
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
+    const [subcategory, setSubcategory] = useState(''); 
 
 	const { loading, error, success } = useSelector((state) => state.newProduct)
 	const { category: categories } = useSelector((state) => state.categorys)
@@ -58,7 +58,7 @@ const AdminProductAdd = () => {
 		formData.append('category', category)
 		formData.append('stock', stock)
 		formData.append('seller', seller)
-
+		formData.append('subcategory', subcategory)
 		images.forEach((image) => {
 			formData.append('files', image)
 		})
@@ -196,6 +196,34 @@ const AdminProductAdd = () => {
 											</small>
 										)}
 								</div>
+								<div className='form-group'>
+    <label htmlFor='subcategory_field'>
+        Subcategory
+    </label>
+    <select
+        className='form-control'
+        id='subcategory_field'
+        value={subcategory}
+        onChange={(e) => setSubcategory(e.target.value)}
+    >
+        <option value='' selected disabled hidden>
+            Choose one
+        </option>
+
+        {/* Map through subcategories based on the selected category */}
+        {categories?.map((cat) => {
+            if (cat.title === category) {
+                return cat?.subcategories.map((sub) => (
+                    <option key={sub} value={sub}>
+                        {sub}
+                    </option>
+                ));
+            }
+            return null;
+        })}
+    </select>
+</div>
+
 
 								<div className='form-group'>
 									<label htmlFor='stock_field'>

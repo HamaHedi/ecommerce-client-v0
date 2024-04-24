@@ -24,7 +24,7 @@ export const getCategory = () => async (dispatch) => {
 		dispatch({ type: ALL_CATEGORY_REQUEST });
 
 		const { data } = await axios.get(
-			`http://localhost:8000/api/admin/category`
+			`https://api.lagha.shop/api/admin/category`
 		);
 
 		dispatch({
@@ -82,7 +82,7 @@ export const newCategory = (categoryData) => async (dispatch) => {
 
 
 		const { data } = await axios.post(
-			`http://localhost:8000/api/admin/category`,
+			`https://api.lagha.shop/api/admin/category`,
 			categoryData,
 			config
 		);

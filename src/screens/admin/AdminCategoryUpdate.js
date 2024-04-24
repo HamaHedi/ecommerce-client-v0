@@ -15,9 +15,11 @@ import { UPDATE_CATEGORY_RESET } from "../../constants/categoryConstants";
 const AdminCategoryUpdate = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [subcategories, setSubcategories] = useState([""]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const {
     loading,
@@ -26,14 +28,13 @@ const AdminCategoryUpdate = () => {
   } = useSelector((state) => state.category);
   const { error, category } = useSelector((state) => state.categoryDetails);
 
-  const { id } = useParams();
-
   useEffect(() => {
     if (category && category._id !== id) {
       dispatch(getCategoryDetails(id));
     } else {
       setTitle(category.title);
       setDescription(category.description);
+      setSubcategories(category.subcategories || [""]); // Initialize subcategories with existing data or empty array
     }
 
     if (error && error.message) {
@@ -69,9 +70,26 @@ const AdminCategoryUpdate = () => {
       updateCategory(category._id, {
         title,
         description,
+        subcategories,
       })
     );
     dispatch(getCategoryDetails(id));
+  };
+
+  const handleSubcategoryChange = (index, value) => {
+    const updatedSubcategories = [...subcategories];
+    updatedSubcategories[index] = value;
+    setSubcategories(updatedSubcategories);
+  };
+
+  const handleAddSubcategory = () => {
+    setSubcategories([...subcategories, ""]);
+  };
+
+  const handleRemoveSubcategory = (index) => {
+    const updatedSubcategories = [...subcategories];
+    updatedSubcategories.splice(index, 1);
+    setSubcategories(updatedSubcategories);
   };
 
   return (
@@ -87,7 +105,7 @@ const AdminCategoryUpdate = () => {
         <div className="col-12 col-md-9 px-3 my-4">
           <div className="card border h-100">
             <div className="card-header d-flex justify-content-between">
-              <h3 className="mb-0">New Category</h3>
+              <h3 className="mb-0">Update Category</h3>
             </div>
             <div className="card-body">
               <form onSubmit={submitHandler}>
@@ -119,6 +137,37 @@ const AdminCategoryUpdate = () => {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   ></textarea>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="subcategory_field">Subcategories</label>
+                  {subcategories.map((subcategory, index) => (
+                    <div key={index} className="input-group mb-3">
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Subcategory"
+                        value={subcategory}
+                        onChange={(e) => handleSubcategoryChange(index, e.target.value)}
+                      />
+                      <div className="input-group-append">
+                        <button
+                          className="btn btn-outline-secondary"
+                          type="button"
+                          onClick={() => handleRemoveSubcategory(index)}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  <button
+                    className="btn btn-secondary"
+                    type="button"
+                    onClick={handleAddSubcategory}
+                  >
+                    Add Subcategory
+                  </button>
                 </div>
 
                 <button
