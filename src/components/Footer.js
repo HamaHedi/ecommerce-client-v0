@@ -89,7 +89,7 @@ const Footer = () => {
             gap: "10px",
           }}
         >
-          <AdressIcon /> 520,West valey, Anim ad minim,
+          <AdressIcon /> Cite commerciale msaken 4070
         </span>
         <span
           style={{
