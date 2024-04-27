@@ -32,6 +32,9 @@ import {
 	DELETE_REVIEW_RESET,
 	DELETE_REVIEW_FAIL,
 	CLEAR_ERRORS,
+	GET_STATISTICS_REQUEST,
+	GET_STATISTICS_FAIL,
+	GET_STATISTICS_SUCCESS
 } from '../constants/productConstants'
 
 export const productsReducer = (state = { products: [] }, action) => {
@@ -189,6 +192,41 @@ export const productReducer = (state = {}, action) => {
 				...state,
 				isUpdated: false,
 			}
+
+		case CLEAR_ERRORS:
+			return {
+				...state,
+				error: null,
+			}
+
+		default:
+			return state
+	}
+}
+export const statisticsReducer = (state = {}, action) => {
+	switch (action.type) {
+		case GET_STATISTICS_REQUEST:
+			return {
+				...state,
+				loading: true,
+			}
+
+		case GET_STATISTICS_SUCCESS:
+			return {
+				...state,
+				loading: false,
+				statistics: action.payload,
+			}
+
+	
+
+		case GET_STATISTICS_FAIL:
+			return {
+				...state,
+				error: action.payload,
+			}
+
+	
 
 		case CLEAR_ERRORS:
 			return {

@@ -25,7 +25,13 @@
   font-weight: 700;
   text-align: center;
   margin: 0 0 5px;
+  min-width: 140px;
+  text-align: left;
   line-height: normal;
+}
+.ant-divider-horizontal {
+  margin: 4px;
+  width: 100%;
 }
 .gategory-title:hover {
   color: #f9c3bb;

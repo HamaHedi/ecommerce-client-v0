@@ -5,7 +5,7 @@ const GlobalStateContext = createContext();
 
 // Step 2: Create a Provider component
 export const GlobalStateProvider = ({ children }) => {
-  const [keyword, setKeyword] = useState('');
+  const [keyword, setKeyword] = useState(undefined);
 
   return (
     <GlobalStateContext.Provider value={{ keyword, setKeyword }}>

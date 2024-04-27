@@ -9,20 +9,21 @@ import { getCategory } from "../../actions/categoryAction";
 import Pagination from "react-js-pagination";
 import { useGlobalState } from "../../context/context";
 import "../../styles/product.css";
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from "react-i18next";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Dropdown, Menu } from "antd";
-import { DownOutlined } from '@ant-design/icons';
+import { Divider, Dropdown, Menu } from "antd";
 
 const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [price, setPrice] = useState([0, 1000]);
   const [category, setCategory] = useState("");
+  const [subcategory, setSubategory] = useState("");
+
   const [rating, setRating] = useState(0);
   // const [keyword, setKeyword] = useState('')
-  const { t } = useTranslation('product')
+  const { t } = useTranslation("product");
   var settings = {
     dots: false,
 
@@ -41,25 +42,25 @@ const Products = () => {
           slidesToShow: 3,
           slidesToScroll: 3,
           infinite: true,
-          dots: true
-        }
+          dots: true,
+        },
       },
       {
         breakpoint: 600,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
-          initialSlide: 2
-        }
+          initialSlide: 2,
+        },
       },
       {
         breakpoint: 480,
         settings: {
           slidesToShow: 1,
-          slidesToScroll: 1
-        }
-      }
-    ]
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
   var settings2 = {
     dots: false,
@@ -79,25 +80,25 @@ const Products = () => {
           slidesToShow: 3,
           slidesToScroll: 3,
           infinite: true,
-          dots: true
-        }
+          dots: true,
+        },
       },
       {
         breakpoint: 600,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
-          initialSlide: 2
-        }
+          initialSlide: 2,
+        },
       },
       {
         breakpoint: 480,
         settings: {
           slidesToShow: 1,
-          slidesToScroll: 1
-        }
-      }
-    ]
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
   const { keyword, setKeyword } = useGlobalState();
 
@@ -145,39 +146,68 @@ const Products = () => {
 
   useEffect(() => {
     dispatch(getCategory());
-    dispatch(getProducts(keyword, currentPage, price, category, rating));
-  }, [dispatch, keyword, category, currentPage, price, rating]);
+    dispatch(
+      getProducts(keyword, currentPage, price, category, rating, subcategory)
+    );
+  }, [dispatch, keyword, category, currentPage, price, rating, subcategory]);
 
   useEffect(() => {
     dispatch(clearErrors());
   }, [dispatch]);
 
   return (
-    <section className={`${keyword ? "container my-4" : ""}`}>
-      <div className="categories-container" >
-        
-      {allCategory?.map((category) => (
+    <section className={`${keyword !== undefined ? "container my-4" : ""}`}>
+      <div className="categories-container">
+        {allCategory?.map((category) => (
           <span className="category-title" key={category.title}>
             <Dropdown
-              overlay={ 
-                <Menu>
+              overlay={
+                <Menu style={{ borderRadius: "5px" }}>
                   {category?.subcategories?.map((subCategory) => (
-                    <Menu.Item key={subCategory} className="gategory-title">{subCategory}</Menu.Item>
+                    <Menu.Item
+                      onClick={() => {
+                        setKeyword("");
+                        setCategory(category.title);
+                        setSubategory(subCategory);
+                      }}
+                      key={subCategory}
+                      className="gategory-title"
+                    >
+                      {subCategory} <Divider />
+                    </Menu.Item>
                   ))}
                 </Menu>
               }
               placement="bottom"
               arrow
-            
             >
-              <span onClick={() => setKeyword(category?.title)} className="category-title">{category?.title} <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 1024 1024"><path fill="currentColor" d="M104.704 338.752a64 64 0 0 1 90.496 0l316.8 316.8l316.8-316.8a64 64 0 0 1 90.496 90.496L557.248 791.296a64 64 0 0 1-90.496 0L104.704 429.248a64 64 0 0 1 0-90.496"></path></svg></span>
+              <span
+                onClick={() => {
+                  setKeyword("");
+                  setCategory(category?.title);
+                  setSubategory("");
+                }}
+                className="category-title"
+              >
+                {category?.title}{" "}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="1em"
+                  height="1em"
+                  viewBox="0 0 1024 1024"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M104.704 338.752a64 64 0 0 1 90.496 0l316.8 316.8l316.8-316.8a64 64 0 0 1 90.496 90.496L557.248 791.296a64 64 0 0 1-90.496 0L104.704 429.248a64 64 0 0 1 0-90.496"
+                  ></path>
+                </svg>
+              </span>
             </Dropdown>
           </span>
         ))}
-        
       </div>
       <div className="row">
-        {keyword && (
+        {keyword !== undefined && (
           <div className="col-12 col-md-3">
             <div className="p-2 h-100">
               <form onSubmit={submitHandler}>
@@ -236,7 +266,10 @@ const Products = () => {
               <ul className="list-group">
                 <li className="list-group-item p-2">
                   <b
-                    onClick={() => setCategory("")}
+                    onClick={() => {
+                      setCategory("");
+                      setSubategory("");
+                    }}
                     style={{ cursor: "pointer" }}
                   >
                     {t("All")}
@@ -254,7 +287,10 @@ const Products = () => {
                   allCategory.map((category) => (
                     <li className="list-group-item p-2" key={category._id}>
                       <small
-                        onClick={() => setCategory(category.title)}
+                        onClick={() => {
+                          setCategory(category);
+                          setSubategory("");
+                        }}
                         style={{ cursor: "pointer" }}
                       >
                         {category.title}
@@ -296,16 +332,15 @@ const Products = () => {
           </div>
         )}
 
-        <div className={keyword ? "col-12 col-md-9" : "col"}>
-          {!keyword && <Banner />}
-          {!keyword && (
+        <div className={keyword !== undefined ? "col-12 col-md-9" : "col"}>
+          {keyword === undefined && <Banner />}
+          {keyword === undefined && (
             <div className="about-container">
               <div className="about-images-container">
                 <img src="assets/img1.png" className="about-image-1" />
                 <img src="assets/img2.png" className="about-image-2" />
                 <img src="assets/bg1.png" />
                 <img src="assets/bg2.png" />
-
               </div>
               <div className="info-container">
                 <span className="about-subtitle">{t("ABOUT LAGHA")}</span>
@@ -314,7 +349,6 @@ const Products = () => {
                 </span>
                 <p className="about-paragraphe">
                   {t("The top three occupations in the Beauty")}
-
                 </p>
               </div>
             </div>
@@ -338,9 +372,8 @@ const Products = () => {
 
             {loading ? (
               <Loader />
-            ) : products && products.length === 0 ? (
-              <Message color="danger" message={t("No Results Found")}
-              />
+            ) : products && products?.length === 0 ? (
+              <Message color="danger" message={t("No Results Found")} />
             ) : error ? (
               <Message color="danger" message={error} />
             ) : (
@@ -350,7 +383,7 @@ const Products = () => {
                   style={{ gap: "35px", justifyContent: "center" }}
                 >
                   {products &&
-                    products.map((product) => (
+                    products?.map((product) => (
                       <Product key={product._id} product={product} />
                     ))}
                 </div>
@@ -381,35 +414,46 @@ const Products = () => {
       </div>
       <div className="slider-container" style={{ padding: "25px" }}>
         <Slider {...settings2}>
-          <div >
-            <img src="assets/2-0-seaforce-lotion-100ml.jpg" style={{ padding: "5px" }} />
+          <div>
+            <img
+              src="assets/2-0-seaforce-lotion-100ml.jpg"
+              style={{ padding: "5px" }}
+            />
           </div>
-          <div >
-
-            <img src="assets/2-0-seaforce-lotion.jpg" style={{ padding: "5px" }} />
+          <div>
+            <img
+              src="assets/2-0-seaforce-lotion.jpg"
+              style={{ padding: "5px" }}
+            />
           </div>
-          <div >
-
+          <div>
             <img src="assets/20150.jpg" style={{ padding: "5px" }} />
           </div>
           <div>
-
-            <img src="assets/20180-purepigments-neutral.jpg" style={{ padding: "5px" }} />
+            <img
+              src="assets/20180-purepigments-neutral.jpg"
+              style={{ padding: "5px" }}
+            />
           </div>
-          <div >
-
-            <img src="assets/colorsave-hairmask250.jpg" style={{ padding: "5px" }} />
+          <div>
+            <img
+              src="assets/colorsave-hairmask250.jpg"
+              style={{ padding: "5px" }}
+            />
           </div>
-          <div >
-
-            <img src="assets/colorsave-shampoo-2501.jpg" style={{ padding: "5px" }} />
+          <div>
+            <img
+              src="assets/colorsave-shampoo-2501.jpg"
+              style={{ padding: "5px" }}
+            />
           </div>
-          <div >
-
-            <img src="assets/newave-perm-kit-web.png" style={{ padding: "5px" }} />
+          <div>
+            <img
+              src="assets/newave-perm-kit-web.png"
+              style={{ padding: "5px" }}
+            />
           </div>
-          <div >
-
+          <div>
             <img src="assets/orange-render.jpg" style={{ padding: "5px" }} />
           </div>
         </Slider>
@@ -420,8 +464,10 @@ const Products = () => {
             <img src="assets/nature.png" />
           </div>
           <div style={{ display: "flex", justifyContent: "center" }}>
-            <img src="assets/logo-anea.png" style={{ height: "60px", marginLeft: "60px" }} />
-
+            <img
+              src="assets/logo-anea.png"
+              style={{ height: "60px", marginLeft: "60px" }}
+            />
           </div>
           <div>
             <img src="assets/nevitaly.png" />
@@ -443,7 +489,6 @@ const Products = () => {
           </div>
         </Slider>
       </div>
-
     </section>
   );
 };

@@ -212,8 +212,8 @@ const AdminProductAdd = () => {
 
         {/* Map through subcategories based on the selected category */}
         {categories?.map((cat) => {
-            if (cat.title === category) {
-                return cat?.subcategories.map((sub) => (
+            if (cat?.title === category) {
+                return cat?.subcategories?.map((sub) => (
                     <option key={sub} value={sub}>
                         {sub}
                     </option>

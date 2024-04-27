@@ -29,18 +29,25 @@ import {
 	DELETE_REVIEW_SUCCESS,
 	DELETE_REVIEW_FAIL,
 	CLEAR_ERRORS,
+	GET_STATISTICS_SUCCESS,
+	GET_STATISTICS_REQUEST,
+	GET_STATISTICS_FAIL
 } from "../constants/productConstants";
 
 export const getProducts =
-	(keyword = "", currentPage = 1, price, category, rating = 0) =>
+	(keyword = "", currentPage = 1, price, category, rating = 0,subCategory) =>
 		async (dispatch) => {
+
 			try {
 				dispatch({ type: ALL_PRODUCTS_REQUEST });
 
 				let link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&ratings[gte]=${rating}`;
 
-				if (category) {
+				if (category !=="") {
 					link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}&ratings[gte]=${rating}`;
+				}
+				if (subCategory !=="") {
+					link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}&subcategory=${subCategory}&ratings[gte]=${rating}`;
 				}
 
 				const { data } = await axios.get(link);
@@ -234,6 +241,34 @@ export const getAdminProducts = (currentPage) => async (dispatch) => {
 	} catch (error) {
 		dispatch({
 			type: ADMIN_PRODUCTS_FAIL,
+			payload: error.response.data.message,
+		});
+	}
+};
+export const getStatistics = () => async (dispatch) => {
+	try {
+		dispatch({ type: GET_STATISTICS_REQUEST });
+		const token = localStorage.getItem('token');
+
+
+		const config = {
+			headers: {
+				"Authorization": token
+
+			},
+		};
+
+		const data  = await axios.get(
+			`https://api.lagha.shop/api/statistics`, config
+		);
+
+		dispatch({
+			type: GET_STATISTICS_SUCCESS,
+			payload: data,
+		});
+	} catch (error) {
+		dispatch({
+			type: GET_STATISTICS_FAIL,
 			payload: error.response.data.message,
 		});
 	}
