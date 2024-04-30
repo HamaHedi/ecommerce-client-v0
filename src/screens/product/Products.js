@@ -156,8 +156,8 @@ const Products = () => {
   }, [dispatch]);
 
   return (
-    <section className={`${keyword !== undefined ? "container my-4" : ""}`}>
-      <div className="categories-container">
+    <section  >
+      <div className="categories-container" >
         {allCategory?.map((category) => (
           <span className="category-title" key={category.title}>
             <Dropdown
@@ -206,9 +206,9 @@ const Products = () => {
           </span>
         ))}
       </div>
-      <div className="row">
+      <div className="row" >
         {keyword !== undefined && (
-          <div className="col-12 col-md-3">
+          <div className="col-12 col-md-3" style={{padding:"30px"}}>
             <div className="p-2 h-100">
               <form onSubmit={submitHandler}>
                 <h6>
@@ -217,7 +217,7 @@ const Products = () => {
                   </b>
                 </h6>
 
-                <div className="row mt-3 mb-2">
+                <div className="row mt-3 mb-2" >
                   <div className="col">
                     <div className="form-group">
                       <small>Min</small>
@@ -353,7 +353,7 @@ const Products = () => {
               </div>
             </div>
           )}
-          <section className="container my-4">
+          <section className="container my-4"  style={{width:"100%", maxWidth:"80%"}}>
             <form onSubmit={searchHandler}>
               <div className="input-group mb-4">
                 <input

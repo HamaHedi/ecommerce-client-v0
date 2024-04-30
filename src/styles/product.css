@@ -17,6 +17,10 @@ padding-bottom: 30px;
 .anticon-down{
     fill: #111;
 }
+.search-product {
+    width: 100%;
+    max-width: 90%;
+}
 .category-title {
     color: #333;
     cursor: pointer;
