@@ -145,6 +145,28 @@ const Sidebar = ({ item }) => {
 						</div>
 					</Link>
 				</div>
+				<div className='col-6 col-sm-6 col-md-12'>
+					<Link
+						to='/admin/brand'
+						className={
+							item === 'brand'
+								? 'btn btn-block mt-3 bg-primary'
+								: 'btn btn-block mt-3'
+						}
+					>
+						<div className='text-center'>
+							<img
+								src='/assets/img/dashboard/brand.png'
+								alt='brnads'
+								style={{ width: '60px', height: '60px' }}
+							/>
+						</div>
+						<div className='text-center mt-2'>
+							<strong className='text-white'>{
+								t("brand")}</strong>
+						</div>
+					</Link>
+				</div>
 			</div>
 		</nav>
 	)

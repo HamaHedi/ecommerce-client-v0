@@ -38,6 +38,9 @@ import AdminCategory from './screens/admin/AdminCategory'
 import AdminCategoryAdd from './screens/admin/AdminCategoryAdd'
 import AdminCategoryUpdate from './screens/admin/AdminCategoryUpdate'
 import Contact from './screens/contact/contact'
+import AdminBrand from './screens/admin/AdminBrands'
+import AdminBrandAdd from './screens/admin/AdminBrandAdd'
+import AdminBrandUpdate from './screens/admin/AdminBrandUpdate'
 
 const App = () => {
 	useEffect(() => {
@@ -95,6 +98,17 @@ const App = () => {
 							<Route
 								path='/admin/category/:id'
 								element={<AdminCategoryUpdate />}
+								exact
+							/>
+								<Route path='/admin/brand' element={<AdminBrand />} exact />
+							<Route
+								path='/admin/brand/add'
+								element={<AdminBrandAdd />}
+								exact
+							/>
+							<Route
+								path='/admin/brand/:id'
+								element={<AdminBrandUpdate />}
 								exact
 							/>
 						</Route>

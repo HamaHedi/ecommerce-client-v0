@@ -4,5 +4,6 @@
   "orders": "Orders",
   "reviews": "Reviews",
   "categories": "Categories",
-  "users": "Users"
+  "users": "Users",
+  "brand":"Brands"
 }
