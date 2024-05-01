@@ -5,8 +5,8 @@ import Sidebar from "../../components/Sidebar";
 
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { newProduct, clearErrors } from "../../actions/productActions";
-import { NEW_PRODUCT_RESET } from "../../constants/productConstants";
+import { newBrand, clearErrors } from "../../actions/brandActions";
+import { NEW_BRAND_RESET } from "../../constants/brandConstants";
 
 
 const AdminBrandAdd = () => {
@@ -17,7 +17,7 @@ const AdminBrandAdd = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading, error, success } = useSelector((state) => state.newProduct);
+  const { loading, error, success } = useSelector((state) => state.newBrand);
 
   useEffect(() => {
 
@@ -31,11 +31,11 @@ const AdminBrandAdd = () => {
 
     if (success) {
       navigate("/admin/brand");
-      toast.success("Product created successfully", {
+      toast.success("Brand created successfully", {
         position: toast.POSITION.TOP_RIGHT,
         className: "m-2",
       });
-      dispatch({ type: NEW_PRODUCT_RESET });
+      dispatch({ type: NEW_BRAND_RESET });
     }
   }, [dispatch, error, success, navigate]);
 
@@ -43,13 +43,13 @@ const AdminBrandAdd = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("name", name);
+    formData.append("title", name);
     formData.append("description", description);
     images.forEach((image) => {
       formData.append("files", image);
     });
 
-    dispatch(newProduct(formData));
+    dispatch(newBrand(formData));
   };
 
   const onChange = (e) => {

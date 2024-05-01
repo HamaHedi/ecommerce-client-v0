@@ -4,6 +4,11 @@ import {
   ALL_BRANDS_REQUEST,
   ALL_BRANDS_SUCCESS,
   ALL_BRANDS_FAIL,
+  NEW_BRAND_REQUEST,
+  NEW_BRAND_SUCCESS,
+  NEW_BRAND_RESET,
+  NEW_BRAND_FAIL,
+  CLEAR_ERRORS
 } from "../constants/brandConstants";
 
 export const getBrands =
@@ -27,3 +32,38 @@ export const getBrands =
       });
     }
   };
+
+export const newBrand = (brandData) => async (dispatch) => {
+  try {
+    dispatch({ type: NEW_BRAND_REQUEST });
+    const token = localStorage.getItem("token");
+
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: token,
+      },
+    };
+
+    const { data } = await axios.post(
+      `http://localhost:8000/api/brands`,
+      brandData,
+      config
+    );
+
+    dispatch({
+      type: NEW_BRAND_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: NEW_BRAND_FAIL,
+      payload: error.response.data,
+    });
+  }
+};
+export const clearErrors = () => async (dispatch) => {
+	dispatch({
+		type: CLEAR_ERRORS,
+	});
+};
