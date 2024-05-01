@@ -7,18 +7,18 @@ import Sidebar from '../../components/Sidebar'
 
 import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
-import { getCategory, deleteCategory, clearErrors } from '../../actions/categoryAction'
+import {  deleteCategory, clearErrors } from '../../actions/categoryAction'
 import { DELETE_CATEGORY_REQUEST } from '../../constants/categoryConstants'
+import { getBrands } from '../../actions/brandActions'
 
 const AdminBrand = () => {
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 
-	const { loading, error, category } = useSelector((state) => state.categorys)
+	const { loading, error, brands, brandsCount } = useSelector((state) => state.brands)
 	const { error: deleteError, isDeleted } = useSelector((state) => state.category)
-
 	useEffect(() => {
-		dispatch(getCategory())
+		dispatch(getBrands())
 
 		if (error) {
 			toast.error(error, {
@@ -50,7 +50,7 @@ const AdminBrand = () => {
 		dispatch(deleteCategory(id))
 	}
 
-	const setCategorys = () => {
+	const setBrands = () => {
 		const data = {
 			columns: [
 				{
@@ -61,6 +61,11 @@ const AdminBrand = () => {
 				{
 					label: 'Title',
 					field: 'title',
+					sort: 'asc',
+				},
+				{
+					label: 'Image',
+					field: 'image',
 					sort: 'asc',
 				},
 				{
@@ -76,15 +81,22 @@ const AdminBrand = () => {
 			rows: [],
 		}
 
-		category.forEach((item) => {
+		brands?.forEach((item) => {
 			data.rows.push({
 				id: item._id,
 				title: item.title,
+				image: (
+					<img
+						src={item && item.images[0] && 'http://localhost:8000/' + item.images[0].path}
+						alt={item && item.images[0] && 'http://api.lagha.shop/' + item.images[0]._id}
+						style={{ width: '100px', height: '100px' }}
+					/>
+				),
 				description: item.description,
 				actions: (
 					<div className='d-flex text-nowrap'>
 						<Link
-							to={`/admin/category/${item._id}`}
+							to={`/admin/brand/${item._id}`}
 							className='btn btn-primary py-1 px-2'
 						>
 							<i className='fa fa-pencil'></i>
@@ -126,7 +138,7 @@ const AdminBrand = () => {
 								<Loader />
 							) : (
 								<MDBDataTable
-									data={setCategorys()}
+									data={setBrands()}
 									className='text-center px-3'
 									bordered
 									striped
@@ -135,11 +147,11 @@ const AdminBrand = () => {
 									responsive
 									info={false}
 									paginationLabel={['<', '>']}
-									paging={category && category.length > 10 ? true : false}
+									paging={brands && brandsCount > 8 ? true : false}
 								/>
 							)}
 						</div>
-						<div className='card-footer'>Total: {category && category.length}</div>
+						<div className='card-footer'>Total: {brands && brandsCount}</div>
 					</div>
 				</div>
 			</div>

@@ -38,7 +38,10 @@ import {
 	newCategoryReducer,
 	categoryReducer,
 } from './reducers/categoryRedusers'
+import {
+	brandsReducer,
 
+} from './reducers/brandReducers'
 const reducer = combineReducers({
 	products: productsReducer,
 	productDetails: productDetailsReducer,
@@ -63,7 +66,9 @@ const reducer = combineReducers({
 	newCategory: newCategoryReducer,
 	category: categoryReducer,
 	newsLetter : newsLetterReducer,
-	statistics:statisticsReducer
+	statistics:statisticsReducer,
+	brands: brandsReducer,
+
 
 })
 

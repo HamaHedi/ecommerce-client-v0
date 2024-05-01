@@ -1,40 +1,41 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
 import Sidebar from "../../components/Sidebar";
-
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getCategoryDetails,
-  updateCategory,
+  getProductDetails,
+  updateProduct,
   clearErrors,
-} from "../../actions/categoryAction";
-import { UPDATE_CATEGORY_RESET } from "../../constants/categoryConstants";
+} from "../../actions/productActions";
+import { UPDATE_PRODUCT_RESET } from "../../constants/productConstants";
 
 const AdminBrandUpdate = () => {
-  const [title, setTitle] = useState("");
+  const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [subcategories, setSubcategories] = useState([""]);
+  const [images, setImages] = useState([]);
+  const [oldImages, setOldImages] = useState([]);
+  const [imagesPreview, setImagesPreview] = useState([]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { id } = useParams();
 
   const {
     loading,
     error: updateError,
     isUpdated,
-  } = useSelector((state) => state.category);
-  const { error, category } = useSelector((state) => state.categoryDetails);
+  } = useSelector((state) => state.product);
+  const { error, product } = useSelector((state) => state.productDetails);
+
+  const { id } = useParams();
 
   useEffect(() => {
-    if (category && category._id !== id) {
-      dispatch(getCategoryDetails(id));
+    if (product && product._id !== id) {
+      dispatch(getProductDetails(id));
     } else {
-      setTitle(category.title);
-      setDescription(category.description);
-      setSubcategories(category.subcategories || [""]); // Initialize subcategories with existing data or empty array
+      setName(product.name);
+      setDescription(product.description);
+      setOldImages(product.images);
     }
 
     if (error && error.message) {
@@ -54,42 +55,48 @@ const AdminBrandUpdate = () => {
     }
 
     if (isUpdated) {
-      navigate("/admin/category");
-      toast.success("Category updated successfully", {
+      navigate("/admin/brand");
+      toast.success("Brand updated successfully", {
         position: toast.POSITION.TOP_RIGHT,
         className: "m-2",
       });
-      dispatch({ type: UPDATE_CATEGORY_RESET });
+      dispatch({ type: UPDATE_PRODUCT_RESET });
     }
-  }, [dispatch, error, navigate, id, updateError, isUpdated, category]);
+  }, [dispatch, error, navigate, product, id, updateError, isUpdated]);
 
   const submitHandler = (e) => {
     e.preventDefault();
 
-    dispatch(
-      updateCategory(category._id, {
-        title,
-        description,
-        subcategories,
-      })
-    );
-    dispatch(getCategoryDetails(id));
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("description", description);
+    images.forEach((image) => {
+      formData.append("files", image);
+    });
+
+    dispatch(updateProduct(product._id, formData));
+    dispatch(getProductDetails(id));
   };
 
-  const handleSubcategoryChange = (index, value) => {
-    const updatedSubcategories = [...subcategories];
-    updatedSubcategories[index] = value;
-    setSubcategories(updatedSubcategories);
-  };
+  const onChange = (e) => {
+    const files = Array.from(e.target.files);
 
-  const handleAddSubcategory = () => {
-    setSubcategories([...subcategories, ""]);
-  };
+    setImagesPreview([]);
+    setImages([]);
+    setOldImages([]);
 
-  const handleRemoveSubcategory = (index) => {
-    const updatedSubcategories = [...subcategories];
-    updatedSubcategories.splice(index, 1);
-    setSubcategories(updatedSubcategories);
+    files.forEach((file) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setImagesPreview((oldArray) => [...oldArray, reader.result]);
+          setImages([...e.target.files]);
+        }
+      };
+
+      reader.readAsDataURL(file);
+    });
   };
 
   return (
@@ -105,28 +112,29 @@ const AdminBrandUpdate = () => {
         <div className="col-12 col-md-9 px-3 my-4">
           <div className="card border h-100">
             <div className="card-header d-flex justify-content-between">
-              <h3 className="mb-0">Update Category</h3>
+              <h3 className="mb-0">Update Brand</h3>
             </div>
             <div className="card-body">
-              <form onSubmit={submitHandler}>
+              <form onSubmit={submitHandler} encType="multipart/form-data">
                 <div className="form-group">
-                  <label htmlFor="name_field">
-                    Title <small>*</small>
-                  </label>
+                  <label htmlFor="name_field">Name</label>
                   <input
                     type="text"
                     id="name_field"
-                    placeholder="Title"
                     className="form-control"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                   />
-                  {error && error.errors && error.errors.title && (
+                  {error && error.errors && error.errors.name && (
                     <small className="form-text text-danger text-left mt-2 mx-1">
-                      {error.errors.title}
+                      {error.errors.name}
                     </small>
                   )}
                 </div>
+
+          
+
+       
 
                 <div className="form-group">
                   <label htmlFor="description_field">Description</label>
@@ -137,37 +145,51 @@ const AdminBrandUpdate = () => {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   ></textarea>
+                  {error && error.errors && error.errors.description && (
+                    <small className="form-text text-danger text-left mt-2 mx-1">
+                      {error.errors.description}
+                    </small>
+                  )}
                 </div>
-
                 <div className="form-group">
-                  <label htmlFor="subcategory_field">Subcategories</label>
-                  {subcategories.map((subcategory, index) => (
-                    <div key={index} className="input-group mb-3">
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Subcategory"
-                        value={subcategory}
-                        onChange={(e) => handleSubcategoryChange(index, e.target.value)}
+                  <label>Images</label>
+
+                  <div className="custom-file">
+                    <input
+                      type="file"
+                      name="product_images"
+                      className="custom-file-input"
+                      id="customFile"
+                      onChange={onChange}
+                      multiple
+                    />
+                    <label className="custom-file-label" htmlFor="customFile">
+                      Choose Images
+                    </label>
+                  </div>
+
+                  {oldImages &&
+                    oldImages.map((img) => (
+                      <img
+                        key={img}
+                        src={"https://api.lagha.shop/" + img.path}
+                        alt={img.path}
+                        className="mt-3 mr-2"
+                        width="55"
+                        height="52"
                       />
-                      <div className="input-group-append">
-                        <button
-                          className="btn btn-outline-secondary"
-                          type="button"
-                          onClick={() => handleRemoveSubcategory(index)}
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    </div>
+                    ))}
+
+                  {imagesPreview.map((img) => (
+                    <img
+                      src={img}
+                      key={img}
+                      alt="Images Preview"
+                      className="mt-3 mr-2"
+                      width="55"
+                      height="52"
+                    />
                   ))}
-                  <button
-                    className="btn btn-secondary"
-                    type="button"
-                    onClick={handleAddSubcategory}
-                  >
-                    Add Subcategory
-                  </button>
                 </div>
 
                 <button
@@ -176,7 +198,17 @@ const AdminBrandUpdate = () => {
                   className="btn btn-primary btn-block mt-4"
                   disabled={loading ? true : false}
                 >
-                  UPDATE
+                  {loading ? (
+                    <div
+                      className="spinner-border"
+                      role="status"
+                      style={{ width: "22px", height: "22px" }}
+                    >
+                      <span className="sr-only">Loading...</span>
+                    </div>
+                  ) : (
+                    "CREATE"
+                  )}
                 </button>
               </form>
             </div>
