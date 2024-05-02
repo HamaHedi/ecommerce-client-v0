@@ -8,6 +8,10 @@ import {
   NEW_BRAND_SUCCESS,
   NEW_BRAND_RESET,
   NEW_BRAND_FAIL,
+  DELETE_BRAND_REQUEST,
+  DELETE_BRAND_FAIL,
+  DELETE_BRAND_SUCCESS,
+  DELETE_BRAND_RESET,
   CLEAR_ERRORS
 } from "../constants/brandConstants";
 
@@ -62,6 +66,33 @@ export const newBrand = (brandData) => async (dispatch) => {
     });
   }
 };
+export const deleteBrand = (id) => async (dispatch) => {
+	try {
+		dispatch({ type: DELETE_BRAND_REQUEST });
+		const token = localStorage.getItem('token');
+
+		const config = {
+			headers: {
+				"Authorization": token
+
+			},
+		};
+		const { data } = await axios.delete(
+			`http://localhost:8000/api/brands/${id}`, config
+		);
+
+		dispatch({
+			type: DELETE_BRAND_SUCCESS,
+			payload: data.success,
+		});
+	} catch (error) {
+		dispatch({
+			type: DELETE_BRAND_FAIL,
+			payload: error.response.data.message,
+		});
+	}
+};
+
 export const clearErrors = () => async (dispatch) => {
 	dispatch({
 		type: CLEAR_ERRORS,

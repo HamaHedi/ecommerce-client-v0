@@ -9,14 +9,15 @@ import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
 import {  deleteCategory, clearErrors } from '../../actions/categoryAction'
 import { DELETE_CATEGORY_REQUEST } from '../../constants/categoryConstants'
-import { getBrands } from '../../actions/brandActions'
+import { deleteBrand, getBrands } from '../../actions/brandActions'
+import { DELETE_BRAND_REQUEST } from '../../constants/brandConstants'
 
 const AdminBrand = () => {
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 
 	const { loading, error, brands, brandsCount } = useSelector((state) => state.brands)
-	const { error: deleteError, isDeleted } = useSelector((state) => state.category)
+	const { error: deleteError, isDeleted } = useSelector((state) => state.brands)
 	useEffect(() => {
 		dispatch(getBrands())
 
@@ -37,17 +38,17 @@ const AdminBrand = () => {
 		}
 
 		if (isDeleted) {
-			toast.success('Category deleted successfully', {
+			toast.success('Brand deleted successfully', {
 				position: toast.POSITION.TOP_RIGHT,
 				className: 'm-2',
 			})
 			navigate('/admin/brand')
-			dispatch({ type: DELETE_CATEGORY_REQUEST })
+			dispatch({ type: DELETE_BRAND_REQUEST })
 		}
 	}, [dispatch, error, deleteError, isDeleted, navigate])
 
-	const deleteCategoryHandler = (id) => {
-		dispatch(deleteCategory(id))
+	const deleteBrandyHandler = (id) => {
+		dispatch(deleteBrand(id))
 	}
 
 	const setBrands = () => {
@@ -103,7 +104,7 @@ const AdminBrand = () => {
 						</Link>
 						<button
 							className='btn btn-danger py-1 px-2 ml-2'
-							onClick={() => deleteCategoryHandler(item._id)}
+							onClick={() => deleteBrandyHandler(item._id)}
 						>
 							<i className='fa fa-trash'></i>
 						</button>

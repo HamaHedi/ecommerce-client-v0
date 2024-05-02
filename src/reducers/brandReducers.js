@@ -7,6 +7,10 @@ import {
   NEW_BRAND_RESET,
   NEW_BRAND_FAIL,
   NEW_BRAND_REQUEST,
+  DELETE_BRAND_REQUEST,
+  DELETE_BRAND_FAIL,
+  DELETE_BRAND_SUCCESS,
+  DELETE_BRAND_RESET,
 } from "../constants/brandConstants";
 
 export const brandsReducer = (state = { brands: [] }, action) => {
@@ -16,7 +20,12 @@ export const brandsReducer = (state = { brands: [] }, action) => {
         loading: true,
         brands: [],
       };
-
+      case DELETE_BRAND_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          isDeleted: action.payload,
+        }
     case ALL_BRANDS_SUCCESS:
       return {
         loading: false,
