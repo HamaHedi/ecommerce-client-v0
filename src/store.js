@@ -40,7 +40,8 @@ import {
 } from './reducers/categoryRedusers'
 import {
 	brandsReducer,
-	newBrandReducer
+	newBrandReducer,
+	brandDetailsReducer
 } from './reducers/brandReducers'
 const reducer = combineReducers({
 	products: productsReducer,
@@ -69,6 +70,8 @@ const reducer = combineReducers({
 	statistics:statisticsReducer,
 	brands: brandsReducer,
 	newBrand: newBrandReducer,
+	brandDetails: brandDetailsReducer,
+
 
 
 })

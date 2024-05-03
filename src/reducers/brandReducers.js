@@ -11,6 +11,13 @@ import {
   DELETE_BRAND_FAIL,
   DELETE_BRAND_SUCCESS,
   DELETE_BRAND_RESET,
+  UPDATE_BRAND_FAIL,
+  UPDATE_BRAND_REQUEST,
+  UPDATE_BRAND_RESET,
+  UPDATE_BRAND_SUCCESS,
+  BRAND_DETAILS_REQUEST,
+  BRAND_DETAILS_SUCCESS,
+  BRAND_DETAILS_FAIL,
 } from "../constants/brandConstants";
 
 export const brandsReducer = (state = { brands: [] }, action) => {
@@ -20,12 +27,35 @@ export const brandsReducer = (state = { brands: [] }, action) => {
         loading: true,
         brands: [],
       };
-      case DELETE_BRAND_SUCCESS:
-        return {
-          ...state,
-          loading: false,
-          isDeleted: action.payload,
-        }
+    case UPDATE_BRAND_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case DELETE_BRAND_FAIL:
+    case UPDATE_BRAND_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case UPDATE_BRAND_RESET:
+      return {
+        ...state,
+        isUpdated: false,
+      };
+    case UPDATE_BRAND_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isUpdated: action.payload,
+      };
+    case DELETE_BRAND_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isDeleted: action.payload,
+      };
+
     case ALL_BRANDS_SUCCESS:
       return {
         loading: false,
@@ -51,7 +81,36 @@ export const brandsReducer = (state = { brands: [] }, action) => {
       return state;
   }
 };
+export const brandDetailsReducer = (state = { brand: {} }, action) => {
+	switch (action.type) {
+		case BRAND_DETAILS_REQUEST:
+			return {
+				...state,
+				loading: true,
+			}
 
+		case BRAND_DETAILS_SUCCESS:
+			return {
+				loading: false,
+				brand: action.payload,
+			}
+
+		case BRAND_DETAILS_FAIL:
+			return {
+				...state,
+				error: action.payload,
+			}
+
+		case CLEAR_ERRORS:
+			return {
+				...state,
+				error: null,
+			}
+
+		default:
+			return state
+	}
+}
 export const newBrandReducer = (state = { brand: {} }, action) => {
   switch (action.type) {
     case NEW_BRAND_REQUEST:

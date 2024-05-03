@@ -3,12 +3,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getProductDetails,
-  updateProduct,
-  clearErrors,
-} from "../../actions/productActions";
-import { UPDATE_PRODUCT_RESET } from "../../constants/productConstants";
+
+import { UPDATE_BRAND_RESET } from "../../constants/brandConstants";
+import { clearErrors, getBrandDetails, updateBrand } from "../../actions/brandActions";
 
 const AdminBrandUpdate = () => {
   const [name, setName] = useState("");
@@ -24,18 +21,18 @@ const AdminBrandUpdate = () => {
     loading,
     error: updateError,
     isUpdated,
-  } = useSelector((state) => state.product);
-  const { error, product } = useSelector((state) => state.productDetails);
+  } = useSelector((state) => state.brands);
+  const { error, brand } = useSelector((state) => state.brandDetails);
 
   const { id } = useParams();
 
   useEffect(() => {
-    if (product && product._id !== id) {
-      dispatch(getProductDetails(id));
+    if (brand && brand._id !== id) {
+      dispatch(getBrandDetails(id));
     } else {
-      setName(product.name);
-      setDescription(product.description);
-      setOldImages(product.images);
+      setName(brand.title);
+      setDescription(brand.description);
+      setOldImages(brand.images);
     }
 
     if (error && error.message) {
@@ -60,22 +57,22 @@ const AdminBrandUpdate = () => {
         position: toast.POSITION.TOP_RIGHT,
         className: "m-2",
       });
-      dispatch({ type: UPDATE_PRODUCT_RESET });
+      dispatch({ type: UPDATE_BRAND_RESET });
     }
-  }, [dispatch, error, navigate, product, id, updateError, isUpdated]);
+  }, [dispatch, error, navigate, brand, id, updateError, isUpdated]);
 
   const submitHandler = (e) => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("name", name);
+    formData.append("title", name);
     formData.append("description", description);
     images.forEach((image) => {
       formData.append("files", image);
     });
 
-    dispatch(updateProduct(product._id, formData));
-    dispatch(getProductDetails(id));
+    dispatch(updateBrand(brand._id, formData));
+    dispatch(getBrandDetails(id));
   };
 
   const onChange = (e) => {
