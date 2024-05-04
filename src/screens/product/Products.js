@@ -19,7 +19,6 @@ import { useNavigate } from "react-router-dom";
 const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [price, setPrice] = useState([0, 1000]);
-  // const [category, setCategory] = useState("");
 const navigate =useNavigate()
   const [rating, setRating] = useState(0);
   // const [keyword, setKeyword] = useState('')
@@ -100,7 +99,7 @@ const navigate =useNavigate()
       },
     ],
   };
-  const { keyword, setKeyword,category, setCategory,subcategory, setSubategory } = useGlobalState();
+  const { keyword, setKeyword,category, setCategory,subcategory, setSubategory,brand,setBrand } = useGlobalState();
 
   const keywordRef = useRef("");
   const minPriceRef = useRef(0);
@@ -148,9 +147,9 @@ const navigate =useNavigate()
     dispatch(getCategory());
 
     dispatch(
-      getProducts(keyword, currentPage, price, category, rating, subcategory)
+      getProducts(keyword, currentPage, price, category, rating, subcategory,brand)
     );
-  }, [dispatch, keyword, category, currentPage, price, rating, subcategory]);
+  }, [dispatch, keyword, category, currentPage, price, rating, subcategory,brand]);
 
   useEffect(() => {
     dispatch(clearErrors());

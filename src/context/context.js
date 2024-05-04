@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState } from "react";
 
 // Step 1: Create a Context
 const GlobalStateContext = createContext();
@@ -8,9 +8,21 @@ export const GlobalStateProvider = ({ children }) => {
   const [keyword, setKeyword] = useState(undefined);
   const [category, setCategory] = useState("");
   const [subcategory, setSubategory] = useState("");
+  const [brand, setBrand] = useState("");
 
   return (
-    <GlobalStateContext.Provider value={{ keyword, setKeyword,category, setCategory,subcategory, setSubategory }}>
+    <GlobalStateContext.Provider
+      value={{
+        keyword,
+        setKeyword,
+        category,
+        setCategory,
+        subcategory,
+        setSubategory,
+        brand,
+        setBrand,
+      }}
+    >
       {children}
     </GlobalStateContext.Provider>
   );

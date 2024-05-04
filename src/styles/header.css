@@ -9,6 +9,8 @@
   display: block;
   position: relative;
   overflow: hidden;
+  font-family: Montserrat;
+
   cursor: pointer;
 }
 .categories-list-container {

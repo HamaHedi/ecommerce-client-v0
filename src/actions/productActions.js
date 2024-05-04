@@ -35,7 +35,7 @@ import {
 } from "../constants/productConstants";
 
 export const getProducts =
-	(keyword = "", currentPage = 1, price, category, rating = 0,subCategory) =>
+	(keyword = "", currentPage = 1, price, category, rating = 0,subCategory,brand) =>
 		async (dispatch) => {
 
 			try {
@@ -44,10 +44,13 @@ export const getProducts =
 				let link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&ratings[gte]=${rating}`;
 
 				if (category !=="") {
-					link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}&ratings[gte]=${rating}`;
+					link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}&brand=${brand}&ratings[gte]=${rating}`;
 				}
 				if (subCategory !=="") {
-					link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}&subcategory=${subCategory}&ratings[gte]=${rating}`;
+					link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}&brand=${brand}&subcategory=${subCategory}&ratings[gte]=${rating}`;
+				}
+				if (brand !=="" &&category==="" &&subCategory===""  ) {
+					link = `http://localhost:8000/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&brand=${brand}&ratings[gte]=${rating}`;
 				}
 
 				const { data } = await axios.get(link);

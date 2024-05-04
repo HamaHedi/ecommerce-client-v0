@@ -21,6 +21,11 @@
     height: calc(100vh - 300px);
     padding: 25px;
 }
+.product-link:hover {
+    color: #f9c3bb;
+    cursor: pointer;
+}
+
 .brand-header {
     color: #333333;
     text-align: left;

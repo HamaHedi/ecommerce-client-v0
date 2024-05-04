@@ -58,7 +58,8 @@ const navigate=useNavigate()
       },
     ],
   };
-  const { keyword, setKeyword, category, setCategory,subcategory, setSubategory} = useGlobalState();
+  const { keyword, setKeyword, category, setCategory,subcategory, setSubategory ,brand,
+    setBrand,} = useGlobalState();
 console.log(subcategory)
   const dispatch = useDispatch();
 
@@ -134,6 +135,14 @@ console.log(subcategory)
      <img src={"http://localhost:8000/"+brand?.images?.[0]?.path} style={{width:"98px"}}/>
      <span className="brand-name">{brand?.title}</span>
      <span className="brand-name">{brand?.productCount} Produits</span>
+     <span className="brand-name product-link" onClick={()=> {
+      navigate('/')
+      setBrand(brand?.title)
+      setKeyword("");
+      setCategory("");
+      setSubategory("");
+     }}> Voir Les Produits</span>
+
   </div>)}
 
       </div>
