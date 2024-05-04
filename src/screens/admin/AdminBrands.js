@@ -88,7 +88,7 @@ const AdminBrand = () => {
 				title: item.title,
 				image: (
 					<img
-						src={item && item.images[0] && 'http://localhost:8000/' + item.images[0].path}
+						src={item && item.images[0] && 'https://api.lagha.shop:8000/' + item.images[0].path}
 						alt={item && item.images[0] && 'http://api.lagha.shop/' + item.images[0]._id}
 						style={{ width: '100px', height: '100px' }}
 					/>

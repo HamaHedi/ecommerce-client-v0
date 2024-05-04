@@ -132,7 +132,7 @@ console.log(subcategory)
       <div className="brands-container">
         <span className="brand-header">Marques</span>
   {brands?.map((brand)=> <div className="brand-info-container">
-     <img src={"http://localhost:8000/"+brand?.images?.[0]?.path} style={{width:"98px"}}/>
+     <img src={"https://api.lagha.shop/"+brand?.images?.[0]?.path} style={{width:"98px"}}/>
      <span className="brand-name">{brand?.title}</span>
      <span className="brand-name">{brand?.productCount} Produits</span>
      <span className="brand-name product-link" onClick={()=> {
