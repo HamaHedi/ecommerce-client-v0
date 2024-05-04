@@ -13,6 +13,7 @@ import {
 import { UPDATE_PRODUCT_RESET } from "../../constants/productConstants";
 
 import { getCategory } from "../../actions/categoryAction";
+import { getBrands } from "../../actions/brandActions";
 
 const AdminProductUpdate = () => {
   const [name, setName] = useState("");
@@ -25,6 +26,7 @@ const AdminProductUpdate = () => {
   const [oldImages, setOldImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
   const [category, setCategory] = useState("");
+  const [brand, setBrand] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -36,12 +38,14 @@ const AdminProductUpdate = () => {
   } = useSelector((state) => state.product);
   const { error, product } = useSelector((state) => state.productDetails);
   const { category: categories } = useSelector((state) => state.categorys);
+  const { brands: brands } = useSelector((state) => state.brands);
   const [subcategory, setSubcategory] = useState("");
 
   const { id } = useParams();
 
   useEffect(() => {
     dispatch(getCategory());
+    dispatch(getBrands());
 
     if (product && product._id !== id) {
       dispatch(getProductDetails(id));
@@ -55,6 +59,8 @@ const AdminProductUpdate = () => {
       setOldImages(product.images);
       setCategory(product.category);
       setSubcategory(product.subcategory);
+      setBrand(product?.brand);
+
     }
 
     if (error && error.message) {
@@ -94,6 +100,7 @@ const AdminProductUpdate = () => {
     formData.append("stock", stock);
     formData.append("seller", seller);
     formData.append("subcategory", subcategory);
+    formData.append("brand", brand);
 
     images.forEach((image) => {
       formData.append("files", image);
@@ -254,6 +261,36 @@ const AdminProductUpdate = () => {
                       return null;
                     })}
                   </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="category_field">
+                    Marque <small>*</small>
+                  </label>
+                  <select
+                    className="form-control"
+                    id="brand_field"
+                    value={brand}
+                    onChange={(e) => setBrand(e.target.value)}
+                  >
+                    <option value="" selected disabled hidden>
+                      Choose one
+                    </option>
+
+                    {brands &&
+                      brands.map((x) => (
+                        <option key={x._id} value={x.title}>
+                          {x.title}
+                        </option>
+                      ))}
+                  </select>
+                  {error &&
+                    error.errors &&
+                    error.errors.brand &&
+                    !brand && (
+                      <small className="form-text text-danger text-left mt-2 mx-1">
+                        {error.errors.brand}
+                      </small>
+                    )}
                 </div>
                 <div className="form-group">
                   <label htmlFor="stock_field">Stock</label>
