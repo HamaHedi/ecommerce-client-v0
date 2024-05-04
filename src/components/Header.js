@@ -5,16 +5,21 @@ import { toast } from "react-toastify";
 import { logout } from "../actions/userActions";
 import "../styles/header.css";
 import { useGlobalState } from "../context/context";
-import { useTranslation } from 'react-i18next'
-import { Button, Dropdown, Menu } from 'antd'
-
-
+import { useTranslation } from "react-i18next";
+import { Button, Dropdown, Menu } from "antd";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { user, loading } = useSelector((state) => state.auth);
-  const { keyword, setKeyword } = useGlobalState();
+  const {
+    keyword,
+    setKeyword,
+    category,
+    setCategory,
+    subcategory,
+    setSubategory,
+  } = useGlobalState();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -22,11 +27,11 @@ const Header = () => {
       setWindowWidth(window.innerWidth);
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     // Cleanup the event listener
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []); // Empty dependency array ensures this effect runs only once
 
@@ -42,75 +47,106 @@ const Header = () => {
   const CategoriesItem = () => {
     return (
       <div className="categories-list-container">
-      <div className="categories-items-container">
-        {allCategory?.map((category) => (
-          <span className="category-title" key={category.title}>
-            <Dropdown
-              overlay={ 
-                <Menu>
-                  {category?.subcategories?.map((subCategory) => (
-                    <Menu.Item key={subCategory} className="gategory-title">{subCategory}</Menu.Item>
-                  ))}
-                </Menu>
-              }
-              placement="bottom"
-              arrow
-            
-            >
-              <span onClick={() => setKeyword(category?.title)} className="gategory-title">{category?.title}</span>
-            </Dropdown>
-          </span>
-        ))}
+        <div className="categories-items-container">
+          {allCategory?.map((category) => (
+            <span className="category-title" key={category.title}>
+              <Dropdown
+                overlay={
+                  <Menu>
+                    {category?.subcategories?.map((subCategory) => (
+                      <Menu.Item
+                        key={subCategory}
+                        className="gategory-title"
+                        onClick={() => {
+                          setKeyword("");
+                          setCategory(category.title);
+                          setSubategory(subCategory);
+                        }}
+                      >
+                        {subCategory}
+                      </Menu.Item>
+                    ))}
+                  </Menu>
+                }
+                placement="bottom"
+                arrow
+              >
+                <span
+                  onClick={() => {
+                    setKeyword("");
+                    setCategory(category?.title);
+                    setSubategory("");
+                  }}
+                  className="gategory-title"
+                >
+                  {category?.title}
+                </span>
+              </Dropdown>
+            </span>
+          ))}
+        </div>
+        <img src="./assets/cover1.png" alt="Cover" />
       </div>
-      <img src="./assets/cover1.png" alt="Cover" /> 
-    </div>
     );
   };
-  const { t, i18n } = useTranslation('header')
+  const { t, i18n } = useTranslation("header");
 
-  const [lang, setLang] = useState(i18n?.language?.toString())
+  const [lang, setLang] = useState(i18n?.language?.toString());
 
   const onChangeLanguage = (language) => {
-    i18n.changeLanguage(language)
-    setLang(language)
-  }
+    i18n.changeLanguage(language);
+    setLang(language);
+  };
 
   const languagesItems = [
     {
-      key: '1',
+      key: "1",
       label: (
-        <div className="navbar-flag-container" onClick={() => onChangeLanguage('fr')}>
-          <img src={'./assets/fr-flag.png'} alt="flag" className="navbar-flag" />
-          <p>{t('language.fr')}</p>
+        <div
+          className="navbar-flag-container"
+          onClick={() => onChangeLanguage("fr")}
+        >
+          <img
+            src={"./assets/fr-flag.png"}
+            alt="flag"
+            className="navbar-flag"
+          />
+          <p>{t("language.fr")}</p>
         </div>
       ),
     },
     {
-      key: '2',
+      key: "2",
       label: (
-        <div className="navbar-flag-container" onClick={() => onChangeLanguage('en')}>
-          <img src={'./assets/en-flag.png'} alt="flag" className="navbar-flag" />
-          <p>{t('language.en')}</p>
+        <div
+          className="navbar-flag-container"
+          onClick={() => onChangeLanguage("en")}
+        >
+          <img
+            src={"./assets/en-flag.png"}
+            alt="flag"
+            className="navbar-flag"
+          />
+          <p>{t("language.en")}</p>
         </div>
       ),
     },
-
-
-  ]
+  ];
 
   return (
     <nav
       className="navbar navbar-expand-lg navbar-defailt py-2 border-bottom"
       style={{ height: "90px" }}
     >
-
-
       <div className="container">
         <Link to="/" className="navbar-brand">
           {/* <img src='/assets/logo.png' alt='logo' /> */}
-          <b onClick={() => setKeyword()
-          }>
-            <img src="/assets/lagha-logo4.png" alt="logo" style={{ height: "65px" }} />
+          <b onClick={() => setKeyword()}>
+            <img
+              src="/assets/lagha-logo4.png"
+              alt="logo"
+              style={{ height: "65px" }}
+            />
           </b>
         </Link>
         <button
@@ -155,40 +191,50 @@ const Header = () => {
               </div>
             </div>
           </div>
-          {<div
-            className="navbar-nav-items"
-            style={{
-              width: "50%",
-              display: "flex",
-              justifyContent: "center",
-              gap: "25px",
-            }}
-          >
-            <Link to="/" >    <span className="navigation-item" onClick={() => setKeyword()
-            }>{t('home')}</span></Link>
-
-
-            <span className="navigation-item" onClick={() => navigate("/contact")}>{t('contact')}</span>
-            <Dropdown
-              overlay={<CategoriesItem />}
-              placement="bottom"
-              arrow
-              overlayStyle={{
-                borderRadius: "5px",
-                background: "white",
-                padding: "25px",
-                boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px"
+          {
+            <div
+              className="navbar-nav-items"
+              style={{
+                width: "50%",
+                display: "flex",
+                justifyContent: "center",
+                gap: "25px",
               }}
             >
-              <span className="navigation-item">{t('categories')}</span>
-            </Dropdown>
-          </div>}
+              <Link to="/">
+                {" "}
+                <span className="navigation-item" onClick={() => setKeyword()}>
+                  {t("home")}
+                </span>
+              </Link>
+
+              <span
+                className="navigation-item"
+                onClick={() => navigate("/contact")}
+              >
+                {t("contact")}
+              </span>
+              <Dropdown
+                overlay={<CategoriesItem />}
+                placement="bottom"
+                arrow
+                overlayStyle={{
+                  borderRadius: "5px",
+                  background: "white",
+                  padding: "25px",
+                  boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+                }}
+              >
+                <span className="navigation-item">{t("categories")}</span>
+              </Dropdown>
+            </div>
+          }
           <ul className="navbar-nav ml-lg-auto">
             <li className="nav-item">
               <Link to="/cart" className="nav-link nav-link-icon mt-3 mt-lg-0">
                 <i className="ni ni-cart"></i>
                 <span className="nav-link-inner--text font-weight-bold">
-                  {t('cart')}
+                  {t("cart")}
                 </span>
               </Link>
             </li>
@@ -203,7 +249,6 @@ const Header = () => {
                   data-toggle="dropdown"
                   aria-haspopup="true"
                   aria-expanded="false"
-
                 >
                   <img
                     src={user && `https://api.lagha.shop${user.avatar}`}
@@ -226,8 +271,7 @@ const Header = () => {
                       className="dropdown-item d-flex align-items-center"
                     >
                       <i className="fa fa-bar-chart" aria-hidden="true"></i>
-                      {t('dashboard')}
-
+                      {t("dashboard")}
                     </Link>
                   )}
 
@@ -236,8 +280,7 @@ const Header = () => {
                     className="dropdown-item d-flex align-items-center"
                   >
                     <i className="fa fa-credit-card-alt" aria-hidden="true"></i>
-                    {t('orders')}
-
+                    {t("orders")}
                   </Link>
 
                   <Link
@@ -245,8 +288,7 @@ const Header = () => {
                     className="dropdown-item d-flex align-items-center"
                   >
                     <i className="fa fa-user-circle" aria-hidden="true"></i>
-                    {t('profile')}
-
+                    {t("profile")}
                   </Link>
 
                   <Link
@@ -254,7 +296,7 @@ const Header = () => {
                     className="dropdown-item d-flex align-items-center"
                   >
                     <i className="fa fa-cog" aria-hidden="true"></i>
-                    {t('settings')}
+                    {t("settings")}
                   </Link>
 
                   <div className="dropdown-divider"></div>
@@ -264,8 +306,7 @@ const Header = () => {
                     onClick={logoutHandler}
                   >
                     <i className="fa fa-sign-out" aria-hidden="true"></i>
-                    {t('logout')}
-
+                    {t("logout")}
                   </button>
                 </div>
               </li>
@@ -275,26 +316,28 @@ const Header = () => {
                   <Link to="/login" className="nav-link nav-link-icon">
                     <i className="ni ni-single-02"></i>
                     <span className="nav-link-inner--text font-weight-bold">
-                      {t('sign_in')}
+                      {t("sign_in")}
                     </span>
                   </Link>
                 </li>
               )
             )}
           </ul>
-
-
         </div>
         <Dropdown
           menu={{ items: languagesItems }}
-          trigger={['click']}
+          trigger={["click"]}
           placement="bottomRight"
           arrow
         >
           <Button type="link" shape="circle">
             <div className="navbar-flag-container">
               <img
-                src={lang === 'en' ? './assets/en-flag.png' : './assets/fr-flag.png'}
+                src={
+                  lang === "en"
+                    ? "./assets/en-flag.png"
+                    : "./assets/fr-flag.png"
+                }
                 alt="flag"
                 className="navbar-flag"
               />

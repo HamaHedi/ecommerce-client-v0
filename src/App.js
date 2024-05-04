@@ -41,6 +41,7 @@ import Contact from './screens/contact/contact'
 import AdminBrand from './screens/admin/AdminBrands'
 import AdminBrandAdd from './screens/admin/AdminBrandAdd'
 import AdminBrandUpdate from './screens/admin/AdminBrandUpdate'
+import Brands from './screens/brand/brand'
 
 const App = () => {
 	useEffect(() => {
@@ -60,6 +61,7 @@ const App = () => {
 						<Route path='/shipping' element={<Shipping />} exact />
 						<Route path='/confirm' element={<ConfirmOrder />} exact />
 						<Route path='/contact' element={<Contact />} exact />
+						<Route path='/brands' element={<Brands />} exact />
 
 						<Route path='/login' element={<Login />} />
 						<Route path='/register' element={<Register />} />

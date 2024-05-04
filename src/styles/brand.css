@@ -1,0 +1,35 @@
+.brand-info-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.brand-name {
+    color: #333;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    font-family: Montserrat;
+    font-weight: 700;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin: 0 0 5px;
+    line-height: normal;
+}
+.brands-container {
+    height: calc(100vh - 300px);
+    padding: 25px;
+}
+.brand-header {
+    color: #333333;
+    text-align: left;
+    font-size: 28px;
+    line-height: 1;
+    font-weight: 700;
+    font-style: normal;
+    text-transform: none;
+    font-family: Montserrat;
+
+
+}

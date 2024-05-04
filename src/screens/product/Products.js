@@ -14,13 +14,13 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Divider, Dropdown, Menu } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [price, setPrice] = useState([0, 1000]);
-  const [category, setCategory] = useState("");
-  const [subcategory, setSubategory] = useState("");
-
+  // const [category, setCategory] = useState("");
+const navigate =useNavigate()
   const [rating, setRating] = useState(0);
   // const [keyword, setKeyword] = useState('')
   const { t } = useTranslation("product");
@@ -100,7 +100,7 @@ const Products = () => {
       },
     ],
   };
-  const { keyword, setKeyword } = useGlobalState();
+  const { keyword, setKeyword,category, setCategory,subcategory, setSubategory } = useGlobalState();
 
   const keywordRef = useRef("");
   const minPriceRef = useRef(0);
@@ -146,6 +146,7 @@ const Products = () => {
 
   useEffect(() => {
     dispatch(getCategory());
+
     dispatch(
       getProducts(keyword, currentPage, price, category, rating, subcategory)
     );
@@ -156,8 +157,8 @@ const Products = () => {
   }, [dispatch]);
 
   return (
-    <section  >
-      <div className="categories-container" >
+    <section>
+      <div className="categories-container">
         {allCategory?.map((category) => (
           <span className="category-title" key={category.title}>
             <Dropdown
@@ -205,10 +206,20 @@ const Products = () => {
             </Dropdown>
           </span>
         ))}
+
+        <span
+          onClick={() => {
+            navigate("/brands")
+          }}
+          className="category-title"
+        >
+          MARQUES
+      
+        </span>
       </div>
-      <div className="row" >
+      <div className="row">
         {keyword !== undefined && (
-          <div className="col-12 col-md-3" style={{padding:"30px"}}>
+          <div className="col-12 col-md-3" style={{ padding: "30px" }}>
             <div className="p-2 h-100">
               <form onSubmit={submitHandler}>
                 <h6>
@@ -217,7 +228,7 @@ const Products = () => {
                   </b>
                 </h6>
 
-                <div className="row mt-3 mb-2" >
+                <div className="row mt-3 mb-2">
                   <div className="col">
                     <div className="form-group">
                       <small>Min</small>
@@ -288,7 +299,8 @@ const Products = () => {
                     <li className="list-group-item p-2" key={category._id}>
                       <small
                         onClick={() => {
-                          setCategory(category);
+                          setKeyword("");
+                          setCategory(category?.title);
                           setSubategory("");
                         }}
                         style={{ cursor: "pointer" }}
@@ -353,7 +365,10 @@ const Products = () => {
               </div>
             </div>
           )}
-          <section className="container my-4"  style={{width:"100%", maxWidth:"80%"}}>
+          <section
+            className="container my-4"
+            style={{ width: "100%", maxWidth: "80%" }}
+          >
             <form onSubmit={searchHandler}>
               <div className="input-group mb-4">
                 <input

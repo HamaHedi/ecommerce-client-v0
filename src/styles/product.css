@@ -13,7 +13,13 @@ padding-bottom: 30px;
     flex-wrap: wrap;
     justify-content: space-around;
     background-color: #f3c69b;
+ 
 }
+@media only screen and (max-width: 800px) {
+    .categories-container {
+      display: none;
+    }
+  }
 .anticon-down{
     fill: #111;
 }
