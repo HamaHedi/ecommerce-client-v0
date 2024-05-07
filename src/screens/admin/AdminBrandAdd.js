@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { newBrand, clearErrors } from "../../actions/brandActions";
 import { NEW_BRAND_RESET } from "../../constants/brandConstants";
-
+import { getCategory } from "../../actions/categoryAction";
 
 const AdminBrandAdd = () => {
   const [name, setName] = useState("");
@@ -18,9 +18,10 @@ const AdminBrandAdd = () => {
   const navigate = useNavigate();
 
   const { loading, error, success } = useSelector((state) => state.newBrand);
-
   useEffect(() => {
-
+    dispatch(getCategory());
+  }, []);
+  useEffect(() => {
     if (error && error.message) {
       toast.error(error.message, {
         position: toast.POSITION.TOP_RIGHT,
@@ -38,6 +39,8 @@ const AdminBrandAdd = () => {
       dispatch({ type: NEW_BRAND_RESET });
     }
   }, [dispatch, error, success, navigate]);
+  const [category, setCategory] = useState("");
+  const { category: categories } = useSelector((state) => state.categorys);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -45,6 +48,8 @@ const AdminBrandAdd = () => {
     const formData = new FormData();
     formData.append("title", name);
     formData.append("description", description);
+    formData.append("category", category);
+
     images.forEach((image) => {
       formData.append("files", image);
     });
@@ -107,7 +112,36 @@ const AdminBrandAdd = () => {
                   )}
                 </div>
 
-      
+                <div className="form-group">
+                  <label htmlFor="category_field">
+                    Category <small>*</small>
+                  </label>
+                  <select
+                    className="form-control"
+                    id="category_field"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                  >
+                    <option value="" selected disabled hidden>
+                      Choose one
+                    </option>
+
+                    {categories &&
+                      categories.map((x) => (
+                        <option key={x._id} value={x.title}>
+                          {x.title}
+                        </option>
+                      ))}
+                  </select>
+                  {error &&
+                    error.errors &&
+                    error.errors.category &&
+                    !category && (
+                      <small className="form-text text-danger text-left mt-2 mx-1">
+                        {error.errors.category}
+                      </small>
+                    )}
+                </div>
 
                 <div className="form-group">
                   <label htmlFor="description_field">Description</label>

@@ -5,7 +5,12 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 
 import { UPDATE_BRAND_RESET } from "../../constants/brandConstants";
-import { clearErrors, getBrandDetails, updateBrand } from "../../actions/brandActions";
+import {
+  clearErrors,
+  getBrandDetails,
+  updateBrand,
+} from "../../actions/brandActions";
+import { getCategory } from "../../actions/categoryAction";
 
 const AdminBrandUpdate = () => {
   const [name, setName] = useState("");
@@ -13,6 +18,9 @@ const AdminBrandUpdate = () => {
   const [images, setImages] = useState([]);
   const [oldImages, setOldImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
+  const [category, setCategory] = useState("");
+
+  const { category: categories } = useSelector((state) => state.categorys);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -25,7 +33,9 @@ const AdminBrandUpdate = () => {
   const { error, brand } = useSelector((state) => state.brandDetails);
 
   const { id } = useParams();
-
+  useEffect(() => {
+    dispatch(getCategory());
+  }, []);
   useEffect(() => {
     if (brand && brand._id !== id) {
       dispatch(getBrandDetails(id));
@@ -33,6 +43,7 @@ const AdminBrandUpdate = () => {
       setName(brand.title);
       setDescription(brand.description);
       setOldImages(brand.images);
+      setCategory(brand.category);
     }
 
     if (error && error.message) {
@@ -67,6 +78,8 @@ const AdminBrandUpdate = () => {
     const formData = new FormData();
     formData.append("title", name);
     formData.append("description", description);
+    formData.append("category", category);
+
     images.forEach((image) => {
       formData.append("files", image);
     });
@@ -129,9 +142,36 @@ const AdminBrandUpdate = () => {
                   )}
                 </div>
 
-          
+                <div className="form-group">
+                  <label htmlFor="category_field">
+                    Category <small>*</small>
+                  </label>
+                  <select
+                    className="form-control"
+                    id="category_field"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                  >
+                    <option value="" selected disabled hidden>
+                      Choose one
+                    </option>
 
-       
+                    {categories &&
+                      categories.map((x) => (
+                        <option key={x._id} value={x.title}>
+                          {x.title}
+                        </option>
+                      ))}
+                  </select>
+                  {error &&
+                    error.errors &&
+                    error.errors.category &&
+                    !category && (
+                      <small className="form-text text-danger text-left mt-2 mx-1">
+                        {error.errors.category}
+                      </small>
+                    )}
+                </div>
 
                 <div className="form-group">
                   <label htmlFor="description_field">Description</label>

@@ -15,11 +15,12 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Divider, Dropdown, Menu } from "antd";
 import { useNavigate } from "react-router-dom";
+import { getBrands } from "../../actions/brandActions";
 
 const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [price, setPrice] = useState([0, 1000]);
-const navigate =useNavigate()
+  const navigate = useNavigate();
   const [rating, setRating] = useState(0);
   // const [keyword, setKeyword] = useState('')
   const { t } = useTranslation("product");
@@ -99,7 +100,16 @@ const navigate =useNavigate()
       },
     ],
   };
-  const { keyword, setKeyword,category, setCategory,subcategory, setSubategory,brand,setBrand } = useGlobalState();
+  const {
+    keyword,
+    setKeyword,
+    category,
+    setCategory,
+    subcategory,
+    setSubategory,
+    brand,
+    setBrand,
+  } = useGlobalState();
 
   const keywordRef = useRef("");
   const minPriceRef = useRef(0);
@@ -115,6 +125,7 @@ const navigate =useNavigate()
     resPerPage,
     filteredProductsCount,
   } = useSelector((state) => state.products);
+	const {loading: BrandLoading, brands, brandsCount } = useSelector((state) => state.brands)
 
   const { loading: categoryLoading, category: allCategory } = useSelector(
     (state) => state.categorys
@@ -145,11 +156,29 @@ const navigate =useNavigate()
 
   useEffect(() => {
     dispatch(getCategory());
+    dispatch(getBrands("","",category));
 
     dispatch(
-      getProducts(keyword, currentPage, price, category, rating, subcategory,brand)
+      getProducts(
+        keyword,
+        currentPage,
+        price,
+        category,
+        rating,
+        subcategory,
+        brand
+      )
     );
-  }, [dispatch, keyword, category, currentPage, price, rating, subcategory,brand]);
+  }, [
+    dispatch,
+    keyword,
+    category,
+    currentPage,
+    price,
+    rating,
+    subcategory,
+    brand,
+  ]);
 
   useEffect(() => {
     dispatch(clearErrors());
@@ -169,6 +198,7 @@ const navigate =useNavigate()
                         setKeyword("");
                         setCategory(category.title);
                         setSubategory(subCategory);
+                        setBrand("");
                       }}
                       key={subCategory}
                       className="gategory-title"
@@ -186,6 +216,7 @@ const navigate =useNavigate()
                   setKeyword("");
                   setCategory(category?.title);
                   setSubategory("");
+                  setBrand("");
                 }}
                 className="category-title"
               >
@@ -208,12 +239,11 @@ const navigate =useNavigate()
 
         <span
           onClick={() => {
-            navigate("/brands")
+            navigate("/brands");
           }}
           className="category-title"
         >
           MARQUES
-      
         </span>
       </div>
       <div className="row">
@@ -279,6 +309,7 @@ const navigate =useNavigate()
                     onClick={() => {
                       setCategory("");
                       setSubategory("");
+                      setBrand("");
                     }}
                     style={{ cursor: "pointer" }}
                   >
@@ -301,6 +332,7 @@ const navigate =useNavigate()
                           setKeyword("");
                           setCategory(category?.title);
                           setSubategory("");
+                          setBrand("");
                         }}
                         style={{ cursor: "pointer" }}
                       >
@@ -311,6 +343,48 @@ const navigate =useNavigate()
                 )}
               </ul>
 
+
+              <h6>
+                <b> {t("Brands")}</b>
+              </h6>
+              <ul className="list-group">
+                <li className="list-group-item p-2">
+                  <b
+                    onClick={() => {
+                      // setCategory("");
+                      // setSubategory("");
+                      setBrand("");
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {t("All")}
+                  </b>
+                </li>
+
+                {BrandLoading ? (
+                  <div className="text-center my-3">
+                    <div className="spinner-border" role="status">
+                      <span className="sr-only"> {t("Loading")} </span>
+                    </div>
+                  </div>
+                ) : (
+                  brands &&
+                  brands.map((brand) => (
+                    <li className="list-group-item p-2" key={brand.id}>
+                      <small
+                        onClick={() => {
+                          setKeyword("");
+                       
+                          setBrand(brand?.title);
+                        }}
+                        style={{ cursor: "pointer" }}
+                      >
+                        {brand.title}
+                      </small>
+                    </li>
+                  ))
+                )}
+              </ul>
               <hr />
 
               <h6>

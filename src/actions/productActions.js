@@ -44,10 +44,10 @@ export const getProducts =
 				let link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&ratings[gte]=${rating}`;
 
 				if (category !=="") {
-					link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}&brand=${brand}&ratings[gte]=${rating}`;
+					link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}${brand&&`&brand=${brand}`}&ratings[gte]=${rating}`;
 				}
 				if (subCategory !=="") {
-					link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}&brand=${brand}&subcategory=${subCategory}&ratings[gte]=${rating}`;
+					link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}${brand&&`&brand=${brand}`}&subcategory=${subCategory}&ratings[gte]=${rating}`;
 				}
 				if (brand !=="" &&category==="" &&subCategory===""  ) {
 					link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&brand=${brand}&ratings[gte]=${rating}`;
