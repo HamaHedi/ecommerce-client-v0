@@ -19,6 +19,7 @@ const Header = () => {
     setCategory,
     subcategory,
     setSubategory,
+    setBrand,
   } = useGlobalState();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
@@ -141,7 +142,12 @@ const Header = () => {
       <div className="container">
         <Link to="/" className="navbar-brand">
           {/* <img src='/assets/logo.png' alt='logo' /> */}
-          <b onClick={() => setKeyword()}>
+          <b
+            onClick={() => {
+              setKeyword();
+              setBrand("");
+            }}
+          >
             <img
               src="/assets/lagha-logo4.png"
               alt="logo"
@@ -203,7 +209,13 @@ const Header = () => {
             >
               <Link to="/">
                 {" "}
-                <span className="navigation-item" onClick={() => setKeyword()}>
+                <span
+                  className="navigation-item"
+                  onClick={() => {
+                    setKeyword();
+                    setBrand("");
+                  }}
+                >
                   {t("home")}
                 </span>
               </Link>

@@ -28,7 +28,7 @@ export const getBrands =
     try {
       dispatch({ type: ALL_BRANDS_REQUEST });
 
-      let link = `http://localhost:8000/api/brands?keyword=${keyword}&page=${currentPage}${category && `&category=${category}`}`;
+      let link = `http://localhost:8000/api/brands?page=${currentPage}${category && `&category=${category}`}`;
 
       const { data } = await axios.get(link);
 
