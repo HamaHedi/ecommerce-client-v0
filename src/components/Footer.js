@@ -99,7 +99,7 @@ const Footer = () => {
             gap: "10px",
           }}
         >
-          <EmailIcon /> mail@example.com
+          <EmailIcon /> contact.Bianas.business@gmail.com
         </span>
         <span
           style={{
