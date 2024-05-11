@@ -1,11 +1,12 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/productCard.css";
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from "react-i18next";
+import { Image } from "antd";
 
 const Product = ({ product }) => {
-  const navigate = useNavigate()
-  const { t } = useTranslation('product')
+  const navigate = useNavigate();
+  const { t } = useTranslation("product");
 
   return (
     // <div className='col-12 col-sm-12 col-md-6 col-lg-4 mb-5'>
@@ -54,22 +55,33 @@ const Product = ({ product }) => {
     <div className="product-card-container">
       <div className="product-card-body">
         <div className="product-image-container">
-          <Link to={`/product/${product._id}`}>
+          {/* <Link to={`/product/${product._id}`}>
+
             <img
-              src={`${product && product.images[0] && 'https://api.lagha.shop/' + product.images[0].path}`}
+              src=
               alt="product"
               className="product-image"
               style={{ borderRadius: "25px" }}
             />
-          </Link>
+          </Link> */}
+          <Image
+          
+            fallback={`${
+              product &&
+              product.images[0] &&
+              "https://api.lagha.shop/" + product.images[0].path
+            }`}
+          />
         </div>
         <span className="product-title">
-          <Link to={`/product/${product._id}`} className="text-dark" >
+          <Link to={`/product/${product._id}`} className="text-dark">
             {product.name}
           </Link>
         </span>
         <div className="d-flex align-items-end">
-          <h5 className="mb-0">DT {product.price && product.price.toFixed(2)}</h5>
+          <h5 className="mb-0">
+            DT {product.price && product.price.toFixed(2)}
+          </h5>
           &nbsp;
           {product.oldPrice !== 0 && (
             <h6 className="mb-0 text-muted">
@@ -85,11 +97,16 @@ const Product = ({ product }) => {
             ></div>
           </div>
           <small id="no_of_reviews">
-            &nbsp;({product.numOfReviews}           {t("reviews")}
-            )
+            &nbsp;({product.numOfReviews} {t("reviews")})
           </small>
         </div>
-        <button className="view-details-button" onClick={() => navigate(`/product/${product._id}`)}> {t("view_details")}</button>
+        <button
+          className="view-details-button"
+          onClick={() => navigate(`/product/${product._id}`)}
+        >
+          {" "}
+          {t("view_details")}
+        </button>
       </div>
     </div>
   );
