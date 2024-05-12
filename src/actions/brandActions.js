@@ -28,7 +28,7 @@ export const getBrands =
     try {
       dispatch({ type: ALL_BRANDS_REQUEST });
 
-      let link = `http://localhost:8000/api/brands?page=${currentPage}${category && `&category=${category}`}`;
+      let link = `https://api.lagha.shop/api/brands?page=${currentPage}${category && `&category=${category}`}`;
 
       const { data } = await axios.get(link);
 
@@ -57,7 +57,7 @@ export const newBrand = (brandData) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      `http://localhost:8000/api/brands`,
+      `https://api.lagha.shop/api/brands`,
       brandData,
       config
     );
@@ -111,7 +111,7 @@ export const getBrandDetails = (id) => async (dispatch) => {
 			},
 		};
 		const { data } = await axios.get(
-			`http://localhost:8000/api/brands/${id}`, config
+			`https://api.lagha.shop/api/brands/${id}`, config
 		);
 
 		dispatch({
@@ -140,7 +140,7 @@ export const updateBrand = (id, brandData) => async (dispatch) => {
 		};
 
 		const { data } = await axios.put(
-			`http://localhost:8000/api/brands/${id}`,
+			`https://api.lagha.shop/api/brands/${id}`,
 			brandData,
 			config
 		);

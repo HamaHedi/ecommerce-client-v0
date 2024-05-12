@@ -41,16 +41,16 @@ export const getProducts =
 			try {
 				dispatch({ type: ALL_PRODUCTS_REQUEST });
 
-				let link = `http://localhost:8000/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&ratings[gte]=${rating}`;
+				let link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&ratings[gte]=${rating}`;
 
 				if (category !=="") {
-					link = `http://localhost:8000/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}${brand&&`&brand=${brand}`}&ratings[gte]=${rating}`;
+					link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}${brand&&`&brand=${brand}`}&ratings[gte]=${rating}`;
 				}
 				if (subCategory !=="") {
-					link = `http://localhost:8000/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}${brand&&`&brand=${brand}`}&subcategory=${subCategory}&ratings[gte]=${rating}`;
+					link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}${brand&&`&brand=${brand}`}&subcategory=${subCategory}&ratings[gte]=${rating}`;
 				}
 				if (brand !=="") {
-					link = `http://localhost:8000/api/products?keyword=${keyword}&page=${currentPage}&brand=${brand}`;
+					link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&brand=${brand}`;
 				}
 
 				const { data } = await axios.get(link);
