@@ -17,7 +17,7 @@ const AdminProductAdd = () => {
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
   const [stock, setStock] = useState(0);
-  const [seller, setSeller] = useState("");
+  // const [seller, setSeller] = useState("");
   const [images, setImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
   const [category, setCategory] = useState("");
@@ -61,7 +61,7 @@ const AdminProductAdd = () => {
     formData.append("description", description);
     formData.append("category", category);
     formData.append("stock", stock);
-    formData.append("seller", seller);
+    // formData.append("seller", seller);
     formData.append("subcategory", subcategory);
     formData.append("brand", brand);
     images.forEach((image) => {
@@ -275,7 +275,7 @@ const AdminProductAdd = () => {
                   )}
                 </div>
 
-                <div className="form-group">
+                {/* <div className="form-group">
                   <label htmlFor="seller_field">Seller Name</label>
                   <input
                     type="text"
@@ -289,7 +289,7 @@ const AdminProductAdd = () => {
                       {error.errors.seller}
                     </small>
                   )}
-                </div>
+                </div> */}
 
                 <div className="form-group">
                   <label>

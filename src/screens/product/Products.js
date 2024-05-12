@@ -151,6 +151,7 @@ const Products = () => {
     setPrice([1, 9000]);
     setCategory("");
     setRating(0);
+    
     setKeyword(keywordRef.current.value);
   };
 
@@ -199,6 +200,7 @@ const Products = () => {
                         setCategory(category.title);
                         setSubategory(subCategory);
                         setBrand("");
+                        setCurrentPage(1)
                       }}
                       key={subCategory}
                       className="gategory-title"
@@ -217,6 +219,8 @@ const Products = () => {
                   setCategory(category?.title);
                   setSubategory("");
                   setBrand("");
+                  setCurrentPage(1)
+
                 }}
                 className="category-title"
               >
@@ -310,6 +314,8 @@ const Products = () => {
                       setCategory("");
                       setSubategory("");
                       setBrand("");
+                      setCurrentPage(1)
+
                     }}
                     style={{ cursor: "pointer" }}
                   >
@@ -333,6 +339,8 @@ const Products = () => {
                           setCategory(category?.title);
                           setSubategory("");
                           setBrand("");
+                          setCurrentPage(1)
+
                         }}
                         style={{ cursor: "pointer" }}
                       >
@@ -374,7 +382,8 @@ const Products = () => {
                       <small
                         onClick={() => {
                           setKeyword("");
-                       
+                          setCurrentPage(1)
+
                           setBrand(brand?.title);
                         }}
                         style={{ cursor: "pointer" }}
