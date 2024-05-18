@@ -6,9 +6,9 @@ const Banner = () => {
 	return (
 
 
-		<Carousel autoPlay infiniteLoop>
+		<Carousel autoPlay infiniteLoop >
 			<div>
-				<img src="/cover1.jpeg" />
+				<img src="/cover1.jpeg"  />
 			</div>
 			<div>
 				<img src="/cover2.jpeg" />

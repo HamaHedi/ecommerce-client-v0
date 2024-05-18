@@ -98,6 +98,7 @@ const AdminProductUpdate = () => {
     formData.append("description", description);
     formData.append("category", category);
     formData.append("stock", stock);
+    formData.append("oldPrice", oldPrice);
     formData.append("seller", seller);
     formData.append("subcategory", subcategory);
     formData.append("brand", brand);
