@@ -551,8 +551,8 @@ const Products = () => {
           </section>
         </div>
       </div>
-      {productsPromo.length > 0 && <span className="nos-marque">Promo</span>}
-      {productsPromo.length > 0 && (
+      {productsPromo?.length > 0 && <span className="nos-marque">Promo</span>}
+      {productsPromo?.length > 0 && (
         <div className="promo-products-container" style={{ padding: "25px" }}>
           <Slider {...settings3}>
             {productsPromo &&
