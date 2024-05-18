@@ -8,16 +8,13 @@ const Banner = () => {
 
 		<Carousel autoPlay infiniteLoop>
 			<div>
-				<img src="/1.png" />
-				<span class="carousel-caption">Premium Cosmetics that Nourish Your Skin and Respect the Environment</span>
+				<img src="/cover1.jpeg" />
+			</div>
+			<div>
+				<img src="/cover2.jpeg" />
 			</div>
 			<div>
 				<img src="/1.png" />
-				<span class="carousel-caption">Luxurious Beauty Products that Embrace Natural Ingredients and Environmental Responsibility</span>
-			</div>
-			<div>
-				<img src="/1.png" />
-				<span class="carousel-caption">High-Quality Cosmetics that Enhance Your Beauty while Promoting Sustainability</span>
 			</div>
 		</Carousel>
 
