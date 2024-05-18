@@ -3,9 +3,22 @@
   border-radius: 5px;
   min-width: 330px;
   border: 1px solid #e4e4e4;
+  position: relative;
 }
 .product-card-container:hover {
   border: 1px solid #f9c3bb;
+}
+.promo-percentage {
+  background-color: #f3c69b;
+  padding: 15px;
+  display: flex;
+  position: absolute;
+  right: 20px;
+  justify-content: center;
+  border-radius: 50%;
+  color: white;
+  width: 53px;
+  height: 53px;
 }
 .product-image-container {
   width: 220px;

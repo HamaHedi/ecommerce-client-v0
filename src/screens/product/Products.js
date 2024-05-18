@@ -1,7 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import Product from "../../components/Product";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts, clearErrors } from "../../actions/productActions";
+import {
+  getProducts,
+  clearErrors,
+  getProductPromo,
+} from "../../actions/productActions";
 import Loader from "../../components/Loader";
 import Message from "../../components/Message";
 import Banner from "../../components/Banner";
@@ -70,7 +74,6 @@ const Products = () => {
     initialSlide: 0,
     autoplay: true,
     infinite: true,
-
     speed: 4000,
     autoplaySpeed: 4000,
     responsive: [
@@ -100,6 +103,7 @@ const Products = () => {
       },
     ],
   };
+
   const {
     keyword,
     setKeyword,
@@ -125,8 +129,49 @@ const Products = () => {
     resPerPage,
     filteredProductsCount,
   } = useSelector((state) => state.products);
-	const {loading: BrandLoading, brands, brandsCount } = useSelector((state) => state.brands)
+  const {
+    loading: BrandLoading,
+    brands,
+    brandsCount,
+  } = useSelector((state) => state.brands);
+  const { productsPromo } = useSelector((state) => state.productsPromo);
+  var settings3 = {
+    dots: false,
 
+    slidesToShow: productsPromo?.length >= 5 ? 5 : productsPromo?.length,
+    slidesToScroll: 5,
+    initialSlide: 0,
+    autoplay: false,
+    infinite: false,
+    speed: 4000,
+    autoplaySpeed: 4000,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
   const { loading: categoryLoading, category: allCategory } = useSelector(
     (state) => state.categorys
   );
@@ -151,13 +196,14 @@ const Products = () => {
     setPrice([1, 9000]);
     setCategory("");
     setRating(0);
-    
+
     setKeyword(keywordRef.current.value);
   };
 
   useEffect(() => {
     dispatch(getCategory());
-    dispatch(getBrands("","",category));
+    dispatch(getBrands("", "", category));
+    dispatch(getProductPromo());
 
     dispatch(
       getProducts(
@@ -200,7 +246,7 @@ const Products = () => {
                         setCategory(category.title);
                         setSubategory(subCategory);
                         setBrand("");
-                        setCurrentPage(1)
+                        setCurrentPage(1);
                       }}
                       key={subCategory}
                       className="gategory-title"
@@ -219,8 +265,7 @@ const Products = () => {
                   setCategory(category?.title);
                   setSubategory("");
                   setBrand("");
-                  setCurrentPage(1)
-
+                  setCurrentPage(1);
                 }}
                 className="category-title"
               >
@@ -314,8 +359,7 @@ const Products = () => {
                       setCategory("");
                       setSubategory("");
                       setBrand("");
-                      setCurrentPage(1)
-
+                      setCurrentPage(1);
                     }}
                     style={{ cursor: "pointer" }}
                   >
@@ -339,8 +383,7 @@ const Products = () => {
                           setCategory(category?.title);
                           setSubategory("");
                           setBrand("");
-                          setCurrentPage(1)
-
+                          setCurrentPage(1);
                         }}
                         style={{ cursor: "pointer" }}
                       >
@@ -350,7 +393,6 @@ const Products = () => {
                   ))
                 )}
               </ul>
-
 
               <h6>
                 <b> {t("Brands")}</b>
@@ -382,7 +424,7 @@ const Products = () => {
                       <small
                         onClick={() => {
                           setKeyword("");
-                          setCurrentPage(1)
+                          setCurrentPage(1);
 
                           setBrand(brand?.title);
                         }}
@@ -509,6 +551,20 @@ const Products = () => {
           </section>
         </div>
       </div>
+      {productsPromo.length > 0 && <span className="nos-marque">Promo</span>}
+      {productsPromo.length > 0 && (
+        <div className="promo-products-container" style={{ padding: "25px" }}>
+          <Slider {...settings3}>
+            {productsPromo &&
+              productsPromo.map((product) => (
+                <div key={product._id}>
+                  <Product product={product} />
+                </div>
+              ))}
+          </Slider>
+        </div>
+      )}
+
       <div className="slider-container" style={{ padding: "25px" }}>
         <Slider {...settings2}>
           <div>
@@ -555,6 +611,7 @@ const Products = () => {
           </div>
         </Slider>
       </div>
+      <span className="nos-marque">NOS MARQUES</span>
       <div className="slider-container" style={{ padding: "25px" }}>
         <Slider {...settings}>
           <div>

@@ -7,7 +7,13 @@ import { Image } from "antd";
 const Product = ({ product }) => {
   const navigate = useNavigate();
   const { t } = useTranslation("product");
-
+  const calculatePercentageReduction = (oldPrice, price) => {
+    if (oldPrice && price) {
+      return ((oldPrice - price) / oldPrice * 100).toFixed(0) + "%";
+    }
+    return ""; // Return an empty string if prices are not available
+  };
+  
   return (
     // <div className='col-12 col-sm-12 col-md-6 col-lg-4 mb-5'>
     // 	<div
@@ -53,6 +59,7 @@ const Product = ({ product }) => {
     // 	</div>
     // </div>
     <div className="product-card-container">
+      {product?.oldPrice > 0 && <span className="promo-percentage">-{calculatePercentageReduction(product?.oldPrice , product?.price)} </span>}
       <div className="product-card-body">
         <div className="product-image-container">
           {/* <Link to={`/product/${product._id}`}>

@@ -31,7 +31,10 @@ import {
 	CLEAR_ERRORS,
 	GET_STATISTICS_SUCCESS,
 	GET_STATISTICS_REQUEST,
-	GET_STATISTICS_FAIL
+	GET_STATISTICS_FAIL,
+	GET_PRODUCTS_PROMO_REQUEST,
+	GET_PRODUCTS_PROMO_FAIL,
+	GET_PRODUCTS_PROMO_SUCCESS
 } from "../constants/productConstants";
 
 export const getProducts =
@@ -67,6 +70,33 @@ export const getProducts =
 			}
 		};
 
+
+		export const getProductPromo = () => async (dispatch) => {
+			try {
+				dispatch({ type: GET_PRODUCTS_PROMO_REQUEST });
+				const token = localStorage.getItem('token');
+		
+				const config = {
+					headers: {
+						"Authorization": token
+		
+					},
+				};
+				const { data } = await axios.get(
+					`https://api.lagha.shop/api/products-promo`, config
+				);
+		
+				dispatch({
+					type: GET_PRODUCTS_PROMO_SUCCESS,
+					payload: data.promoProducts,
+				});
+			} catch (error) {
+				dispatch({
+					type: GET_PRODUCTS_PROMO_FAIL,
+					payload: error.response.data.message,
+				});
+			}
+		};
 export const getProductDetails = (id) => async (dispatch) => {
 	try {
 		dispatch({ type: PRODUCT_DETAILS_REQUEST });

@@ -59,6 +59,21 @@ padding-bottom: 30px;
     font-family: Montserrat;
 
 }
+& .slick-list { margin: 0 -7px; & .slick-slide > div { padding: 0 20px; } }
+.nos-marque {
+    color: #333333;
+    font-size: 1.9em;
+    font-weight: 700;
+    line-height: 1.375em;
+    text-transform: capitalize;
+    margin-bottom: 0.25em;
+    width: 100%;
+    display: flex;
+    padding: 30px;
+    justify-content: center;
+    font-family: Montserrat;
+
+}
 .about-subtitle {
     color: #f26460;
     font-size: 1.2375em;

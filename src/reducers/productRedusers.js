@@ -34,7 +34,10 @@ import {
 	CLEAR_ERRORS,
 	GET_STATISTICS_REQUEST,
 	GET_STATISTICS_FAIL,
-	GET_STATISTICS_SUCCESS
+	GET_STATISTICS_SUCCESS,
+	GET_PRODUCTS_PROMO_FAIL,
+	GET_PRODUCTS_PROMO_REQUEST,
+	GET_PRODUCTS_PROMO_SUCCESS
 } from '../constants/productConstants'
 
 export const productsReducer = (state = { products: [] }, action) => {
@@ -80,7 +83,38 @@ export const productsReducer = (state = { products: [] }, action) => {
 			return state
 	}
 }
+export const productsPromoReducer = (state = { productsPromo: [] }, action) => {
+	
+	switch (action.type) {
+		case GET_PRODUCTS_PROMO_REQUEST:
+			return {
+				loading: true,
+				productsPromo: [],
+			}
 
+		case GET_PRODUCTS_PROMO_SUCCESS:
+			return {
+				loading: false,
+				productsPromo: action.payload,
+				
+			}
+
+		case GET_PRODUCTS_PROMO_FAIL:
+			return {
+				loading: false,
+				error: action.payload,
+			}
+
+		case CLEAR_ERRORS:
+			return {
+				...state,
+				error: null,
+			}
+
+		default:
+			return state
+	}
+}
 export const productDetailsReducer = (state = { product: {} }, action) => {
 	switch (action.type) {
 		case PRODUCT_DETAILS_REQUEST:
