@@ -8,7 +8,7 @@ import L from "leaflet"; // Import Leaflet library
 import { ReactComponent as EmailIcon } from "./envelope-solid.svg";
 import { ReactComponent as PhoneIcon } from "./mobile-screen-button-solid.svg";
 import { ReactComponent as AdressIcon } from "./location-arrow-solid.svg";
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from "react-i18next";
 
 const Contact = () => {
   const position = [35.72917, 10.58082];
@@ -17,13 +17,15 @@ const Contact = () => {
     iconSize: [25, 41],
     iconAnchor: [12, 41],
   });
-  const { t } = useTranslation('contact')
+  const { t } = useTranslation("contact");
 
   return (
     <>
       <div className="background-image-container">
         <span className="login-title">{t("Contact")}</span>
-        <span className="login-subtitle">{t("Home")} / {t("Contact")}</span>
+        <span className="login-subtitle">
+          {t("Home")} / {t("Contact")}
+        </span>
       </div>
       <div className="map-container">
         <MapContainer
@@ -40,7 +42,7 @@ const Contact = () => {
             <Popup>{t("Our store location")}</Popup>
           </Marker>
         </MapContainer>
-
+<div className="contacts-container" >
         <div className="contact-info-container">
           <div className="phone-contact">
             <div className="icon-container">
@@ -67,6 +69,33 @@ const Contact = () => {
             <span>No: Cite commerciale msaken 4070</span>
           </div>
         </div>
+        <div className="contact-form-container">
+          <san>Contact Form</san>
+          <input
+            type="email"
+            required
+            className="login-input"
+            placeholder={"Name"}
+            // value={email}
+            // onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="email"
+            required
+            className="login-input"
+            placeholder={"Email"}
+            // value={email}
+            // onChange={(e) => setEmail(e.target.value)}
+          />
+          <textarea
+            required
+            style={{height:"200px"}}
+            className="login-input"
+            placeholder={"Message"}
+            // value={email}
+            // onChange={(e) => setEmail(e.target.value)}
+          />
+        </div></div>
       </div>
     </>
   );
