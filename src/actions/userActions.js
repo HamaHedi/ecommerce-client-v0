@@ -38,6 +38,9 @@ import {
 	SUBSCRIPTION_REQUEST,
 	SUBSCRIPTION_SUCCESS,
 	SUBSCRIPTION_FAIL,
+	MESSAGE_REQUEST,
+	MESSAGE_FAIL,
+	MESSAGE_SUCCESS,
 	CLEAR_ERRORS,
 } from "../constants/userConstants";
 
@@ -214,6 +217,29 @@ export const updatePassword = (oldPassword, password) => async (dispatch) => {
 	}
 };
 
+export const sendMessage = (payload) => async (dispatch) => {
+	try {
+		dispatch({ type: MESSAGE_REQUEST });
+
+		const config = {
+			headers: {
+				"Content-Type": "application/json",
+			},
+		};
+
+		const { data } = await axios.post("http://localhost:8000/api/messages", payload, config);
+
+		dispatch({
+			type: MESSAGE_SUCCESS,
+			payload: data.message,
+		});
+	} catch (error) {
+		dispatch({
+			type: MESSAGE_FAIL,
+			payload: error.response.data,
+		});
+	}
+};
 // Forgot password
 export const forgotPassword = (email) => async (dispatch) => {
 	try {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import "../../styles/contact.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
@@ -9,16 +9,32 @@ import { ReactComponent as EmailIcon } from "./envelope-solid.svg";
 import { ReactComponent as PhoneIcon } from "./mobile-screen-button-solid.svg";
 import { ReactComponent as AdressIcon } from "./location-arrow-solid.svg";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { sendMessage } from "../../actions/userActions";
+import { toast } from "react-toastify";
 
 const Contact = () => {
   const position = [35.72917, 10.58082];
+  const dispatch = useDispatch();
   const defaultIcon = L.icon({
     iconUrl: icon,
     iconSize: [25, 41],
     iconAnchor: [12, 41],
   });
   const { t } = useTranslation("contact");
-
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
+  const handleSendMessage = () => {
+    dispatch(sendMessage({ email: email, name: name, message: message }))
+      .unwrap()
+      .then(() =>
+        toast.success("Message sent successfully", {
+          position: toast.POSITION.TOP_RIGHT,
+          className: "m-2",
+        })
+      );
+  };
   return (
     <>
       <div className="background-image-container">
@@ -76,26 +92,26 @@ const Contact = () => {
               required
               className="login-input"
               placeholder={"Name"}
-              // value={email}
-              // onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <input
               type="email"
               required
               className="login-input"
               placeholder={"Email"}
-              // value={email}
-              // onChange={(e) => setEmail(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
             <textarea
               required
               style={{ height: "200px" }}
               className="login-input"
               placeholder={"Message"}
-              // value={email}
-              // onChange={(e) => setEmail(e.target.value)}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
             />
-            <button className="login-button" type="submit">
+            <button className="login-button" onClick={handleSendMessage}>
               Send
             </button>
           </div>
