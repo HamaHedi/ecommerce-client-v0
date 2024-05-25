@@ -42,60 +42,64 @@ const Contact = () => {
             <Popup>{t("Our store location")}</Popup>
           </Marker>
         </MapContainer>
-<div className="contacts-container" >
-        <div className="contact-info-container">
-          <div className="phone-contact">
-            <div className="icon-container">
-              <PhoneIcon />
+        <div className="contacts-container">
+          <div className="contact-info-container">
+            <div className="phone-contact">
+              <div className="icon-container">
+                <PhoneIcon />
+              </div>
+              <span className="title">{t("PHONE")}</span>
+              <span>Phone: 27220666</span>
+              <span>Fax: 73258310</span>
             </div>
-            <span className="title">{t("PHONE")}</span>
-            <span>Phone: 27220666</span>
-            <span>Fax: 73258310</span>
-          </div>
-          <div className="email-contact">
-            <div className="icon-container">
-              <EmailIcon />
-            </div>
-            <span className="title">{t("EMAIL")}</span>
+            <div className="email-contact">
+              <div className="icon-container">
+                <EmailIcon />
+              </div>
+              <span className="title">{t("EMAIL")}</span>
 
-            <span>contact.Bianas.business@gmail.com</span>
-          </div>
-          <div className="address-contact">
-            <div className="icon-container">
-              <AdressIcon />
+              <span>contact.Bianas.business@gmail.com</span>
             </div>
-            <span className="title">{t("ADDRESS")}</span>
+            <div className="address-contact">
+              <div className="icon-container">
+                <AdressIcon />
+              </div>
+              <span className="title">{t("ADDRESS")}</span>
 
-            <span>No: Cite commerciale msaken 4070</span>
+              <span>No: Cite commerciale msaken 4070</span>
+            </div>
+          </div>
+          <div className="contact-form-container">
+            <span className="contact-form-title">Contact Form</span>
+            <input
+              type="email"
+              required
+              className="login-input"
+              placeholder={"Name"}
+              // value={email}
+              // onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              type="email"
+              required
+              className="login-input"
+              placeholder={"Email"}
+              // value={email}
+              // onChange={(e) => setEmail(e.target.value)}
+            />
+            <textarea
+              required
+              style={{ height: "200px" }}
+              className="login-input"
+              placeholder={"Message"}
+              // value={email}
+              // onChange={(e) => setEmail(e.target.value)}
+            />
+            <button className="login-button" type="submit">
+              Send
+            </button>
           </div>
         </div>
-        <div className="contact-form-container">
-          <san>Contact Form</san>
-          <input
-            type="email"
-            required
-            className="login-input"
-            placeholder={"Name"}
-            // value={email}
-            // onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            type="email"
-            required
-            className="login-input"
-            placeholder={"Email"}
-            // value={email}
-            // onChange={(e) => setEmail(e.target.value)}
-          />
-          <textarea
-            required
-            style={{height:"200px"}}
-            className="login-input"
-            placeholder={"Message"}
-            // value={email}
-            // onChange={(e) => setEmail(e.target.value)}
-          />
-        </div></div>
       </div>
     </>
   );
