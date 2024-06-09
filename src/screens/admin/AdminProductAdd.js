@@ -22,6 +22,7 @@ const AdminProductAdd = () => {
   const [imagesPreview, setImagesPreview] = useState([]);
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
+  const [colors, setColors] = useState(["#000000"]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -61,6 +62,7 @@ const AdminProductAdd = () => {
     formData.append("description", description);
     formData.append("category", category);
     formData.append("oldPrice", oldPrice);
+    formData.append("colors", colors);
 
     formData.append("stock", stock);
     // formData.append("seller", seller);
@@ -93,6 +95,20 @@ const AdminProductAdd = () => {
     });
   };
 
+  const handleAddColorPicker = () => {
+    setColors([...colors, "#000000"]);
+  };
+
+  const handleColorChange = (index, newColor) => {
+    const newColors = colors?.map((color, i) =>
+      i === index ? newColor : color
+    );
+    setColors(newColors);
+  };
+  const handleRemoveColorPicker = (index) => {
+    const newColors = colors?.filter((color, i) => i !== index);
+    setColors(newColors);
+  };
   return (
     <section className="container my-4">
       <div className="row" style={{ minHeight: "80vh" }}>
@@ -227,38 +243,34 @@ const AdminProductAdd = () => {
                       return null;
                     })}
                   </select>
-               
                 </div>
-				<div className="form-group">
-                    <label htmlFor="category_field">
-                      Marque <small>*</small>
-                    </label>
-                    <select
-                      className="form-control"
-                      id="brand_field"
-                      value={brand}
-                      onChange={(e) => setBrand(e.target.value)}
-                    >
-                      <option value="" selected disabled hidden>
-                        Choose one
-                      </option>
+                <div className="form-group">
+                  <label htmlFor="category_field">
+                    Marque <small>*</small>
+                  </label>
+                  <select
+                    className="form-control"
+                    id="brand_field"
+                    value={brand}
+                    onChange={(e) => setBrand(e.target.value)}
+                  >
+                    <option value="" selected disabled hidden>
+                      Choose one
+                    </option>
 
-                      {brands &&
-                        brands?.map((x) => (
-                          <option key={x._id} value={x.title}>
-                            {x.title}
-                          </option>
-                        ))}
-                    </select>
-                    {error &&
-                      error.errors &&
-                      error.errors.brand &&
-                      !brand && (
-                        <small className="form-text text-danger text-left mt-2 mx-1">
-                          {error.errors.brand}
-                        </small>
-                      )}
-                  </div>
+                    {brands &&
+                      brands?.map((x) => (
+                        <option key={x._id} value={x.title}>
+                          {x.title}
+                        </option>
+                      ))}
+                  </select>
+                  {error && error.errors && error.errors.brand && !brand && (
+                    <small className="form-text text-danger text-left mt-2 mx-1">
+                      {error.errors.brand}
+                    </small>
+                  )}
+                </div>
                 <div className="form-group">
                   <label htmlFor="stock_field">
                     Stock <small>*</small>
@@ -275,6 +287,41 @@ const AdminProductAdd = () => {
                       {error.errors.stock}
                     </small>
                   )}
+                </div>
+                <div>
+                  <div>
+                    <span>Colors</span>
+                    {colors?.map((color, index) => (
+                      <div
+                        key={index}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "3px",
+                        }}
+                      >
+                        <input
+                          type="color"
+                          value={color}
+                          onChange={(e) =>
+                            handleColorChange(index, e.target.value)
+                          }
+                        />
+                        <div
+                          onClick={() => handleRemoveColorPicker(index)}
+                          style={{ cursor: "pointer" }}
+                        >
+                          Remove
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <buttdivon
+                    onClick={handleAddColorPicker}
+                    style={{ cursor: "pointer" }}
+                  >
+                    Add Color{" "}
+                  </buttdivon>
                 </div>
 
                 {/* <div className="form-group">
@@ -312,7 +359,7 @@ const AdminProductAdd = () => {
                     </label>
                   </div>
 
-                  {imagesPreview.map((img) => (
+                  {imagesPreview?.map((img) => (
                     <img
                       src={img}
                       key={img}

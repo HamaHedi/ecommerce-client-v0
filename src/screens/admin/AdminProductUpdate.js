@@ -27,10 +27,19 @@ const AdminProductUpdate = () => {
   const [imagesPreview, setImagesPreview] = useState([]);
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
+  const [colors, setColors] = useState(); 
+  const handleAddColorPicker = () => {
+    setColors([...colors, "#000000"]); 
+  };
 
+  const handleColorChange = (index, newColor) => {
+    const newColors = colors.map((color, i) =>
+      i === index ? newColor : color
+    );
+    setColors(newColors);
+  };
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const {
     loading,
     error: updateError,
@@ -60,7 +69,7 @@ const AdminProductUpdate = () => {
       setCategory(product.category);
       setSubcategory(product.subcategory);
       setBrand(product?.brand);
-
+      setColors(product?.colors?.[0]?.split(","));
     }
 
     if (error && error.message) {
@@ -102,6 +111,7 @@ const AdminProductUpdate = () => {
     formData.append("seller", seller);
     formData.append("subcategory", subcategory);
     formData.append("brand", brand);
+    formData.append("colors", colors);
 
     images.forEach((image) => {
       formData.append("files", image);
@@ -131,7 +141,10 @@ const AdminProductUpdate = () => {
       reader.readAsDataURL(file);
     });
   };
-
+  const handleRemoveColorPicker = (index) => {
+    const newColors = colors?.filter((color, i) => i !== index);
+    setColors(newColors);
+  };
   return (
     <section className="container my-4">
       <div className="row" style={{ minHeight: "80vh" }}>
@@ -307,6 +320,42 @@ const AdminProductUpdate = () => {
                       {error.errors.stock}
                     </small>
                   )}
+                </div>
+
+                <div>
+                  <div>
+                    <span>Colors</span>
+                    {colors?.map((color, index) => (
+                      <div
+                        key={index}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "3px",
+                        }}
+                      >
+                        <input
+                          type="color"
+                          value={color}
+                          onChange={(e) =>
+                            handleColorChange(index, e.target.value)
+                          }
+                        />
+                        <div
+                          onClick={() => handleRemoveColorPicker(index)}
+                          style={{ cursor: "pointer" }}
+                        >
+                          Remove
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <buttdivon
+                    onClick={handleAddColorPicker}
+                    style={{ cursor: "pointer" }}
+                  >
+                    Add Color{" "}
+                  </buttdivon>
                 </div>
 
                 <div className="form-group">

@@ -6,9 +6,35 @@
     padding: 25px;
     width: 100%;
 }
+.contacts-container {
+    display: flex;
+    padding: 20px;
+    align-items: center;
+    width: 100%;
+
+}
+.contact-form-container {
+    width: 100%;
+    display: flex;
+    gap: 15px;
+    max-width: 600px;
+    flex-direction: column;
+}
+.contact-form-title {
+    color: #1a1a1a;
+    font-family: Montserrat;
+    font-weight: 700;
+    font-size: 25px;
+    text-align: center;
+    letter-spacing: 0em;
+    margin: 0 0 15px;
+    line-height: 1.4;
+
+}
 .contact-info-container {
     display: flex;
-    width: 100%;
+    flex-direction: column;
+    width: 50%;
     flex-wrap: wrap;
     padding: 50px;
     gap: 80px;
