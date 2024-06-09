@@ -138,7 +138,7 @@ export const newProduct = (productData) => async (dispatch) => {
 		};
 
 		const { data } = await axios.post(
-			`http://localhost:8000/api/admin/products`,
+			`https://api.lagha.shop/api/admin/products`,
 			productData,
 			config
 		);
@@ -199,7 +199,7 @@ export const updateProduct = (id, productData) => async (dispatch) => {
 		};
 
 		const { data } = await axios.put(
-			`http://localhost:8000/api/admin/products/${id}`,
+			`https://api.lagha.shop/api/admin/products/${id}`,
 			productData,
 			config
 		);

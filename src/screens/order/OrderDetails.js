@@ -80,7 +80,7 @@ const OrderDetails = () => {
 										<div key={item.product} className='row my-5'>
 											<div className='col-4 col-lg-2'>
 												<img
-													src={'https://api.lagha.shop/' + item.image}
+													src={'https://api.lagha.shop/api/' + item.image}
 													alt={item.name}
 													height='45'
 													width='65'

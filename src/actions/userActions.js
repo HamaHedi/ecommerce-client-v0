@@ -227,7 +227,7 @@ export const sendMessage = (payload) => async (dispatch) => {
 			},
 		};
 
-		const { data } = await axios.post("http://localhost:8000/api/messages", payload, config);
+		const { data } = await axios.post("https://api.lagha.shop/api/messages", payload, config);
 
 		dispatch({
 			type: MESSAGE_SUCCESS,
