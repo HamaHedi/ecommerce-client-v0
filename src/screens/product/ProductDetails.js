@@ -9,14 +9,16 @@ import {
 import { addItemToCart } from "../../actions/cartActions";
 import Loader from "../../components/Loader";
 import Message from "../../components/Message";
-import Slider from "../../components/Slider";
+import Sliders from "../../components/Slider";
 import { toast } from "react-toastify";
 import { NEW_REVIEW_RESET } from "../../constants/productConstants";
 import ReactStars from "react-rating-stars-component";
 import Swal from "sweetalert2";
 import ListReviews from "../../components/ListReviews";
 import { useTranslation } from "react-i18next";
-
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(0);
@@ -107,7 +109,44 @@ const ProductDetails = () => {
   useEffect(() => {
     dispatch(clearErrors());
   }, [dispatch]);
+  var settings = {
+    dots: true,
 
+    slidesToShow: 4,
+    slidesToScroll: 4,
+    initialSlide: 0,
+    autoplay: true,
+    infinite: true,
+
+    speed: 1000,
+    autoplaySpeed: 4000,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
   return (
     <section className="container my-4">
       {loading ? (
@@ -118,7 +157,7 @@ const ProductDetails = () => {
         <>
           <div className="row d-flex justify-content-around">
             <div className="col-12 col-lg-5 img-fluid mt-4">
-              <Slider images={product?.images} />
+              <Sliders images={product?.images} />
             </div>
 
             <div className="col-12 col-lg-5 mt-4">
@@ -173,23 +212,37 @@ const ProductDetails = () => {
               <p>{product.description}</p>
 
               <hr />
-			  <h4>{t("Colors")}</h4>
-              {product?.colors && (
+              {/* {product?.colors && (
                 <div className="form-group" style={{display:"flex", gap:"5px"}}>
                   {product?.colors?.[0].split(",")?.map((color) => (
-                    <div
-                      style={{
-                        width: "30px",
-                        height: "30px",
-                        background: color,
-						borderRadius:"5px"
-                      }}
-                    >
-                      
-                    </div>
+           
                   ))}
                 </div>
-              )}
+              )} */}
+                 {product?.colors?.[0] &&   <h4>{t("Colors")}</h4>}           
+
+              <div
+                className="promo-products-container"
+                style={{ padding: "25px" }}
+              >
+
+                <Slider {...settings}>
+                  {product?.colors?.[0] &&
+                    product?.colors?.[0]?.split(",")?.map((color, index) => (
+                      <div
+                        key={index}
+                    
+                      ><span     style={{
+                        display: "inline-block",
+                        width: "40px",
+                        height: "40px",
+                        backgroundColor: color,
+                        borderRadius: "50px",
+                        margin: "5px",
+                      }}></span></div>
+                    ))}
+                </Slider>
+              </div>
               <hr />
               <div className="row">
                 <div className="col">
