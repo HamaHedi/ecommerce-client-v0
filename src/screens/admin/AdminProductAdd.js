@@ -22,8 +22,30 @@ const AdminProductAdd = () => {
   const [imagesPreview, setImagesPreview] = useState([]);
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
-  const [colors, setColors] = useState(["#000000"]);
+  const [colors, setColors] = useState([{ name: "", value: "#000000" }]);
 
+  const handleAddColorPicker = () => {
+    setColors([...colors, { name: "", value: "#000000" }]);
+  };
+
+  const handleColorChange = (index, newValue) => {
+    const newColors = colors.map((color, i) =>
+      i === index ? { ...color, value: newValue } : color
+    );
+    setColors(newColors);
+  };
+
+  const handleNameChange = (index, newName) => {
+    const newColors = colors.map((color, i) =>
+      i === index ? { ...color, name: newName } : color
+    );
+    setColors(newColors);
+  };
+
+  const handleRemoveColorPicker = (index) => {
+    const newColors = colors.filter((_, i) => i !== index);
+    setColors(newColors);
+  };
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [subcategory, setSubcategory] = useState("");
@@ -62,7 +84,7 @@ const AdminProductAdd = () => {
     formData.append("description", description);
     formData.append("category", category);
     formData.append("oldPrice", oldPrice);
-    formData.append("colors", colors);
+    formData.append("colors", JSON.stringify(colors));
 
     formData.append("stock", stock);
     // formData.append("seller", seller);
@@ -95,20 +117,6 @@ const AdminProductAdd = () => {
     });
   };
 
-  const handleAddColorPicker = () => {
-    setColors([...colors, "#000000"]);
-  };
-
-  const handleColorChange = (index, newColor) => {
-    const newColors = colors?.map((color, i) =>
-      i === index ? newColor : color
-    );
-    setColors(newColors);
-  };
-  const handleRemoveColorPicker = (index) => {
-    const newColors = colors?.filter((color, i) => i !== index);
-    setColors(newColors);
-  };
   return (
     <section className="container my-4">
       <div className="row" style={{ minHeight: "80vh" }}>
@@ -291,20 +299,29 @@ const AdminProductAdd = () => {
                 <div>
                   <div>
                     <span>Colors</span>
-                    {colors?.map((color, index) => (
+                    {colors.map((color, index) => (
                       <div
                         key={index}
                         style={{
                           display: "flex",
                           alignItems: "center",
                           gap: "3px",
+                          marginBottom: "8px",
                         }}
                       >
                         <input
                           type="color"
-                          value={color}
+                          value={color.value}
                           onChange={(e) =>
                             handleColorChange(index, e.target.value)
+                          }
+                        />
+                        <input
+                          type="text"
+                          placeholder="Color Name"
+                          value={color.name}
+                          onChange={(e) =>
+                            handleNameChange(index, e.target.value)
                           }
                         />
                         <div
@@ -316,12 +333,12 @@ const AdminProductAdd = () => {
                       </div>
                     ))}
                   </div>
-                  <buttdivon
+                  <div
                     onClick={handleAddColorPicker}
                     style={{ cursor: "pointer" }}
                   >
-                    Add Color{" "}
-                  </buttdivon>
+                    Add Color
+                  </div>
                 </div>
 
                 {/* <div className="form-group">

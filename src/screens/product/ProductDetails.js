@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { Tooltip } from "antd";
 const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(0);
@@ -112,8 +113,8 @@ const ProductDetails = () => {
   var settings = {
     dots: true,
 
-    slidesToShow: 4,
-    slidesToScroll: 4,
+    slidesToShow: 6,
+    slidesToScroll: 6,
     initialSlide: 0,
     autoplay: true,
     infinite: true,
@@ -219,27 +220,29 @@ const ProductDetails = () => {
                   ))}
                 </div>
               )} */}
-                 {product?.colors?.[0] &&   <h4>{t("Colors")}</h4>}           
+              {product?.colors && <h4>{t("Colors")}</h4>}
 
               <div
                 className="promo-products-container"
                 style={{ padding: "25px" }}
               >
-
                 <Slider {...settings}>
-                  {product?.colors?.[0] &&
-                    product?.colors?.[0]?.split(",")?.map((color, index) => (
-                      <div
-                        key={index}
-                    
-                      ><span     style={{
-                        display: "inline-block",
-                        width: "40px",
-                        height: "40px",
-                        backgroundColor: color,
-                        borderRadius: "50px",
-                        margin: "5px",
-                      }}></span></div>
+                  {product?.colors &&
+                    product?.colors?.map((color, index) => (
+                      <Tooltip title={color?.name}>
+                        <div key={index}>
+                          <span
+                            style={{
+                              display: "inline-block",
+                              width: "30px",
+                              height: "30px",
+                              backgroundColor: color?.value,
+                              borderRadius: "50px",
+                              margin: "5px",
+                            }}
+                          ></span>
+                        </div>
+                      </Tooltip>
                     ))}
                 </Slider>
               </div>

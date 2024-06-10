@@ -27,17 +27,31 @@ const AdminProductUpdate = () => {
   const [imagesPreview, setImagesPreview] = useState([]);
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
-  const [colors, setColors] = useState(); 
+  const [colors, setColors] = useState([{ name: "", value: "#000000" }]);
+
   const handleAddColorPicker = () => {
-    setColors([...colors, "#000000"]); 
+    setColors([...colors, { name: "", value: "#000000" }]);
   };
 
-  const handleColorChange = (index, newColor) => {
+  const handleColorChange = (index, newValue) => {
     const newColors = colors.map((color, i) =>
-      i === index ? newColor : color
+      i === index ? { ...color, value: newValue } : color
     );
     setColors(newColors);
   };
+
+  const handleNameChange = (index, newName) => {
+    const newColors = colors.map((color, i) =>
+      i === index ? { ...color, name: newName } : color
+    );
+    setColors(newColors);
+  };
+
+  const handleRemoveColorPicker = (index) => {
+    const newColors = colors.filter((_, i) => i !== index);
+    setColors(newColors);
+  };
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
@@ -69,7 +83,7 @@ const AdminProductUpdate = () => {
       setCategory(product.category);
       setSubcategory(product.subcategory);
       setBrand(product?.brand);
-      setColors(product?.colors?.[0]?.split(","));
+      setColors(product.colors.map((color) => ({ name: color.name, value: color.value })));
     }
 
     if (error && error.message) {
@@ -111,7 +125,7 @@ const AdminProductUpdate = () => {
     formData.append("seller", seller);
     formData.append("subcategory", subcategory);
     formData.append("brand", brand);
-    formData.append("colors", colors);
+    formData.append("colors", JSON.stringify(colors));
 
     images.forEach((image) => {
       formData.append("files", image);
@@ -141,10 +155,7 @@ const AdminProductUpdate = () => {
       reader.readAsDataURL(file);
     });
   };
-  const handleRemoveColorPicker = (index) => {
-    const newColors = colors?.filter((color, i) => i !== index);
-    setColors(newColors);
-  };
+
   return (
     <section className="container my-4">
       <div className="row" style={{ minHeight: "80vh" }}>
@@ -297,14 +308,11 @@ const AdminProductUpdate = () => {
                         </option>
                       ))}
                   </select>
-                  {error &&
-                    error.errors &&
-                    error.errors.brand &&
-                    !brand && (
-                      <small className="form-text text-danger text-left mt-2 mx-1">
-                        {error.errors.brand}
-                      </small>
-                    )}
+                  {error && error.errors && error.errors.brand && !brand && (
+                    <small className="form-text text-danger text-left mt-2 mx-1">
+                      {error.errors.brand}
+                    </small>
+                  )}
                 </div>
                 <div className="form-group">
                   <label htmlFor="stock_field">Stock</label>
@@ -332,13 +340,22 @@ const AdminProductUpdate = () => {
                           display: "flex",
                           alignItems: "center",
                           gap: "3px",
+                          marginBottom: "8px",
                         }}
                       >
                         <input
                           type="color"
-                          value={color}
+                          value={color.value}
                           onChange={(e) =>
                             handleColorChange(index, e.target.value)
+                          }
+                        />
+                        <input
+                          type="text"
+                          placeholder="Color Name"
+                          value={color.name}
+                          onChange={(e) =>
+                            handleNameChange(index, e.target.value)
                           }
                         />
                         <div
@@ -350,12 +367,12 @@ const AdminProductUpdate = () => {
                       </div>
                     ))}
                   </div>
-                  <buttdivon
+                  <div
                     onClick={handleAddColorPicker}
                     style={{ cursor: "pointer" }}
                   >
-                    Add Color{" "}
-                  </buttdivon>
+                    Add Color
+                  </div>
                 </div>
 
                 <div className="form-group">
