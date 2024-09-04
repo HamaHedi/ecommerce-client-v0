@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 const Brands = () => {
   const { brands: brands } = useSelector((state) => state.brands);
-const navigate=useNavigate()
+  const navigate = useNavigate()
   const { loading: categoryLoading, category: allCategory } = useSelector(
     (state) => state.categorys
   );
@@ -58,9 +58,9 @@ const navigate=useNavigate()
       },
     ],
   };
-  const { keyword, setKeyword, category, setCategory,subcategory, setSubategory ,brand,
-    setBrand,} = useGlobalState();
-console.log(subcategory)
+  const { keyword, setKeyword, category, setCategory, subcategory, setSubategory, brand,
+    setBrand, } = useGlobalState();
+  console.log(subcategory)
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -75,7 +75,7 @@ console.log(subcategory)
 
   return (
     <section >
-             <div className="categories-container">
+      <div className="categories-container">
         {allCategory?.map((category) => (
           <span className="category-title" key={category.title}>
             <Dropdown
@@ -127,23 +127,23 @@ console.log(subcategory)
           </span>
         ))}
 
-       
+
       </div>
       <div className="brands-container">
         <span className="brand-header">Marques</span>
-  {brands?.map((brand)=> <div className="brand-info-container">
-     <img src={"https://api.lagha.shop/"+brand?.images?.[0]?.path} style={{width:"98px"}}/>
-     <span className="brand-name">{brand?.title}</span>
-     <span className="brand-name">{brand?.productCount} Produits</span>
-     <span className="brand-name product-link" onClick={()=> {
-      navigate('/')
-      setBrand(brand?.title)
-      setKeyword("");
-      setCategory("");
-      setSubategory("");
-     }}> Voir Les Produits</span>
+        {brands?.map((brand) => <div className="brand-info-container">
+          <img src={"https://api.lagha.shop/" + brand?.images?.[0]?.path} style={{ width: "98px" }} />
+          <span className="brand-name">{brand?.title}</span>
+          <span className="brand-name">{brand?.productCount} Produits</span>
+          <span className="brand-name product-link" onClick={() => {
+            navigate('/')
+            setBrand(brand?.title)
+            setKeyword("");
+            setCategory("");
+            setSubategory("");
+          }}> Voir Les Produits</span>
 
-  </div>)}
+        </div>)}
 
       </div>
       <div className="slider-container" style={{ padding: "25px" }}>

@@ -7,6 +7,7 @@ import "../styles/header.css";
 import { useGlobalState } from "../context/context";
 import { useTranslation } from "react-i18next";
 import { Button, Dropdown, Menu } from "antd";
+import { ReactComponent as UserIcon } from "../assets/icons/mdi--user.svg";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -137,7 +138,7 @@ const Header = () => {
   return (
     <nav
       className="navbar navbar-expand-lg navbar-defailt py-2 border-bottom"
-      style={{ height: "90px" }}
+      style={{ height: "90px", background: "#d12f28" }}
     >
       <div className="container">
         <Link to="/" className="navbar-brand">
@@ -245,7 +246,7 @@ const Header = () => {
             <li className="nav-item">
               <Link to="/cart" className="nav-link nav-link-icon mt-3 mt-lg-0">
                 <i className="ni ni-cart"></i>
-                <span className="nav-link-inner--text font-weight-bold">
+                <span className="nav-link-inner--text font-weight-bold" style={{ color: "white" }}>
                   {t("cart")}
                 </span>
               </Link>
@@ -325,15 +326,24 @@ const Header = () => {
             ) : (
               !loading && (
                 <li className="nav-item">
-                  <Link to="/login" className="nav-link nav-link-icon">
-                    <i className="ni ni-single-02"></i>
-                    <span className="nav-link-inner--text font-weight-bold">
+                  <Link to="/login" className="nav-link nav-link-icon" style={{ display: "flex", alignItems: "center" }}>
+                    {/* <i className="ni ni-single-02" style={{ fill: "white" }}></i> */}
+                    <UserIcon style={{ width: "20px", fill: 'white' }} />
+                    <span className="nav-link-inner--text font-weight-bold" style={{ color: "white" }}>
                       {t("sign_in")}
                     </span>
                   </Link>
                 </li>
               )
             )}
+            <li className="nav-item">
+              <Link to="/cart" className="nav-link nav-link-icon mt-3 mt-lg-0">
+                <i className="ni ni-cart"></i>
+                <span className="nav-link-inner--text font-weight-bold" style={{ color: "white" }}>
+                  {t("contact")}
+                </span>
+              </Link>
+            </li>
           </ul>
         </div>
         <Dropdown

@@ -234,6 +234,15 @@ const Products = () => {
   return (
     <section>
       <div className="categories-container">
+        <span
+          onClick={() => {
+            navigate("/brands");
+          }}
+          className="category-title"
+          style={{ margin: 0 }}
+        >
+          MARQUES
+        </span>
         {allCategory?.map((category) => (
           <span className="category-title" key={category.title}>
             <Dropdown
@@ -286,14 +295,7 @@ const Products = () => {
           </span>
         ))}
 
-        <span
-          onClick={() => {
-            navigate("/brands");
-          }}
-          className="category-title"
-        >
-          MARQUES
-        </span>
+
       </div>
       <div className="row">
         {keyword !== undefined && (
