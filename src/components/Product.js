@@ -13,7 +13,7 @@ const Product = ({ product }) => {
     }
     return ""; // Return an empty string if prices are not available
   };
-  
+  console.log(product)
   return (
     // <div className='col-12 col-sm-12 col-md-6 col-lg-4 mb-5'>
     // 	<div
@@ -59,7 +59,7 @@ const Product = ({ product }) => {
     // 	</div>
     // </div>
     <div className="product-card-container">
-      {product?.oldPrice > 0 && <span className="promo-percentage">-{calculatePercentageReduction(product?.oldPrice , product?.price)} </span>}
+      {product?.oldPrice > 0 && <span className="promo-percentage">-{calculatePercentageReduction(product?.oldPrice, product?.price)} </span>}
       <div className="product-card-body">
         <div className="product-image-container">
           {/* <Link to={`/product/${product._id}`}>
@@ -72,17 +72,21 @@ const Product = ({ product }) => {
             />
           </Link> */}
           <Image
-          
-            fallback={`${
-              product &&
+
+            fallback={`${product &&
               product.images[0] &&
               "https://api.lagha.shop/" + product.images[0].path
-            }`}
+              }`}
           />
         </div>
         <span className="product-title">
           <Link to={`/product/${product._id}`} className="text-dark">
-            {product.name}
+            {product?.brand}
+          </Link>
+        </span>
+        <span className="product-name">
+          <Link to={`/product/${product._id}`} className="text-dark">
+            {product?.name}
           </Link>
         </span>
         <div className="d-flex align-items-end">
@@ -96,7 +100,7 @@ const Product = ({ product }) => {
             </h6>
           )}
         </div>
-        <div className="ratings mt-auto text-nowrap mb-1">
+        {/* <div className="ratings mt-auto text-nowrap mb-1">
           <div className="rating-outer">
             <div
               className="rating-inner"
@@ -106,7 +110,7 @@ const Product = ({ product }) => {
           <small id="no_of_reviews">
             &nbsp;({product.numOfReviews} {t("reviews")})
           </small>
-        </div>
+        </div> */}
         <button
           className="view-details-button"
           onClick={() => navigate(`/product/${product._id}`)}

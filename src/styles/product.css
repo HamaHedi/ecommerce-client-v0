@@ -111,3 +111,6 @@
   position: absolute;
   border: 10px solid white;
 }
+.axis-vertical {
+  display: none;
+}

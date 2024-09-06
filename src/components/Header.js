@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -6,8 +6,10 @@ import { logout } from "../actions/userActions";
 import "../styles/header.css";
 import { useGlobalState } from "../context/context";
 import { useTranslation } from "react-i18next";
-import { Button, Dropdown, Menu } from "antd";
+import { Button, Divider, Dropdown, Menu } from "antd";
 import { ReactComponent as UserIcon } from "../assets/icons/mdi--user.svg";
+import { ReactComponent as CartIcon } from "../assets/icons/cart.svg";
+import { ReactComponent as PositionIcon } from "../assets/icons/position.svg";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -99,6 +101,14 @@ const Header = () => {
     i18n.changeLanguage(language);
     setLang(language);
   };
+  const keywordRef = useRef("");
+
+  const searchHandler = (e) => {
+    e.preventDefault();
+
+
+    setKeyword(keywordRef.current.value);
+  };
 
   const languagesItems = [
     {
@@ -140,7 +150,19 @@ const Header = () => {
       className="navbar navbar-expand-lg navbar-defailt py-2 border-bottom"
       style={{ height: "90px", background: "#d12f28" }}
     >
-      <div className="container">
+      <div className="container" onSubmit={searchHandler}>
+        <form >
+          <div style={{ display: "flex", alignItems: "center", background: "white", borderRadius: "15px" }}>
+            <input
+              type="text"
+              style={{ display: "flex", border: "0px", borderRadius: "15px", outline: "none", boxShadow: "none" }}
+              placeholder={t("search..")}
+              ref={keywordRef}
+
+            />
+            <i className="fa fa-search" aria-hidden="true" style={{ paddingRight: "10px" }}></i>
+          </div>
+        </form>
         <Link to="/" className="navbar-brand">
           {/* <img src='/assets/logo.png' alt='logo' /> */}
           <b
@@ -156,6 +178,7 @@ const Header = () => {
             />
           </b>
         </Link>
+
         <button
           className="navbar-toggler border"
           type="button"
@@ -208,7 +231,7 @@ const Header = () => {
                 gap: "25px",
               }}
             >
-              <Link to="/">
+              {/* <Link to="/">
                 {" "}
                 <span
                   className="navigation-item"
@@ -219,15 +242,15 @@ const Header = () => {
                 >
                   {t("home")}
                 </span>
-              </Link>
+              </Link> */}
 
-              <span
+              {/* <span
                 className="navigation-item"
                 onClick={() => navigate("/contact")}
               >
                 {t("contact")}
-              </span>
-              <Dropdown
+              </span> */}
+              {/* <Dropdown
                 overlay={<CategoriesItem />}
                 placement="bottom"
                 arrow
@@ -239,18 +262,20 @@ const Header = () => {
                 }}
               >
                 <span className="navigation-item">{t("categories")}</span>
-              </Dropdown>
+              </Dropdown> */}
             </div>
           }
-          <ul className="navbar-nav ml-lg-auto">
+          <ul className="navbar-nav ml-lg-auto" style={{ width: "100%", display: "flex", alignItems: "center" }}>
+
             <li className="nav-item">
-              <Link to="/cart" className="nav-link nav-link-icon mt-3 mt-lg-0">
-                <i className="ni ni-cart"></i>
+              <Link to="/contact" className="nav-link nav-link-icon mt-3 mt-lg-0" style={{ display: "flex", alignItems: "center" }}>
+                <PositionIcon style={{ width: "20px" }} />
                 <span className="nav-link-inner--text font-weight-bold" style={{ color: "white" }}>
-                  {t("cart")}
+                  {t("contact")}
                 </span>
               </Link>
             </li>
+            <hr width="2" size="500" style={{ background: "white", height: "40px" }} />
 
             {user && user.name ? (
               <li className="nav-item dropdown">
@@ -337,10 +362,10 @@ const Header = () => {
               )
             )}
             <li className="nav-item">
-              <Link to="/cart" className="nav-link nav-link-icon mt-3 mt-lg-0">
-                <i className="ni ni-cart"></i>
+              <Link to="/cart" className="nav-link nav-link-icon mt-3 mt-lg-0" style={{ display: "flex" }}>
+                <CartIcon style={{ width: "20px", fill: 'white' }} />
                 <span className="nav-link-inner--text font-weight-bold" style={{ color: "white" }}>
-                  {t("contact")}
+                  {t("cart")}
                 </span>
               </Link>
             </li>

@@ -472,7 +472,7 @@ const Products = () => {
 
         <div className={keyword !== undefined ? "col-12 col-md-9" : "col"}>
           {keyword === undefined && <Banner />}
-          {keyword === undefined && (
+          {/* {keyword === undefined && (
             <div className="about-container">
               <div className="about-images-container">
                 <img src="assets/img1.png" className="about-image-1" />
@@ -490,12 +490,12 @@ const Products = () => {
                 </p>
               </div>
             </div>
-          )}
+          )} */}
           <section
             className="container my-4"
             style={{ width: "100%", maxWidth: "80%" }}
           >
-            <form onSubmit={searchHandler}>
+            {keyword && <form onSubmit={searchHandler}>
               <div className="input-group mb-4">
                 <input
                   type="text"
@@ -509,7 +509,8 @@ const Products = () => {
                   </span>
                 </div>
               </div>
-            </form>
+            </form>}
+
 
             {loading ? (
               <Loader />
