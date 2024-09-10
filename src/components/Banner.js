@@ -8,10 +8,10 @@ const Banner = () => {
 
 		<Carousel autoPlay infiniteLoop >
 			<div>
-				<img src="/cover1.jpeg" />
+				<img src="/affiche_web_together_copy.jpeg" />
 			</div>
 			<div>
-				<img src="/cover2.jpeg" />
+				<img src="/affiche_web_together_copy.jpeg" />
 			</div>
 			<div>
 				<img src="/affiche_web_together_copy.jpeg" />
