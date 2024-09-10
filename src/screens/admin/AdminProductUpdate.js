@@ -14,6 +14,7 @@ import { UPDATE_PRODUCT_RESET } from "../../constants/productConstants";
 
 import { getCategory } from "../../actions/categoryAction";
 import { getBrands } from "../../actions/brandActions";
+import { Switch } from "antd";
 
 const AdminProductUpdate = () => {
   const [name, setName] = useState("");
@@ -28,11 +29,14 @@ const AdminProductUpdate = () => {
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
   const [colors, setColors] = useState([{ name: "", value: "#000000" }]);
+  const [isNew, setIsNew] = useState(false);
 
   const handleAddColorPicker = () => {
     setColors([...colors, { name: "", value: "#000000" }]);
   };
-
+  const handleSwitchChange = (checked) => {
+    setIsNew(checked)
+  };
   const handleColorChange = (index, newValue) => {
     const newColors = colors.map((color, i) =>
       i === index ? { ...color, value: newValue } : color
@@ -83,6 +87,8 @@ const AdminProductUpdate = () => {
       setCategory(product.category);
       setSubcategory(product.subcategory);
       setBrand(product?.brand);
+      setIsNew(product?.isNew);
+
       setColors(product.colors.map((color) => ({ name: color.name, value: color.value })));
     }
 
@@ -124,6 +130,8 @@ const AdminProductUpdate = () => {
     formData.append("oldPrice", oldPrice);
     formData.append("seller", seller);
     formData.append("subcategory", subcategory);
+    formData.append("isNew", isNew);
+
     formData.append("brand", brand);
     formData.append("colors", JSON.stringify(colors));
 
@@ -199,7 +207,8 @@ const AdminProductUpdate = () => {
                     onChange={(e) => setOldPrice(e.target.value)}
                   />
                 </div>
-
+                <label style={{ paddingRight: "3px" }} >New Product {' '}</label>
+                <Switch onChange={handleSwitchChange} value={isNew} />
                 <div className="form-group">
                   <label htmlFor="price_field">Price</label>
                   <input
