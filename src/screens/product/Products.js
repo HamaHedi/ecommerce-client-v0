@@ -5,6 +5,7 @@ import {
   getProducts,
   clearErrors,
   getProductPromo,
+  getNewProduct,
 } from "../../actions/productActions";
 import Loader from "../../components/Loader";
 import Message from "../../components/Message";
@@ -20,6 +21,8 @@ import "slick-carousel/slick/slick-theme.css";
 import { Divider, Dropdown, Menu } from "antd";
 import { useNavigate } from "react-router-dom";
 import { getBrands } from "../../actions/brandActions";
+import prevArrow from '../../assets/icons/prev.svg';
+import nextArrow from '../../assets/icons/next.svg';
 
 const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -129,22 +132,53 @@ const Products = () => {
     resPerPage,
     filteredProductsCount,
   } = useSelector((state) => state.products);
+
+  const {
+
+    newProducts,
+  } = useSelector((state) => state.newProducts);
+  console.log(newProducts)
   const {
     loading: BrandLoading,
     brands,
     brandsCount,
   } = useSelector((state) => state.brands);
   const { productsPromo } = useSelector((state) => state.productsPromo);
+  const CustomPrevArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, width: '50px', height: '50px', backgroundImage: `url(${prevArrow})`, backgroundRepeat: "no-repeat", zIndex: "99" }}
+        onClick={onClick}
+      />
+    );
+  }
+
+  const CustomNextArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, width: '30px', height: '30px', backgroundImage: `url(${nextArrow})`, backgroundRepeat: "no-repeat", zIndex: "99" }}
+        onClick={onClick}
+      />
+    );
+  }
   var settings3 = {
     dots: false,
 
-    slidesToShow: productsPromo?.length >= 5 ? 5 : productsPromo?.length,
-    slidesToScroll: 5,
+    slidesToShow: newProducts?.newProducts?.length >= 4 ? 4 : newProducts?.newProducts?.length,
+    slidesToScroll: 2,
     initialSlide: 0,
     autoplay: false,
     infinite: false,
-    speed: 4000,
-    autoplaySpeed: 4000,
+    arrows: true,
+    accessibility: true,
+    speed: 2000,
+    autoplaySpeed: 2000,
+    prevArrow: <CustomPrevArrow />,
+    nextArrow: <CustomNextArrow />,
     responsive: [
       {
         breakpoint: 1024,
@@ -214,6 +248,11 @@ const Products = () => {
         rating,
         subcategory,
         brand
+      )
+    );
+    dispatch(
+      getNewProduct(
+
       )
     );
   }, [
@@ -299,7 +338,9 @@ const Products = () => {
       </div>
       <div className="row">
         {keyword !== undefined && (
+
           <div className="col-12 col-md-3" style={{ padding: "30px" }}>
+
             <div className="p-2 h-100">
               <form onSubmit={submitHandler}>
                 <h6>
@@ -470,7 +511,7 @@ const Products = () => {
           </div>
         )}
 
-        <div className={keyword !== undefined ? "col-12 col-md-9" : "col"}>
+        <div className={keyword !== undefined ? "col-12 col-md-9" : "col"} style={{ justifyContent: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
           {keyword === undefined && <Banner />}
           {/* {keyword === undefined && (
             <div className="about-container">
@@ -491,6 +532,27 @@ const Products = () => {
               </div>
             </div>
           )} */}
+          <div className="new-product-container" ><span className="new-products-title">
+            Nouveaux produits
+          </span>
+            {/* {newProducts?.newProducts &&
+              newProducts?.newProducts?.map((product) => (
+                <Product key={product._id} product={product} />
+              ))} */}
+            {newProducts?.newProducts?.length > 0 && (
+              <div className="promo-products-container" style={{ padding: "25px" }}>
+                <Slider {...settings3}>
+                  {newProducts?.newProducts &&
+                    newProducts?.newProducts?.map((product) => (
+                      <div key={product._id}>
+                        <Product product={product} />
+                      </div>
+                    ))}
+                </Slider>
+              </div>
+            )}
+          </div>
+
           <section
             className="container my-4"
             style={{ width: "100%", maxWidth: "80%" }}
@@ -524,6 +586,9 @@ const Products = () => {
                   className="row"
                   style={{ gap: "35px", justifyContent: "center" }}
                 >
+                  <span className="new-products-title">
+                    Nos produits
+                  </span>
                   {products &&
                     products?.map((product) => (
                       <Product key={product._id} product={product} />

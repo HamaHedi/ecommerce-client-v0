@@ -37,7 +37,9 @@ import {
 	GET_STATISTICS_SUCCESS,
 	GET_PRODUCTS_PROMO_FAIL,
 	GET_PRODUCTS_PROMO_REQUEST,
-	GET_PRODUCTS_PROMO_SUCCESS
+	GET_PRODUCTS_PROMO_SUCCESS,
+	GET_NEW_PRODUCT_FAIL,
+	GET_NEW_PRODUCT_REQUEST, GET_NEW_PRODUCT_SUCCESS
 } from '../constants/productConstants'
 
 export const productsReducer = (state = { products: [] }, action) => {
@@ -83,8 +85,43 @@ export const productsReducer = (state = { products: [] }, action) => {
 			return state
 	}
 }
+export const newAddedProductsReducer = (state = { products: [] }, action) => {
+	switch (action.type) {
+
+
+
+		case GET_NEW_PRODUCT_REQUEST:
+			return {
+				loading: true,
+				newProducts: [],
+			}
+
+		case GET_NEW_PRODUCT_SUCCESS:
+			return {
+				loading: false,
+				newProducts: action.payload,
+
+			}
+		case GET_NEW_PRODUCT_FAIL:
+			return {
+				loading: false,
+				error: action.payload,
+			}
+
+
+
+		case CLEAR_ERRORS:
+			return {
+				...state,
+				error: null,
+			}
+
+		default:
+			return state
+	}
+}
 export const productsPromoReducer = (state = { productsPromo: [] }, action) => {
-	
+
 	switch (action.type) {
 		case GET_PRODUCTS_PROMO_REQUEST:
 			return {
@@ -96,7 +133,7 @@ export const productsPromoReducer = (state = { productsPromo: [] }, action) => {
 			return {
 				loading: false,
 				productsPromo: action.payload,
-				
+
 			}
 
 		case GET_PRODUCTS_PROMO_FAIL:
@@ -252,7 +289,7 @@ export const statisticsReducer = (state = {}, action) => {
 				statistics: action.payload,
 			}
 
-	
+
 
 		case GET_STATISTICS_FAIL:
 			return {
@@ -260,7 +297,7 @@ export const statisticsReducer = (state = {}, action) => {
 				error: action.payload,
 			}
 
-	
+
 
 		case CLEAR_ERRORS:
 			return {

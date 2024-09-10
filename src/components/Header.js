@@ -10,6 +10,7 @@ import { Button, Divider, Dropdown, Menu } from "antd";
 import { ReactComponent as UserIcon } from "../assets/icons/mdi--user.svg";
 import { ReactComponent as CartIcon } from "../assets/icons/cart.svg";
 import { ReactComponent as PositionIcon } from "../assets/icons/position.svg";
+import { ReactComponent as ArrowDown } from "../assets/icons/arrowDown.svg";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -294,9 +295,9 @@ const Header = () => {
                     className="rounded-circle"
                     style={{ width: "25px", height: "25px" }}
                   />
-                  <span className="nav-link-inner--text font-weight-bold text-nowrap">
+                  <span className="nav-link-inner--text font-weight-bold text-nowrap" style={{ color: "white", display: "flex" }}>
                     &nbsp;{user && user.name}&nbsp;
-                    <i className="fa fa-caret-down" aria-hidden="true"></i>
+                    <ArrowDown style={{ width: "15px" }} />
                   </span>
                 </span>
                 <div

@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { newProduct, clearErrors } from "../../actions/productActions";
 import { NEW_PRODUCT_RESET } from "../../constants/productConstants";
+import { Switch } from 'antd';
 
 import { getCategory } from "../../actions/categoryAction";
 import { getBrands } from "../../actions/brandActions";
@@ -22,8 +23,12 @@ const AdminProductAdd = () => {
   const [imagesPreview, setImagesPreview] = useState([]);
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
-  const [colors, setColors] = useState([{ name: "", value: "#000000" }]);
+  const [isNew, setIsNew] = useState(false);
 
+  const [colors, setColors] = useState([{ name: "", value: "#000000" }]);
+  const handleSwitchChange = (checked) => {
+    setIsNew(checked)
+  };
   const handleAddColorPicker = () => {
     setColors([...colors, { name: "", value: "#000000" }]);
   };
@@ -85,7 +90,7 @@ const AdminProductAdd = () => {
     formData.append("category", category);
     formData.append("oldPrice", oldPrice);
     formData.append("colors", JSON.stringify(colors));
-
+    formData.append("isNew", isNew);
     formData.append("stock", stock);
     // formData.append("seller", seller);
     formData.append("subcategory", subcategory);
@@ -162,7 +167,8 @@ const AdminProductAdd = () => {
                     onChange={(e) => setOldPrice(e.target.value)}
                   />
                 </div>
-
+                <label style={{ paddingRight: "3px" }} >New Product {' '}</label>
+                <Switch onChange={handleSwitchChange} />
                 <div className="form-group">
                   <label htmlFor="price_field">
                     Price <small>*</small>

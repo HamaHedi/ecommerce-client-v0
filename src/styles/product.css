@@ -114,3 +114,25 @@
 .axis-vertical {
   display: none;
 }
+.new-product-container {
+  width: 90%;
+}
+.new-products-title {
+  color: #333333;
+  font-size: 1.9em;
+  font-weight: 700;
+  line-height: 1.375em;
+  text-transform: capitalize;
+  margin-bottom: 0.25em;
+  width: 100%;
+  display: flex;
+  padding: 30px;
+  /* justify-content: center; */
+  font-family: Montserrat;
+}
+.slick-next:before {
+  display: none;
+}
+.slick-prev:before {
+  display: none;
+}

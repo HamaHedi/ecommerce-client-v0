@@ -34,11 +34,14 @@ import {
 	GET_STATISTICS_FAIL,
 	GET_PRODUCTS_PROMO_REQUEST,
 	GET_PRODUCTS_PROMO_FAIL,
-	GET_PRODUCTS_PROMO_SUCCESS
+	GET_PRODUCTS_PROMO_SUCCESS,
+	GET_NEW_PRODUCT_FAIL,
+	GET_NEW_PRODUCT_REQUEST,
+	GET_NEW_PRODUCT_SUCCESS
 } from "../constants/productConstants";
 
 export const getProducts =
-	(keyword = "", currentPage = 1, price, category, rating = 0,subCategory,brand) =>
+	(keyword = "", currentPage = 1, price, category, rating = 0, subCategory, brand) =>
 		async (dispatch) => {
 
 			try {
@@ -46,13 +49,13 @@ export const getProducts =
 
 				let link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&ratings[gte]=${rating}`;
 
-				if (category !=="") {
-					link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}${brand&&`&brand=${brand}`}&ratings[gte]=${rating}`;
+				if (category !== "") {
+					link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}${brand && `&brand=${brand}`}&ratings[gte]=${rating}`;
 				}
-				if (subCategory !=="") {
-					link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}${brand&&`&brand=${brand}`}&subcategory=${subCategory}&ratings[gte]=${rating}`;
+				if (subCategory !== "") {
+					link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}${brand && `&brand=${brand}`}&subcategory=${subCategory}&ratings[gte]=${rating}`;
 				}
-				if (brand !=="") {
+				if (brand !== "") {
 					link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&brand=${brand}`;
 				}
 
@@ -70,33 +73,58 @@ export const getProducts =
 			}
 		};
 
+export const getNewProduct = () => async (dispatch) => {
+	try {
+		dispatch({ type: GET_NEW_PRODUCT_REQUEST });
+		const token = localStorage.getItem('token');
 
-		export const getProductPromo = () => async (dispatch) => {
-			try {
-				dispatch({ type: GET_PRODUCTS_PROMO_REQUEST });
-				const token = localStorage.getItem('token');
-		
-				const config = {
-					headers: {
-						"Authorization": token
-		
-					},
-				};
-				const { data } = await axios.get(
-					`https://api.lagha.shop/api/products-promo`, config
-				);
-		
-				dispatch({
-					type: GET_PRODUCTS_PROMO_SUCCESS,
-					payload: data.promoProducts,
-				});
-			} catch (error) {
-				dispatch({
-					type: GET_PRODUCTS_PROMO_FAIL,
-					payload: error.response.data.message,
-				});
-			}
+		const config = {
+			headers: {
+				"Authorization": token
+
+			},
 		};
+		const { data } = await axios.get(
+			`http://localhost:8000/api/new-product`, config
+		);
+
+		dispatch({
+			type: GET_NEW_PRODUCT_SUCCESS,
+			payload: data,
+		});
+	} catch (error) {
+		dispatch({
+			type: GET_NEW_PRODUCT_FAIL,
+			payload: error.response.data.message,
+		});
+	}
+};
+export const getProductPromo = () => async (dispatch) => {
+	try {
+		dispatch({ type: GET_PRODUCTS_PROMO_REQUEST });
+		const token = localStorage.getItem('token');
+
+		const config = {
+			headers: {
+				"Authorization": token
+
+			},
+		};
+		const { data } = await axios.get(
+			`https://api.lagha.shop/api/products-promo`, config
+		);
+
+		dispatch({
+			type: GET_PRODUCTS_PROMO_SUCCESS,
+			payload: data.promoProducts,
+		});
+	} catch (error) {
+		dispatch({
+			type: GET_PRODUCTS_PROMO_FAIL,
+			payload: error.response.data.message,
+		});
+	}
+};
 export const getProductDetails = (id) => async (dispatch) => {
 	try {
 		dispatch({ type: PRODUCT_DETAILS_REQUEST });
@@ -138,7 +166,7 @@ export const newProduct = (productData) => async (dispatch) => {
 		};
 
 		const { data } = await axios.post(
-			`https://api.lagha.shop/api/admin/products`,
+			`http://localhost:8000/api/admin/products`,
 			productData,
 			config
 		);
@@ -291,7 +319,7 @@ export const getStatistics = () => async (dispatch) => {
 			},
 		};
 
-		const data  = await axios.get(
+		const data = await axios.get(
 			`https://api.lagha.shop/api/statistics`, config
 		);
 
