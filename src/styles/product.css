@@ -14,7 +14,6 @@
   justify-content: center;
   align-items: center;
   padding-bottom: 30px;
-  /* background-color: #f3c69b; */
 }
 @media only screen and (max-width: 800px) {
   .categories-container {
@@ -127,7 +126,6 @@
   width: 100%;
   display: flex;
   padding: 30px;
-  /* justify-content: center; */
   font-family: Montserrat;
 }
 .slick-next:before {
