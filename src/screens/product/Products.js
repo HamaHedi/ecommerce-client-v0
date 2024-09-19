@@ -532,26 +532,29 @@ const Products = () => {
               </div>
             </div>
           )} */}
-          <div className="new-product-container" ><span className="new-products-title">
-            Nouveaux produits
-          </span>
-            {/* {newProducts?.newProducts &&
+          {!keyword && !category &&
+
+            !subcategory && <div className="new-product-container" ><span className="new-products-title">
+              Nouveaux produits
+            </span>
+              {/* {newProducts?.newProducts &&
               newProducts?.newProducts?.map((product) => (
                 <Product key={product._id} product={product} />
               ))} */}
-            {newProducts?.newProducts?.length > 0 && (
-              <div className="promo-products-container" style={{ padding: "25px" }}>
-                <Slider {...settings3}>
-                  {newProducts?.newProducts &&
-                    newProducts?.newProducts?.map((product) => (
-                      <div key={product._id}>
-                        <Product product={product} />
-                      </div>
-                    ))}
-                </Slider>
-              </div>
-            )}
-          </div>
+              {newProducts?.newProducts?.length > 0 && (
+                <div className="promo-products-container" style={{ padding: "25px" }}>
+                  <Slider {...settings3}>
+                    {newProducts?.newProducts &&
+                      newProducts?.newProducts?.map((product) => (
+                        <div key={product._id}>
+                          <Product product={product} />
+                        </div>
+                      ))}
+                  </Slider>
+                </div>
+              )}
+            </div>}
+
 
           <section
             className="container my-4"
@@ -586,9 +589,12 @@ const Products = () => {
                   className="row"
                   style={{ gap: "35px", justifyContent: "center" }}
                 >
-                  <span className="new-products-title">
-                    Nos produits
-                  </span>
+                  {!keyword && !category &&
+
+                    !subcategory && <span className="new-products-title">
+                      Nos produits
+                    </span>}
+
                   {products &&
                     products?.map((product) => (
                       <Product key={product._id} product={product} />

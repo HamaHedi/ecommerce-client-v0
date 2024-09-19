@@ -169,6 +169,8 @@ const Header = () => {
           <b
             onClick={() => {
               setKeyword();
+              setCategory()
+              setSubategory()
               setBrand("");
             }}
           >
