@@ -72,7 +72,10 @@ const Product = ({ product }) => {
             />
           </Link> */}
           <Image
+            style={{
 
+              height: "220px"
+            }}
             fallback={`${product &&
               product.images[0] &&
               "https://api.lagha.shop/" + product.images[0].path

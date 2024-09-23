@@ -23,6 +23,9 @@
 .product-image-container {
   width: 220px;
   height: 220px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .product-image {
   width: 220px;
