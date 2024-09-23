@@ -94,12 +94,12 @@ const Product = ({ product }) => {
         </span>
         <div className="d-flex align-items-end">
           <h5 className="mb-0">
-            DT {product.price && product.price.toFixed(2)}
+            {product.price && product.price.toFixed(3)}Dt
           </h5>
           &nbsp;
           {product.oldPrice !== 0 && (
             <h6 className="mb-0 text-muted">
-              <del>DT {product.oldPrice && product.oldPrice.toFixed(2)}</del>
+              <del>{product.oldPrice && product.oldPrice.toFixed(3)}Dt</del>
             </h6>
           )}
         </div>
