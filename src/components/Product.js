@@ -118,7 +118,6 @@ const Product = ({ product }) => {
           className="view-details-button"
           onClick={() => navigate(`/product/${product._id}`)}
         >
-          {" "}
           {t("view_details")}
         </button>
       </div>

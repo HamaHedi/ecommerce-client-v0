@@ -42,6 +42,7 @@ import AdminBrand from './screens/admin/AdminBrands'
 import AdminBrandAdd from './screens/admin/AdminBrandAdd'
 import AdminBrandUpdate from './screens/admin/AdminBrandUpdate'
 import Brands from './screens/brand/brand'
+import ScrollToTop from './scrollTotp'
 
 const App = () => {
 	useEffect(() => {
@@ -51,6 +52,7 @@ const App = () => {
 	return (
 		<>
 			<Router>
+				<ScrollToTop />
 				<Header />
 				<main>
 					<Routes>
@@ -102,7 +104,7 @@ const App = () => {
 								element={<AdminCategoryUpdate />}
 								exact
 							/>
-								<Route path='/admin/brand' element={<AdminBrand />} exact />
+							<Route path='/admin/brand' element={<AdminBrand />} exact />
 							<Route
 								path='/admin/brand/add'
 								element={<AdminBrandAdd />}
