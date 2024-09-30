@@ -7,13 +7,10 @@ import Login from './screens/auth/Login'
 import Register from './screens/auth/Register'
 import Cart from './screens/cart/Cart'
 import ProductDetails from './screens/product/ProductDetails'
-
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-
 import IsAuthenticatedRoutes from './routes/IsAuthenticatedRoutes'
 import IsAdminRoutes from './routes/IsAdminRoutes'
-
 import { loadUser } from './actions/userActions'
 import store from './store'
 import Profile from './screens/user/Profile'

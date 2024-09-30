@@ -166,7 +166,7 @@ export const newProduct = (productData) => async (dispatch) => {
 		};
 
 		const { data } = await axios.post(
-			`https://api.lagha.shop/api/admin/products`,
+			`http://localhost:8000/api/admin/products`,
 			productData,
 			config
 		);
