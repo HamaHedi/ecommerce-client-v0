@@ -19,7 +19,7 @@ import { useTranslation } from "react-i18next";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Tooltip } from "antd";
+import { Image, Tooltip } from "antd";
 const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(0);
@@ -160,15 +160,17 @@ const ProductDetails = () => {
 
             <div className="col-12 col-lg-5 img-fluid mt-4">
               <Sliders images={product?.images} />
-              <Sliders images={product?.certificates} width={100} />
-
+              {/* <Sliders images={product?.certificates} width={100} /> */}
+              <div style={{ display: "flex", gap: "10px", paddingTop: "10px", flexWrap: "wrap", justifyContent: "center" }}>
+                {product?.certificates?.map((cert) => <Image fallback={"https://api.lagha.shop" + cert.path} style={{ width: "80px", height: "80px" }} />)}
+              </div>
             </div>
 
             <div className="col-12 col-lg-5 mt-4">
               <h3>{product.name}</h3>
               <p>
                 {" "}
-                {t("Product")} #{product._id}
+                {t("Product")}
               </p>
 
               <hr />
