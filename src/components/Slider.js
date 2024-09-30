@@ -3,7 +3,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 import { Image } from "antd";
 
-const Slider = ({ images }) => {
+const Slider = ({ images, width }) => {
   return (
     <Carousel
       autoPlay
@@ -12,6 +12,8 @@ const Slider = ({ images }) => {
       showStatus={false}
       showIndicators={false}
       showThumbs={images && images.length === 1 ? false : true}
+
+      width={width || undefined}
     >
       {images &&
         images.map((image) => (

@@ -157,8 +157,11 @@ const ProductDetails = () => {
       ) : (
         <>
           <div className="row d-flex justify-content-around">
+
             <div className="col-12 col-lg-5 img-fluid mt-4">
               <Sliders images={product?.images} />
+              <Sliders images={product?.certificates} width={100} />
+
             </div>
 
             <div className="col-12 col-lg-5 mt-4">
