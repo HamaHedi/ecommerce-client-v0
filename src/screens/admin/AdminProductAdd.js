@@ -14,6 +14,8 @@ import { getBrands } from "../../actions/brandActions";
 
 const AdminProductAdd = () => {
   const [name, setName] = useState("");
+  const [code, setCode] = useState("");
+
   const [oldPrice, setOldPrice] = useState(0);
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
@@ -92,6 +94,7 @@ const AdminProductAdd = () => {
     formData.append("category", category);
     formData.append("oldPrice", oldPrice);
     formData.append("colors", JSON.stringify(colors));
+    formData.append("code", code);
     formData.append("isNew", isNew);
     formData.append("stock", stock);
     // formData.append("seller", seller);
@@ -181,7 +184,19 @@ const AdminProductAdd = () => {
                     </small>
                   )}
                 </div>
+                <div className="form-group">
+                  <label htmlFor="code_field">
+                    Code
+                  </label>
+                  <input
+                    type="text"
+                    id="code_field"
+                    className="form-control"
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
+                  />
 
+                </div>
                 <div className="form-group">
                   <label htmlFor="old_price_field">Old Price</label>
                   <input

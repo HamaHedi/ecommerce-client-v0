@@ -30,6 +30,7 @@ const AdminProductUpdate = () => {
   const [brand, setBrand] = useState("");
   const [colors, setColors] = useState([{ name: "", value: "#000000" }]);
   const [isNew, setIsNew] = useState(false);
+  const [code, setCode] = useState("");
 
   const handleAddColorPicker = () => {
     setColors([...colors, { name: "", value: "#000000" }]);
@@ -88,6 +89,7 @@ const AdminProductUpdate = () => {
       setSubcategory(product.subcategory);
       setBrand(product?.brand);
       setIsNew(product?.isNew);
+      setCode(product?.code);
 
       setColors(product.colors.map((color) => ({ name: color.name, value: color.value })));
     }
@@ -131,6 +133,7 @@ const AdminProductUpdate = () => {
     formData.append("seller", seller);
     formData.append("subcategory", subcategory);
     formData.append("isNew", isNew);
+    formData.append("code", code);
 
     formData.append("brand", brand);
     formData.append("colors", JSON.stringify(colors));
@@ -196,7 +199,17 @@ const AdminProductUpdate = () => {
                     </small>
                   )}
                 </div>
+                <div className="form-group">
+                  <label htmlFor="code_field">Code</label>
+                  <input
+                    type="text"
+                    id="code_field"
+                    className="form-control"
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
+                  />
 
+                </div>
                 <div className="form-group">
                   <label htmlFor="old_price_field">Old Price</label>
                   <input

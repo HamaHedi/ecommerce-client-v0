@@ -170,7 +170,7 @@ const ProductDetails = () => {
               <h3>{product.name}</h3>
               <p>
                 {" "}
-                {t("Product")}
+                {t("Product")} code: {product.code}
               </p>
 
               <hr />
