@@ -31,6 +31,10 @@ const AdminProductUpdate = () => {
   const [colors, setColors] = useState([{ name: "", value: "#000000" }]);
   const [isNew, setIsNew] = useState(false);
   const [code, setCode] = useState("");
+  const [certificates, setCertificates] = useState([]);
+
+  const [oldCertificates, setOldCertificates] = useState([]);
+  const [certificatesPreview, setCertificatesPreview] = useState([]);
 
   const handleAddColorPicker = () => {
     setColors([...colors, { name: "", value: "#000000" }]);
@@ -90,7 +94,7 @@ const AdminProductUpdate = () => {
       setBrand(product?.brand);
       setIsNew(product?.isNew);
       setCode(product?.code);
-
+      setOldCertificates(product.certificates);
       setColors(product.colors.map((color) => ({ name: color.name, value: color.value })));
     }
 
@@ -141,7 +145,9 @@ const AdminProductUpdate = () => {
     images.forEach((image) => {
       formData.append("files", image);
     });
-
+    certificates.forEach((certificate) => {
+      formData.append("certificates", certificate);
+    });
     dispatch(updateProduct(product._id, formData));
     dispatch(getProductDetails(id));
   };
@@ -166,7 +172,25 @@ const AdminProductUpdate = () => {
       reader.readAsDataURL(file);
     });
   };
+  const handleCertificates = (e) => {
+    const files = Array.from(e.target.files);
 
+    setCertificatesPreview([]);
+    setCertificates([]);
+    setOldCertificates([])
+    files.forEach((file) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setCertificatesPreview((oldArray) => [...oldArray, reader.result]);
+          setCertificates([...e.target.files]);
+        }
+      };
+
+      reader.readAsDataURL(file);
+    });
+  };
   return (
     <section className="container my-4">
       <div className="row" style={{ minHeight: "80vh" }}>
@@ -453,7 +477,46 @@ const AdminProductUpdate = () => {
                     />
                   ))}
                 </div>
+                <div className="form-group">
+                  <label>
+                    Certificates <small>*</small>
+                  </label>
 
+                  <div className="custom-file">
+                    <input
+                      type="file"
+                      name="product_images"
+                      className="custom-file-input"
+                      id="customFile"
+                      onChange={handleCertificates}
+                      multiple
+                    />
+                    <label className="custom-file-label" htmlFor="customFile">
+                      Choose Certificates
+                    </label>
+                  </div>
+                  {oldCertificates &&
+                    oldCertificates.map((img) => (
+                      <img
+                        key={img}
+                        src={"https://api.lagha.shop/" + img.path}
+                        alt={img.path}
+                        className="mt-3 mr-2"
+                        width="55"
+                        height="52"
+                      />
+                    ))}
+                  {certificatesPreview?.map((img) => (
+                    <img
+                      src={img}
+                      key={img}
+                      alt="Images Preview"
+                      className="mt-3 mr-2"
+                      width="55"
+                      height="52"
+                    />
+                  ))}
+                </div>
                 <button
                   id="login_button"
                   type="submit"
