@@ -6,15 +6,15 @@ const Banner = () => {
 	return (
 
 
-		<Carousel autoPlay infiniteLoop >
+		<Carousel autoPlay infiniteLoop interval={5000} emulateTouch>
 			<div>
-				<img src="/affiche_web_together_copy.jpeg" />
+				<img src="/7050318-01.jpg" style={{ maxHeight: "671px" }} />
+			</div>
+			<div>
+				<img src="/affiche_web_together.jpeg" />
 			</div>
 			<div>
 				<img src="/cover.jpg" />
-			</div>
-			<div>
-				<img src="/affiche_web_together_copy.jpeg" />
 			</div>
 		</Carousel>
 
