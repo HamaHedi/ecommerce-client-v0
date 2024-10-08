@@ -232,7 +232,7 @@ const Header = () => {
                 gap: "25px",
               }}
             >
-              <Link to="/">
+              {windowWidth <= 1000 && <><Link to="/">
 
                 <span
                   data-toggle="collapse"
@@ -249,113 +249,113 @@ const Header = () => {
                 </span>
               </Link>
 
-              <Link to="/contact" >
-                <span className="navigation-item"
-                  data-toggle="collapse"
-                  data-target="#navbar-default"
-                  aria-expanded="false"
-
-                >
-                  {t("contact")}
-                </span>
-              </Link>
-              <Dropdown
-                overlay={<CategoriesItem />}
-                placement="bottom"
-                arrow
-                overlayStyle={{
-                  borderRadius: "5px",
-                  background: "white",
-                  padding: "25px",
-                  boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-                }}
-              >
-                <span className="navigation-item">{t("categories")}</span>
-              </Dropdown>
-              {user && user.name ? (
-                <li className="nav-item dropdown">
-                  <span
-                    className="nav-link nav-link-icon"
-                    style={{ cursor: "pointer", display: "flex" }}
-                    id="navbar-default_dropdown_1"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
+                <Link to="/contact" >
+                  <span className="navigation-item"
+                    data-toggle="collapse"
+                    data-target="#navbar-default"
                     aria-expanded="false"
+
                   >
-                    <img
-                      src={user && `https://api.lagha.shop${user.avatar}`}
-                      alt="user"
-                      className="rounded-circle"
-                      style={{ width: "25px", height: "25px" }}
-                    />
-                    <span className="nav-link-inner--text font-weight-bold text-nowrap" style={{ display: "flex" }}>
-                      &nbsp;{user && user.name}&nbsp;
-                      <ArrowDown style={{ width: "15px" }} />
-                    </span>
+                    {t("contact")}
                   </span>
-                  <div
-                    className="dropdown-menu dropdown-menu-right"
-                    aria-labelledby="navbar-default_dropdown_1"
-                  >
-                    {user && user.role === "admin" && (
-                      <Link
-                        to="/dashboard"
-                        className="dropdown-item d-flex align-items-center"
-                      >
-                        <i className="fa fa-bar-chart" aria-hidden="true"></i>
-                        {t("dashboard")}
-                      </Link>
-                    )}
-
-                    <Link
-                      to="/orders"
-                      className="dropdown-item d-flex align-items-center"
-                    >
-                      <i className="fa fa-credit-card-alt" aria-hidden="true"></i>
-                      {t("orders")}
-                    </Link>
-
-                    <Link
-                      to="/profile"
-                      className="dropdown-item d-flex align-items-center"
-                    >
-                      <i className="fa fa-user-circle" aria-hidden="true"></i>
-                      {t("profile")}
-                    </Link>
-
-                    <Link
-                      to="/settings"
-                      className="dropdown-item d-flex align-items-center"
-                    >
-                      <i className="fa fa-cog" aria-hidden="true"></i>
-                      {t("settings")}
-                    </Link>
-
-                    <div className="dropdown-divider"></div>
-
-                    <button
-                      className="dropdown-item d-flex align-items-center"
-                      onClick={logoutHandler}
-                    >
-                      <i className="fa fa-sign-out" aria-hidden="true"></i>
-                      {t("logout")}
-                    </button>
-                  </div>
-                </li>
-              ) : (
-                !loading && (
-                  <Link to="/login"  >
-
-                    <span className="navigation-item" data-toggle="collapse"
-                      data-target="#navbar-default"
+                </Link>
+                <Dropdown
+                  overlay={<CategoriesItem />}
+                  placement="bottom"
+                  arrow
+                  overlayStyle={{
+                    borderRadius: "5px",
+                    background: "white",
+                    padding: "25px",
+                    boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+                  }}
+                >
+                  <span className="navigation-item">{t("categories")}</span>
+                </Dropdown>
+                {user && user.name ? (
+                  <li className="nav-item dropdown">
+                    <span
+                      className="nav-link nav-link-icon"
+                      style={{ cursor: "pointer", display: "flex" }}
+                      id="navbar-default_dropdown_1"
+                      role="button"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
                       aria-expanded="false"
                     >
-                      {t("sign_in")}
+                      <img
+                        src={user && `https://api.lagha.shop${user.avatar}`}
+                        alt="user"
+                        className="rounded-circle"
+                        style={{ width: "25px", height: "25px" }}
+                      />
+                      <span className="nav-link-inner--text font-weight-bold text-nowrap" style={{ display: "flex" }}>
+                        &nbsp;{user && user.name}&nbsp;
+                        <ArrowDown style={{ width: "15px" }} />
+                      </span>
                     </span>
-                  </Link>
-                )
-              )}
+                    <div
+                      className="dropdown-menu dropdown-menu-right"
+                      aria-labelledby="navbar-default_dropdown_1"
+                    >
+                      {user && user.role === "admin" && (
+                        <Link
+                          to="/dashboard"
+                          className="dropdown-item d-flex align-items-center"
+                        >
+                          <i className="fa fa-bar-chart" aria-hidden="true"></i>
+                          {t("dashboard")}
+                        </Link>
+                      )}
+
+                      <Link
+                        to="/orders"
+                        className="dropdown-item d-flex align-items-center"
+                      >
+                        <i className="fa fa-credit-card-alt" aria-hidden="true"></i>
+                        {t("orders")}
+                      </Link>
+
+                      <Link
+                        to="/profile"
+                        className="dropdown-item d-flex align-items-center"
+                      >
+                        <i className="fa fa-user-circle" aria-hidden="true"></i>
+                        {t("profile")}
+                      </Link>
+
+                      <Link
+                        to="/settings"
+                        className="dropdown-item d-flex align-items-center"
+                      >
+                        <i className="fa fa-cog" aria-hidden="true"></i>
+                        {t("settings")}
+                      </Link>
+
+                      <div className="dropdown-divider"></div>
+
+                      <button
+                        className="dropdown-item d-flex align-items-center"
+                        onClick={logoutHandler}
+                      >
+                        <i className="fa fa-sign-out" aria-hidden="true"></i>
+                        {t("logout")}
+                      </button>
+                    </div>
+                  </li>
+                ) : (
+                  !loading && (
+                    <Link to="/login"  >
+
+                      <span className="navigation-item" data-toggle="collapse"
+                        data-target="#navbar-default"
+                        aria-expanded="false"
+                      >
+                        {t("sign_in")}
+                      </span>
+                    </Link>
+                  )
+                )}</>}
             </div>
           }
           <ul className="navbar-nav ml-lg-auto" style={{ width: "100%", display: "flex", alignItems: "center" }}>
