@@ -1,7 +1,6 @@
 .product-card-container {
   padding: 15px;
   border-radius: 5px;
-  min-width: 330px;
   border: 1px solid #e4e4e4;
   position: relative;
 }
@@ -61,7 +60,6 @@
   font-weight: 700;
   width: 100%;
   overflow: hidden;
-  width: 300px;
   text-align: center;
   margin: 0 0 5px;
   line-height: normal;

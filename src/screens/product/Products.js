@@ -183,18 +183,18 @@ const Products = () => {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
+          slidesToShow: 1,
+          slidesToScroll: 1,
           infinite: true,
-          dots: true,
+          dots: false,
         },
       },
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2,
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          initialSlide: 1,
         },
       },
       {
@@ -542,7 +542,7 @@ const Products = () => {
                 <Product key={product._id} product={product} />
               ))} */}
               {newProducts?.newProducts?.length > 0 && (
-                <div className="promo-products-container" style={{ padding: "25px" }}>
+                <div className="promo-products-container" style={{ padding: "50px" }}>
                   <Slider {...settings3}>
                     {newProducts?.newProducts &&
                       newProducts?.newProducts?.map((product) => (

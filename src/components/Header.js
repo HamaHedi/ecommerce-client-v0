@@ -26,7 +26,6 @@ const Header = () => {
     setBrand,
   } = useGlobalState();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -90,7 +89,6 @@ const Header = () => {
             </span>
           ))}
         </div>
-        <img src="./assets/cover1.png" alt="Cover" />
       </div>
     );
   };
@@ -164,8 +162,7 @@ const Header = () => {
             <i className="fa fa-search" aria-hidden="true" style={{ paddingRight: "10px" }}></i>
           </div>
         </form>
-        <Link to="/" className="navbar-brand">
-          {/* <img src='/assets/logo.png' alt='logo' /> */}
+        {windowWidth > 550 ? <Link to="/" className="navbar-brand">
           <b
             onClick={() => {
               setKeyword();
@@ -180,7 +177,8 @@ const Header = () => {
               style={{ height: "65px" }}
             />
           </b>
-        </Link>
+        </Link> : null}
+
 
         <button
           className="navbar-toggler border"
@@ -234,9 +232,13 @@ const Header = () => {
                 gap: "25px",
               }}
             >
-              {/* <Link to="/">
-                {" "}
+              <Link to="/">
+
                 <span
+                  data-toggle="collapse"
+                  data-target="#navbar-default"
+                  aria-expanded="false"
+
                   className="navigation-item"
                   onClick={() => {
                     setKeyword();
@@ -245,15 +247,19 @@ const Header = () => {
                 >
                   {t("home")}
                 </span>
-              </Link> */}
+              </Link>
 
-              {/* <span
-                className="navigation-item"
-                onClick={() => navigate("/contact")}
-              >
-                {t("contact")}
-              </span> */}
-              {/* <Dropdown
+              <Link to="/contact" >
+                <span className="navigation-item"
+                  data-toggle="collapse"
+                  data-target="#navbar-default"
+                  aria-expanded="false"
+
+                >
+                  {t("contact")}
+                </span>
+              </Link>
+              <Dropdown
                 overlay={<CategoriesItem />}
                 placement="bottom"
                 arrow
@@ -265,7 +271,91 @@ const Header = () => {
                 }}
               >
                 <span className="navigation-item">{t("categories")}</span>
-              </Dropdown> */}
+              </Dropdown>
+              {user && user.name ? (
+                <li className="nav-item dropdown">
+                  <span
+                    className="nav-link nav-link-icon"
+                    style={{ cursor: "pointer", display: "flex" }}
+                    id="navbar-default_dropdown_1"
+                    role="button"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <img
+                      src={user && `https://api.lagha.shop${user.avatar}`}
+                      alt="user"
+                      className="rounded-circle"
+                      style={{ width: "25px", height: "25px" }}
+                    />
+                    <span className="nav-link-inner--text font-weight-bold text-nowrap" style={{ display: "flex" }}>
+                      &nbsp;{user && user.name}&nbsp;
+                      <ArrowDown style={{ width: "15px" }} />
+                    </span>
+                  </span>
+                  <div
+                    className="dropdown-menu dropdown-menu-right"
+                    aria-labelledby="navbar-default_dropdown_1"
+                  >
+                    {user && user.role === "admin" && (
+                      <Link
+                        to="/dashboard"
+                        className="dropdown-item d-flex align-items-center"
+                      >
+                        <i className="fa fa-bar-chart" aria-hidden="true"></i>
+                        {t("dashboard")}
+                      </Link>
+                    )}
+
+                    <Link
+                      to="/orders"
+                      className="dropdown-item d-flex align-items-center"
+                    >
+                      <i className="fa fa-credit-card-alt" aria-hidden="true"></i>
+                      {t("orders")}
+                    </Link>
+
+                    <Link
+                      to="/profile"
+                      className="dropdown-item d-flex align-items-center"
+                    >
+                      <i className="fa fa-user-circle" aria-hidden="true"></i>
+                      {t("profile")}
+                    </Link>
+
+                    <Link
+                      to="/settings"
+                      className="dropdown-item d-flex align-items-center"
+                    >
+                      <i className="fa fa-cog" aria-hidden="true"></i>
+                      {t("settings")}
+                    </Link>
+
+                    <div className="dropdown-divider"></div>
+
+                    <button
+                      className="dropdown-item d-flex align-items-center"
+                      onClick={logoutHandler}
+                    >
+                      <i className="fa fa-sign-out" aria-hidden="true"></i>
+                      {t("logout")}
+                    </button>
+                  </div>
+                </li>
+              ) : (
+                !loading && (
+                  <Link to="/login"  >
+
+                    <span className="navigation-item" data-toggle="collapse"
+                      data-target="#navbar-default"
+                      aria-expanded="false"
+                    >
+                      {t("sign_in")}
+                    </span>
+                  </Link>
+                )
+              )}
             </div>
           }
           <ul className="navbar-nav ml-lg-auto" style={{ width: "100%", display: "flex", alignItems: "center" }}>
@@ -279,8 +369,7 @@ const Header = () => {
               </Link>
             </li>
             <hr width="2" size="500" style={{ background: "white", height: "40px" }} />
-
-            {user && user.name ? (
+            {windowWidth > 1000 && user && user.name ? (
               <li className="nav-item dropdown">
                 <span
                   className="nav-link nav-link-icon"
@@ -364,6 +453,7 @@ const Header = () => {
                 </li>
               )
             )}
+
             <li className="nav-item">
               <Link to="/cart" className="nav-link nav-link-icon mt-3 mt-lg-0" style={{ display: "flex" }}>
                 <CartIcon style={{ width: "20px", fill: 'white' }} />
