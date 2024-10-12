@@ -36,6 +36,28 @@ const AdminProductUpdate = () => {
   const [oldCertificates, setOldCertificates] = useState([]);
   const [certificatesPreview, setCertificatesPreview] = useState([]);
 
+  const [sizes, setSizes] = useState([{ sizeName: "", sizePrice: "" }]);
+  const handleSizeNameChange = (index, name) => {
+    const updatedSizes = [...sizes];
+    updatedSizes[index].sizeName = name;
+    setSizes(updatedSizes);
+  };
+
+  const handleSizePriceChange = (index, price) => {
+    const updatedSizes = [...sizes];
+    updatedSizes[index].sizePrice = price;
+    setSizes(updatedSizes);
+  };
+
+  const handleRemoveSizePicker = (index) => {
+    const updatedSizes = sizes.filter((_, i) => i !== index);
+    setSizes(updatedSizes);
+  };
+
+  const handleAddSizePicker = () => {
+    setSizes([...sizes, { sizeName: "", sizePrice: "" }]);
+  };
+
   const handleAddColorPicker = () => {
     setColors([...colors, { name: "", value: "#000000" }]);
   };
@@ -96,6 +118,8 @@ const AdminProductUpdate = () => {
       setCode(product?.code);
       setOldCertificates(product.certificates);
       setColors(product.colors.map((color) => ({ name: color.name, value: color.value })));
+      setSizes(product?.sizes.map((size) => ({ sizeName: size.sizeName, sizePrice: size.sizePrice })));
+
     }
 
     if (error && error.message) {
@@ -138,6 +162,7 @@ const AdminProductUpdate = () => {
     formData.append("subcategory", subcategory);
     formData.append("isNew", isNew);
     formData.append("code", code);
+    formData.append("sizes", JSON.stringify(sizes));
 
     formData.append("brand", brand);
     formData.append("colors", JSON.stringify(colors));
@@ -420,8 +445,43 @@ const AdminProductUpdate = () => {
                     Add Color
                   </div>
                 </div>
-
-                <div className="form-group">
+                <div style={{ paddingTop: "10px", paddingBottom: "10px" }}>
+                  <span>Sizes</span>
+                  {sizes.map((size, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "3px",
+                        marginBottom: "8px",
+                      }}
+                    >
+                      <input
+                        type="text"
+                        placeholder="Size Name"
+                        value={size.sizeName}
+                        onChange={(e) => handleSizeNameChange(index, e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Size Price"
+                        value={size.sizePrice}
+                        onChange={(e) => handleSizePriceChange(index, e.target.value)}
+                      />
+                      <div
+                        onClick={() => handleRemoveSizePicker(index)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        Remove
+                      </div>
+                    </div>
+                  ))}
+                  <div onClick={handleAddSizePicker} style={{ cursor: "pointer" }}>
+                    Add Size
+                  </div>
+                </div>
+                {/* <div className="form-group">
                   <label htmlFor="seller_field">Seller Name</label>
                   <input
                     type="text"
@@ -435,7 +495,7 @@ const AdminProductUpdate = () => {
                       {error.errors.seller}
                     </small>
                   )}
-                </div>
+                </div> */}
 
                 <div className="form-group">
                   <label>Images</label>
