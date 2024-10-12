@@ -51,7 +51,7 @@ const Footer = () => {
     <footer
       class="relative pt-8 pb-6"
       style={{
-        background: "#f9c3bb",
+        background: "rgb(209, 47, 40)",
         display: "flex",
         alignItems: "center",
         flexWrap: "wrap",
@@ -70,7 +70,7 @@ const Footer = () => {
       >
         <span
           style={{
-            color: "#1a1a1a",
+            color: "white",
             fontSize: "25px",
             position: "relative",
             marginBottom: "5px",
@@ -83,6 +83,8 @@ const Footer = () => {
         </span>
         <span
           style={{
+            color: "white",
+
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -93,6 +95,8 @@ const Footer = () => {
         </span>
         <span
           style={{
+            color: "white",
+
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -103,6 +107,8 @@ const Footer = () => {
         </span>
         <span
           style={{
+            color: "white",
+
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -114,6 +120,8 @@ const Footer = () => {
       </div>
       <div
         style={{
+          color: "white",
+
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -123,7 +131,7 @@ const Footer = () => {
       >
         <span
           style={{
-            color: "#1a1a1a",
+            color: "white",
             fontSize: "25px",
             position: "relative",
             marginBottom: "5px",
@@ -136,6 +144,8 @@ const Footer = () => {
         </span>
         <div
           style={{
+            color: "white",
+
             display: "flex",
             justifyContent: "center",
             gap: "10px",
@@ -165,7 +175,7 @@ const Footer = () => {
       <div className="newsletter-subscription-container">
         <span
           style={{
-            color: "#1a1a1a",
+            color: "white",
             fontSize: "25px",
             position: "relative",
             marginBottom: "15px",
@@ -178,7 +188,7 @@ const Footer = () => {
         </span>
         <p
           style={{
-            color: "#1a1a1a",
+            color: "white",
             fontSize: "16px",
             position: "relative",
             marginBottom: "5px",
@@ -196,7 +206,9 @@ const Footer = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <button className="login-button" onClick={handleNewsletter}>
+        <button className="login-button" style={{
+          color: "white",
+        }} onClick={handleNewsletter}>
           {t("subscribe")}
         </button>
       </div>
