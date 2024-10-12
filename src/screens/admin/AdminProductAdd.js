@@ -114,6 +114,8 @@ const AdminProductAdd = () => {
     formData.append("category", category);
     formData.append("oldPrice", oldPrice);
     formData.append("colors", JSON.stringify(colors));
+    formData.append("sizes", JSON.stringify(sizes));
+
     formData.append("code", code);
     formData.append("isNew", isNew);
     formData.append("stock", stock);

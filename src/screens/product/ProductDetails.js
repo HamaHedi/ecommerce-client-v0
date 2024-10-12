@@ -20,6 +20,9 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Image, Tooltip } from "antd";
+import { Radio } from 'antd';
+import "../../styles/productdetails.css";
+
 const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(0);
@@ -148,6 +151,12 @@ const ProductDetails = () => {
       },
     ],
   };
+  const [value, setValue] = useState();
+  useEffect(() => { setValue(product?.sizes?.[0]?.sizePrice) }, [product])
+  const onChange = (e) => {
+    setValue(e.target.value);
+  };
+
   return (
     <section className="container my-4">
       {loading ? (
@@ -177,7 +186,7 @@ const ProductDetails = () => {
 
               <div className="d-flex align-items-end">
                 <h4 className="mb-0">
-                  DT {product.price && product.price.toFixed(2)}
+                  DT {value ? Number(value).toFixed(2) : product.price && product.price.toFixed(2)}
                 </h4>
                 &nbsp;
                 {product.oldPrice !== 0 && (
@@ -225,33 +234,44 @@ const ProductDetails = () => {
                   ))}
                 </div>
               )} */}
-              {product?.colors && <h4>{t("Colors")}</h4>}
+              {product?.colors?.length > 0 && <> {product?.colors && <h4>{t("Colors")}</h4>}
 
-              <div
-                className="promo-products-container"
-                style={{ padding: "25px" }}
-              >
-                <Slider {...settings}>
-                  {product?.colors &&
-                    product?.colors?.map((color, index) => (
-                      <Tooltip title={color?.name}>
-                        <div key={index}>
-                          <span
-                            style={{
-                              display: "inline-block",
-                              width: "30px",
-                              height: "30px",
-                              backgroundColor: color?.value,
-                              borderRadius: "50px",
-                              margin: "5px",
-                            }}
-                          ></span>
-                        </div>
-                      </Tooltip>
-                    ))}
-                </Slider>
-              </div>
+                <div
+                  className="promo-products-container"
+                  style={{ padding: "25px" }}
+                >
+                  <Slider {...settings}>
+                    {product?.colors &&
+                      product?.colors?.map((color, index) => (
+                        <Tooltip title={color?.name}>
+                          <div key={index}>
+                            <span
+                              style={{
+                                display: "inline-block",
+                                width: "30px",
+                                height: "30px",
+                                backgroundColor: color?.value,
+                                borderRadius: "50px",
+                                margin: "5px",
+                              }}
+                            ></span>
+                          </div>
+                        </Tooltip>
+                      ))}
+                  </Slider>
+                </div>              <hr />
+              </>}
+
+
+              <h4>{t("PACK/SIZE")}</h4>
+
+              <Radio.Group onChange={onChange} value={value} defaultValue={product?.sizes?.[0]?.sizePrice}>
+
+                {product?.sizes?.map((size) => <Radio key={size?.sizePrice} value={size?.sizePrice}><p style={{ fontFamily: "monospace" }}>{size?.sizeName}</p></Radio>
+                )}
+              </Radio.Group>
               <hr />
+
               <div className="row">
                 <div className="col">
                   <div className="input-group">
@@ -380,6 +400,7 @@ const ProductDetails = () => {
               </div>
             </div>
           </div>
+
         </>
       )}
     </section>
