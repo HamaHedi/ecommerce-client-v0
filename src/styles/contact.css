@@ -1,105 +1,102 @@
 .map-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 25px;
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 25px;
+  width: 100%;
 }
 .contacts-container {
-    display: flex;
-    padding: 20px;
-    align-items: center;
-    width: 100%;
-
+  display: flex;
+  padding: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
 }
 .contact-form-container {
-    width: 100%;
-    display: flex;
-    gap: 15px;
-    max-width: 600px;
-    flex-direction: column;
+  width: 100%;
+  display: flex;
+  gap: 15px;
+  max-width: 600px;
+  flex-direction: column;
 }
 .contact-form-title {
-    color: #1a1a1a;
-    font-family: Montserrat;
-    font-weight: 700;
-    font-size: 25px;
-    text-align: center;
-    letter-spacing: 0em;
-    margin: 0 0 15px;
-    line-height: 1.4;
-
+  color: #1a1a1a;
+  font-family: Montserrat;
+  font-weight: 700;
+  font-size: 25px;
+  text-align: center;
+  letter-spacing: 0em;
+  margin: 0 0 15px;
+  line-height: 1.4;
 }
 .contact-info-container {
-    display: flex;
-    flex-direction: column;
-    width: 50%;
-    flex-wrap: wrap;
-    padding: 50px;
-    gap: 80px;
-    justify-content: center;
-   
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  flex-wrap: wrap;
+  padding: 50px;
+  gap: 80px;
+  justify-content: center;
 }
 .icon-container {
-    background: #333333;
-    width: 50px;
-    display: flex;
-    justify-content: center;
-    height: 50px;
-    border-radius: 50%;
-    align-items: center;
+  background: #333333;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  height: 50px;
+  border-radius: 50%;
+  align-items: center;
 }
-.icon-container:hover { background: #f9c3bb;}
+.icon-container:hover {
+  background: rgb(209, 47, 40);
+}
 .phone-contact {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;   
-    gap: 10px;  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
 }
 .email-contact {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 10px;  
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
 }
 .address-contact {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column; 
-    gap: 10px;  
-    
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
 }
-svg{
-    width: 25px;   
-    fill: white;     
+svg {
+  width: 25px;
+  fill: white;
 }
-svg:hover{
-    width: 25px;   
-    fill: #333333;  
-       
+svg:hover {
+  width: 25px;
+  fill: #333333;
 }
 
 .title {
-    color: #1a1a1a;
-    font-family: Montserrat;
-    font-weight: 700;
-    font-size: 20px;
-    letter-spacing: 1px;
+  color: #1a1a1a;
+  font-family: Montserrat;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 1px;
 }
 .title:hover {
-    color: #f9c3bb;
-
+  color: rgb(209, 47, 40);
 }
 span {
-    color: #6a6a6a;
-    letter-spacing: 0em;
-    font-family: Cardo;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 1.5;
+  color: #6a6a6a;
+  letter-spacing: 0em;
+  font-family: Cardo;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
 }
