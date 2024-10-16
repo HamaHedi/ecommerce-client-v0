@@ -277,7 +277,7 @@ export const newReview = (reviewData) => async (dispatch) => {
 	}
 };
 
-export const getAdminProducts = (currentPage) => async (dispatch) => {
+export const getAdminProducts = (currentPage, search) => async (dispatch) => {
 	try {
 		dispatch({ type: ADMIN_PRODUCTS_REQUEST });
 		const token = localStorage.getItem('token');
@@ -291,7 +291,7 @@ export const getAdminProducts = (currentPage) => async (dispatch) => {
 		};
 
 		const { data } = await axios.get(
-			`https://api.lagha.shop/api/admin/products?page=${currentPage}`, config
+			`https://api.lagha.shop/api/admin/products?page=${currentPage}&search=${search}`, config
 		);
 
 		dispatch({

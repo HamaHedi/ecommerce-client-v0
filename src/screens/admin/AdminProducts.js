@@ -17,12 +17,12 @@ const AdminProducts = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const { loading, error, products, pagination } = useSelector((state) => state.products)
 	const { error: deleteError, isDeleted } = useSelector((state) => state.product)
-
+	const [searchString, setSearchString] = useState("")
 	function setCurrentPageNo(pageNumber) {
 		setCurrentPage(pageNumber);
 	}
 	useEffect(() => {
-		dispatch(getAdminProducts(currentPage))
+		dispatch(getAdminProducts(currentPage, searchString))
 
 		if (error) {
 			toast.error(error, {
@@ -48,7 +48,7 @@ const AdminProducts = () => {
 			navigate('/admin/products')
 			dispatch({ type: DELETE_PRODUCT_RESET })
 		}
-	}, [dispatch, error, deleteError, isDeleted, navigate, currentPage])
+	}, [dispatch, error, deleteError, isDeleted, navigate, currentPage, searchString])
 
 	const deleteProductHandler = (id) => {
 		dispatch(deleteProduct(id))
@@ -144,22 +144,21 @@ const AdminProducts = () => {
 							</Link>
 						</div>
 						<div className='card-body px-0'>
-							{loading ? (
-								<Loader />
-							) : (
+							{
 								<MDBDataTable
 									data={setProducts()}
 									className='text-center px-3'
 									bordered
 									striped
 									hover
+									onSearch={(e) => setSearchString(e)}
 									noBottomColumns
 									responsive
 									info={false}
 									paginationLabel={['<', '>']}
 									paging={products && products.length > 10 ? true : false}
 								/>
-							)}
+							}
 						</div>
 						<div className='card-footer'>Total: {pagination && pagination?.totalProducts}</div>
 						<div
