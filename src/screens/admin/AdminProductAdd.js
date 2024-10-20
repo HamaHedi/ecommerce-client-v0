@@ -11,11 +11,12 @@ import { Switch } from 'antd';
 
 import { getCategory } from "../../actions/categoryAction";
 import { getBrands } from "../../actions/brandActions";
-
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 const AdminProductAdd = () => {
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
-
+  const [value, setValue] = useState('');
   const [oldPrice, setOldPrice] = useState(0);
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
@@ -112,7 +113,7 @@ const AdminProductAdd = () => {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("price", price);
-    formData.append("description", description);
+    formData.append("description", value);
     formData.append("category", category);
     formData.append("oldPrice", oldPrice);
     formData.append("colors", JSON.stringify(colors));
@@ -252,20 +253,22 @@ const AdminProductAdd = () => {
                   )}
                 </div>
 
-                <div className="form-group">
+                <div className="form-group" style={{ height: "300px" }}>
                   <label htmlFor="description_field">Description</label>
-                  <textarea
+                  {/* <textarea
                     className="form-control"
                     id="description_field"
                     rows="8"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                  ></textarea>
-                  {error && error.errors && error.errors.description && (
+                  ></textarea> */}
+                  <ReactQuill theme="snow" value={value} onChange={setValue} style={{ height: "220px" }} />
+
+                  {/* {error && error.errors && error.errors.description && (
                     <small className="form-text text-danger text-left mt-2 mx-1">
                       {error.errors.description}
                     </small>
-                  )}
+                  )} */}
                 </div>
 
                 <div className="form-group">

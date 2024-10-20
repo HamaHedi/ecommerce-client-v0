@@ -231,7 +231,7 @@ const ProductDetails = () => {
               <hr />
 
               <h4>{t("Description")}</h4>
-              <p>{product.description}</p>
+              <p dangerouslySetInnerHTML={{ __html: product.description }} />
 
               <hr />
               {/* {product?.colors && (
