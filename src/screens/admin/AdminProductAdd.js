@@ -28,6 +28,8 @@ const AdminProductAdd = () => {
   const [isNew, setIsNew] = useState(false);
   const [certificates, setCertificates] = useState([]);
   const [certificatesPreview, setCertificatesPreview] = useState([]);
+  const [selectedTeintes, setSelectedTeintes] = useState();
+
   const [sizes, setSizes] = useState([{ sizeName: "", sizePrice: "" }]);
   const handleSizeNameChange = (index, name) => {
     const updatedSizes = [...sizes];
@@ -103,7 +105,7 @@ const AdminProductAdd = () => {
       dispatch({ type: NEW_PRODUCT_RESET });
     }
   }, [dispatch, error, success, navigate]);
-
+  const teinteOptions = [{ title: "Anea", value: "anea" }]
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -115,6 +117,7 @@ const AdminProductAdd = () => {
     formData.append("oldPrice", oldPrice);
     formData.append("colors", JSON.stringify(colors));
     formData.append("sizes", JSON.stringify(sizes));
+    formData.append("teints", selectedTeintes);
 
     formData.append("code", code);
     formData.append("isNew", isNew);
@@ -459,7 +462,29 @@ const AdminProductAdd = () => {
                     </small>
                   )}
                 </div> */}
+                <div className="form-group">
+                  <label htmlFor="category_field">
+                    Teintes
+                  </label>
+                  <select
+                    className="form-control"
+                    id="brand_field"
+                    value={selectedTeintes}
+                    onChange={(e) => setSelectedTeintes(e.target.value)}
+                  >
+                    <option value="" selected disabled hidden>
+                      Choose one
+                    </option>
 
+                    {teinteOptions &&
+                      teinteOptions?.map((x) => (
+                        <option key={x._id} value={x.title}>
+                          {x.title}
+                        </option>
+                      ))}
+                  </select>
+
+                </div>
                 <div className="form-group">
                   <label>
                     Images <small>*</small>
