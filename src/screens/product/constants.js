@@ -1,10 +1,5 @@
 export const teinteImages = [
 
-
-
-
-
-
     '/anea/0.00.png',
     '/anea/0.1.png',
     '/anea/0.3.png',

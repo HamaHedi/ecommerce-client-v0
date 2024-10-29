@@ -106,7 +106,7 @@ const AdminProductAdd = () => {
       dispatch({ type: NEW_PRODUCT_RESET });
     }
   }, [dispatch, error, success, navigate]);
-  const teinteOptions = [{ title: "Anea", value: "anea" }]
+  const teinteOptions = [{ title: "Anea", value: "anea" }, { title: "Togethair", value: "togethair" }]
   const submitHandler = (e) => {
     e.preventDefault();
 
