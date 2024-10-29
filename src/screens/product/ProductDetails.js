@@ -277,14 +277,21 @@ const ProductDetails = () => {
                   )}
                 </Radio.Group>              <hr />
               </>}
-
-              <div className="teintes-container">
+              {product?.teints && <div className="teintes-container">
                 <h4>{t("All Teintes")}</h4>
                 <div style={{ display: "flex", flexDirection: "column" }}>  <div onClick={showModal} style={{ marginTop: 10, cursor: "pointer" }}>
                   See All
                 </div>
                   <div className="teintes-scroll-list" style={{ display: 'flex', overflowX: 'scroll', maxWidth: "400px" }}>
-                    {teinteImages.slice(0, 10).map((src, index) => (
+                    {product?.teints === 'Anea' && teinteImages.slice(0, 10).map((src, index) => (
+                      <img
+                        key={index}
+                        src={src}
+                        alt={`Teinte ${index + 1}`}
+                        style={{ width: "60px", height: "60px", marginRight: 10 }}
+                      />
+                    ))}
+                    {product?.teints === 'Togethair' && beigeIrise.colors.slice(0, 10).map((src, index) => (
                       <img
                         key={index}
                         src={src}
@@ -293,7 +300,6 @@ const ProductDetails = () => {
                       />
                     ))}
                   </div></div>
-
 
 
 
@@ -771,7 +777,9 @@ const ProductDetails = () => {
 
 
                 </Modal>
-              </div>
+              </div>}
+
+
               <hr />
               <div className="row">
                 <div className="col">
