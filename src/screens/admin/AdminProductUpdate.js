@@ -32,6 +32,8 @@ const AdminProductUpdate = () => {
   const [isNew, setIsNew] = useState(false);
   const [code, setCode] = useState("");
   const [certificates, setCertificates] = useState([]);
+  const [selectedTeintes, setSelectedTeintes] = useState();
+  const teinteOptions = [{ title: "Anea", value: "anea" }, { title: "Togethair", value: "togethair" }]
 
   const [oldCertificates, setOldCertificates] = useState([]);
   const [certificatesPreview, setCertificatesPreview] = useState([]);
@@ -163,6 +165,7 @@ const AdminProductUpdate = () => {
     formData.append("isNew", isNew);
     formData.append("code", code);
     formData.append("sizes", JSON.stringify(sizes));
+    formData.append("teints", selectedTeintes);
 
     formData.append("brand", brand);
     formData.append("colors", JSON.stringify(colors));
@@ -496,7 +499,29 @@ const AdminProductUpdate = () => {
                     </small>
                   )}
                 </div> */}
+                <div className="form-group">
+                  <label htmlFor="category_field">
+                    Teintes
+                  </label>
+                  <select
+                    className="form-control"
+                    id="brand_field"
+                    value={selectedTeintes}
+                    onChange={(e) => setSelectedTeintes(e.target.value)}
+                  >
+                    <option value="" selected disabled hidden>
+                      Choose one
+                    </option>
 
+                    {teinteOptions &&
+                      teinteOptions?.map((x) => (
+                        <option key={x._id} value={x.title}>
+                          {x.title}
+                        </option>
+                      ))}
+                  </select>
+
+                </div>
                 <div className="form-group">
                   <label>Images</label>
 

@@ -14,35 +14,36 @@
   flex-direction: column;
   justify-content: center;
 }
-
 .teintes-scroll-list {
   display: flex;
-  overflow-x: scroll;
-  padding: 10px 0;
-  width: 100%;
-  scroll-behavior: smooth;
-}
-.teintes-scroll-list::-webkit-scrollbar {
-  height: 8px;
+  -webkit-mask: linear-gradient(90deg, #000 0%, #000 90%, #0000 100%);
+
+  gap: 11px;
+  padding: 10px;
+  background: unset;
+  overflow: auto;
 }
 
-.teintes-scroll-list::-webkit-scrollbar-track {
-  background: white;
-  border-radius: 10px;
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
 }
 
-.teintes-scroll-list::-webkit-scrollbar-thumb {
-  background-color: white;
-  border-radius: 10px;
+::-webkit-scrollbar-track {
+  background-color: unset;
 }
 
-.teintes-scroll-list::-webkit-scrollbar-thumb:hover {
-  background-color: white;
+::-webkit-scrollbar-thumb {
+  background-color: unset;
+  border-radius: 6px;
 }
 
-.teintes-scroll-list {
-  scrollbar-width: thin;
-  scrollbar-color: white #f1f1f1;
+::-webkit-scrollbar-thumb:hover {
+  background-color: unset;
+}
+
+.teintes-scroll-list.dragging {
+  cursor: grabbing;
 }
 
 .teinte-image {

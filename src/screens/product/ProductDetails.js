@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -163,7 +163,30 @@ const ProductDetails = () => {
   const onChange = (e) => {
     setValue(e.target.value);
   };
+  const listRef = useRef(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    e.preventDefault();
+    setStartX(e.pageX - (listRef.current?.offsetLeft || 0));
+    setScrollLeft(listRef.current?.scrollLeft || 0);
+  };
 
+  const handleMouseUpOrLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - (listRef.current?.offsetLeft || 0);
+    const walk = (x - startX) * 1;
+    if (listRef.current) {
+      listRef.current.scrollLeft = scrollLeft - walk;
+    }
+  };
   return (
     <section className="container my-4">
       {loading ? (
@@ -229,66 +252,26 @@ const ProductDetails = () => {
               </b>
 
               <hr />
-
-              <h4>{t("Description")}</h4>
-              <p dangerouslySetInnerHTML={{ __html: product.description }} />
-
-              <hr />
-              {/* {product?.colors && (
-                <div className="form-group" style={{display:"flex", gap:"5px"}}>
-                  {product?.colors?.[0].split(",")?.map((color) => (
-           
-                  ))}
-                </div>
-              )} */}
-              {product?.colors?.length > 0 && <> {product?.colors && <h4>{t("Colors")}</h4>}
-
-                <div
-                  className="promo-products-container"
-                  style={{ padding: "25px" }}
-                >
-                  <Slider {...settings}>
-                    {product?.colors &&
-                      product?.colors?.map((color, index) => (
-                        <Tooltip title={color?.name}>
-                          <div key={index}>
-                            <span
-                              style={{
-                                display: "inline-block",
-                                width: "30px",
-                                height: "30px",
-                                backgroundColor: color?.value,
-                                borderRadius: "50px",
-                                margin: "5px",
-                              }}
-                            ></span>
-                          </div>
-                        </Tooltip>
-                      ))}
-                  </Slider>
-                </div>              <hr />
-              </>}
-
-              {product?.sizes?.length > 0 && <>    <h4>{t("PACK/SIZE")}</h4>
-
-                <Radio.Group onChange={onChange} value={value} defaultValue={product?.sizes?.[0]?.sizePrice}>
-
-                  {product?.sizes?.map((size) => <Radio key={size?.sizePrice} value={size?.sizePrice}><p style={{ fontFamily: "monospace" }}>{size?.sizeName}</p></Radio>
-                  )}
-                </Radio.Group>              <hr />
-              </>}
               {product?.teints && <div className="teintes-container">
-                <h4>{t("All Teintes")}</h4>
+                <h4>{t("Toutes les teintes")}</h4>
                 <div style={{ display: "flex", flexDirection: "column" }}>  <div onClick={showModal} style={{ marginTop: 10, cursor: "pointer" }}>
-                  See All
-                </div>
-                  <div className="teintes-scroll-list" style={{ display: 'flex', overflowX: 'scroll', maxWidth: "400px" }}>
+                  Voir Tout                </div>
+                  <div
+                    className={`teintes-scroll-list ${isDragging ? 'dragging' : ''}`}
+
+                    style={{ display: 'flex', overflowX: 'scroll', maxWidth: '400px' }}
+                    ref={listRef}
+                    onMouseDown={handleMouseDown}
+                    onMouseLeave={handleMouseUpOrLeave}
+                    onMouseUp={handleMouseUpOrLeave}
+                    onMouseMove={handleMouseMove}
+                  >
                     {product?.teints === 'Anea' && teinteImages.slice(0, 10).map((src, index) => (
                       <img
                         key={index}
                         src={src}
                         alt={`Teinte ${index + 1}`}
-                        style={{ width: "60px", height: "60px", marginRight: 10 }}
+                        style={{ width: '60px', height: '60px', marginRight: 10 }}
                       />
                     ))}
                     {product?.teints === 'Togethair' && beigeIrise.colors.slice(0, 10).map((src, index) => (
@@ -296,7 +279,7 @@ const ProductDetails = () => {
                         key={index}
                         src={src}
                         alt={`Teinte ${index + 1}`}
-                        style={{ width: "60px", height: "60px", marginRight: 10 }}
+                        style={{ width: '60px', height: '60px', marginRight: 10 }}
                       />
                     ))}
                   </div></div>
@@ -781,6 +764,54 @@ const ProductDetails = () => {
 
 
               <hr />
+              <h4>{t("Description")}</h4>
+              <p dangerouslySetInnerHTML={{ __html: product.description }} />
+
+              <hr />
+              {/* {product?.colors && (
+                <div className="form-group" style={{display:"flex", gap:"5px"}}>
+                  {product?.colors?.[0].split(",")?.map((color) => (
+           
+                  ))}
+                </div>
+              )} */}
+              {product?.colors?.length > 0 && <> {product?.colors && <h4>{t("Colors")}</h4>}
+
+                <div
+                  className="promo-products-container"
+                  style={{ padding: "25px" }}
+                >
+                  <Slider {...settings}>
+                    {product?.colors &&
+                      product?.colors?.map((color, index) => (
+                        <Tooltip title={color?.name}>
+                          <div key={index}>
+                            <span
+                              style={{
+                                display: "inline-block",
+                                width: "30px",
+                                height: "30px",
+                                backgroundColor: color?.value,
+                                borderRadius: "50px",
+                                margin: "5px",
+                              }}
+                            ></span>
+                          </div>
+                        </Tooltip>
+                      ))}
+                  </Slider>
+                </div>              <hr />
+              </>}
+
+              {product?.sizes?.length > 0 && <>    <h4>{t("PACK/SIZE")}</h4>
+
+                <Radio.Group onChange={onChange} value={value} defaultValue={product?.sizes?.[0]?.sizePrice}>
+
+                  {product?.sizes?.map((size) => <Radio key={size?.sizePrice} value={size?.sizePrice}><p style={{ fontFamily: "monospace" }}>{size?.sizeName}</p></Radio>
+                  )}
+                </Radio.Group>              <hr />
+              </>}
+
               <div className="row">
                 <div className="col">
                   <div className="input-group">
