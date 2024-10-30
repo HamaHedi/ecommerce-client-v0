@@ -15,7 +15,8 @@ import { UPDATE_PRODUCT_RESET } from "../../constants/productConstants";
 import { getCategory } from "../../actions/categoryAction";
 import { getBrands } from "../../actions/brandActions";
 import { Switch } from "antd";
-
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 const AdminProductUpdate = () => {
   const [name, setName] = useState("");
   const [oldPrice, setOldPrice] = useState(0);
@@ -290,15 +291,17 @@ const AdminProductUpdate = () => {
                   )}
                 </div>
 
-                <div className="form-group">
+                <div className="form-group" style={{ height: "300px" }}>
                   <label htmlFor="description_field">Description</label>
-                  <textarea
+                  {/* <textarea
                     className="form-control"
                     id="description_field"
                     rows="8"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                  ></textarea>
+                  ></textarea> */}
+                  <ReactQuill theme="snow" value={description} onChange={setDescription} style={{ height: "220px" }} />
+
                   {error && error.errors && error.errors.description && (
                     <small className="form-text text-danger text-left mt-2 mx-1">
                       {error.errors.description}
