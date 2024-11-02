@@ -252,7 +252,7 @@ const ProductDetails = () => {
               </b>
 
               <hr />
-              {product?.teints && <div className="teintes-container">
+              {product?.teints !== undefined && product?.teints !== "undefined" && <div className="teintes-container">
                 <h4>{t("Toutes les teintes")}</h4>
                 <div style={{ display: "flex", flexDirection: "column" }}>  <div onClick={showModal} style={{ marginTop: 10, cursor: "pointer" }}>
                   Voir Tout                </div>
