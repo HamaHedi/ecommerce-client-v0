@@ -147,21 +147,10 @@ const Header = () => {
   return (
     <nav
       className="navbar navbar-expand-lg navbar-defailt py-2 border-bottom"
-      style={{ height: "90px", background: "#d12f28" }}
+      style={{ height: "150px", background: "#fff" }}
     >
-      <div className="container" onSubmit={searchHandler}>
-        <form >
-          <div style={{ display: "flex", alignItems: "center", background: "white", borderRadius: "15px" }}>
-            <input
-              type="text"
-              style={{ display: "flex", border: "0px", borderRadius: "15px", outline: "none", boxShadow: "none" }}
-              placeholder={t("search..")}
-              ref={keywordRef}
+      <div className="container" onSubmit={searchHandler} >
 
-            />
-            <i className="fa fa-search" aria-hidden="true" style={{ paddingRight: "10px" }}></i>
-          </div>
-        </form>
         {windowWidth > 550 ? <Link to="/" className="navbar-brand">
           <b
             onClick={() => {
@@ -172,9 +161,9 @@ const Header = () => {
             }}
           >
             <img
-              src="/assets/lagha-logo4.png"
+              src="/assets/new-logo-2.png"
               alt="logo"
-              style={{ height: "65px" }}
+              style={{ height: "150px", width: "100px" }}
             />
           </b>
         </Link> : null}
@@ -202,7 +191,7 @@ const Header = () => {
               <div className="col-6 collapse-brand">
                 <Link to="/">
                   <b>
-                    <img src="/assets/lagha-logo4.png" alt="logo" />
+                    <img src="/assets/new-logo-2.png" alt="logo" />
                   </b>
                 </Link>
               </div>
@@ -358,17 +347,25 @@ const Header = () => {
                 )}</>}
             </div>
           }
-          <ul className="navbar-nav ml-lg-auto" style={{ width: "100%", display: "flex", alignItems: "center" }}>
+          <ul className="navbar-nav ml-lg-auto" style={{ display: "flex", alignItems: "center" }}>
+            <form >
+              <div style={{ display: "flex", alignItems: "center", background: "white", borderRadius: "15px", border: "1px solid #5a3584", marginRight: "140px" }}>
+                <input
+                  type="text"
+                  style={{ display: "flex", border: "0px", borderRadius: "15px", outline: "none", boxShadow: "none", width: "300px" }}
+                  placeholder={t("search..")}
+                  ref={keywordRef}
 
+                />
+                <i className="fa fa-search" aria-hidden="true" style={{ paddingRight: "10px" }}></i>
+              </div>
+            </form>
             <li className="nav-item">
               <Link to="/contact" className="nav-link nav-link-icon mt-3 mt-lg-0" style={{ display: "flex", alignItems: "center" }}>
-                <PositionIcon style={{ width: "20px" }} />
-                <span className="nav-link-inner--text font-weight-bold" style={{ color: "white" }}>
-                  {t("contact")}
-                </span>
+                <PositionIcon style={{ width: "35px" }} />
+
               </Link>
             </li>
-            <hr width="2" size="500" style={{ background: "white", height: "40px" }} />
             {windowWidth > 1000 && user && user.name ? (
               <li className="nav-item dropdown">
                 <span
@@ -444,11 +441,8 @@ const Header = () => {
               !loading && (
                 <li className="nav-item">
                   <Link to="/login" className="nav-link nav-link-icon" style={{ display: "flex", alignItems: "center" }}>
-                    {/* <i className="ni ni-single-02" style={{ fill: "white" }}></i> */}
-                    <UserIcon style={{ width: "20px", fill: 'white' }} />
-                    <span className="nav-link-inner--text font-weight-bold" style={{ color: "white" }}>
-                      {t("sign_in")}
-                    </span>
+                    <UserIcon style={{ width: "30px" }} />
+
                   </Link>
                 </li>
               )
@@ -456,12 +450,12 @@ const Header = () => {
 
             <li className="nav-item">
               <Link to="/cart" className="nav-link nav-link-icon mt-3 mt-lg-0" style={{ display: "flex" }}>
-                <CartIcon style={{ width: "20px", fill: 'white' }} />
-                <span className="nav-link-inner--text font-weight-bold" style={{ color: "white" }}>
-                  {t("cart")}
-                </span>
+                <CartIcon style={{ width: "30px", fill: 'white' }} />
+
+
               </Link>
             </li>
+
           </ul>
         </div>
         <Dropdown

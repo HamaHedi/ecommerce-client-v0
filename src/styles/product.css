@@ -14,6 +14,7 @@
   justify-content: center;
   align-items: center;
   padding-bottom: 30px;
+  background-color: #673995;
 }
 @media only screen and (max-width: 800px) {
   .categories-container {
@@ -28,7 +29,7 @@
   max-width: 90%;
 }
 .category-title {
-  color: #333;
+  color: #fff;
   cursor: pointer;
   display: inline-block;
   font-size: 16px;
@@ -37,11 +38,12 @@
   text-align: center;
   display: flex;
   align-items: center;
+
   gap: 2px;
   line-height: normal;
 }
 .category-title:hover {
-  color: rgb(209, 47, 40);
+  color: #cbb9d7;
 }
 .info-container {
   display: flex;

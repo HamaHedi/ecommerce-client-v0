@@ -9,9 +9,9 @@
 .newsletter-email {
   background-color: unset;
   border: 0px;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid #5a3584;
   width: 280px;
-  color: white;
+  color: black;
   letter-spacing: 0em;
   font-family: Cardo;
   font-weight: 400;
@@ -21,8 +21,15 @@
   -webkit-text-size-adjust: 100%;
 }
 .newsletter-email::placeholder {
-  color: white;
+  color: black;
   font-family: Cardo;
+}
+.newsletter-button {
+  background-color: #5a3584;
+  color: white;
+  border-radius: 50px;
+  margin-top: 6px;
+  padding: 10px 50px;
 }
 .newsletter-subscription-container {
   display: flex;
