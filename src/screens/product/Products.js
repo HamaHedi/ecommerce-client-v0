@@ -688,33 +688,28 @@ const Products = () => {
       <span className="nos-marque">NOS MARQUES</span>
       <div className="slider-container" style={{ padding: "25px" }}>
         <Slider {...settings}>
-          <div>
-            <img src="assets/nature.png" />
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <img src="assets/brand2.jpeg" style={{ height: "120px", marginLeft: "50px" }} />
           </div>
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
             <img
-              src="assets/logo-anea.png"
-              style={{ height: "60px", marginLeft: "60px" }}
+              src="assets/brand1.jpeg" style={{ height: "120px" }}
+            // style={{ height: "60px", marginLeft: "60px" }}
             />
           </div>
-          <div>
-            <img src="assets/nevitaly.png" />
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <img src="assets/nevitaly.png" style={{ marginTop: "30px" }}
+            />
           </div>
-          <div>
-            <img src="assets/5_x150.webp" />
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <img src="assets/brand3.jpeg" style={{ height: "120px", marginLeft: "50px" }}
+            />
           </div>
-          <div>
-            <img src="assets/3_x150.webp" />
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <img src="assets/brand4.jpeg" style={{ height: "120px", marginLeft: "50px" }}
+            />
           </div>
-          <div>
-            <img src="assets/5_x150.webp" />
-          </div>
-          <div>
-            <img src="assets/3_x150.webp" />
-          </div>
-          <div>
-            <img src="assets/5_x150.webp" />
-          </div>
+
         </Slider>
       </div>
     </section>

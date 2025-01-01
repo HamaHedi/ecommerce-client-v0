@@ -72,3 +72,29 @@
 p {
   margin-bottom: 0px;
 }
+.search-header-input {
+  display: flex;
+  border: 0px;
+  border-radius: 15px;
+  outline: none;
+  box-shadow: none;
+  width: 300px;
+}
+@media (max-width: 500px) {
+  .search-header-input {
+    width: 100%;
+  }
+}
+.search-header-input-container {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 15px;
+  border: 1px solid #5a3584;
+  margin-right: 140px;
+}
+@media (max-width: 500px) {
+  .search-header-input-container {
+    margin-right: 0px;
+  }
+}

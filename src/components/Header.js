@@ -147,7 +147,7 @@ const Header = () => {
   return (
     <nav
       className="navbar navbar-expand-lg navbar-defailt py-2 border-bottom"
-      style={{ height: "150px", background: "#fff" }}
+    // style={{ height: "150px", background: "#fff" }}
     >
       <div className="container" onSubmit={searchHandler} >
 
@@ -191,7 +191,7 @@ const Header = () => {
               <div className="col-6 collapse-brand">
                 <Link to="/">
                   <b>
-                    <img src="/assets/new-logo-2.png" alt="logo" />
+                    <img src="/assets/new-logo-2.png" alt="logo" style={{ height: "55px" }} />
                   </b>
                 </Link>
               </div>
@@ -348,11 +348,11 @@ const Header = () => {
             </div>
           }
           <ul className="navbar-nav ml-lg-auto" style={{ display: "flex", alignItems: "center" }}>
-            <form >
-              <div style={{ display: "flex", alignItems: "center", background: "white", borderRadius: "15px", border: "1px solid #5a3584", marginRight: "140px" }}>
+            <form style={{ width: "100%" }}>
+              <div className={"search-header-input-container"} >
                 <input
                   type="text"
-                  style={{ display: "flex", border: "0px", borderRadius: "15px", outline: "none", boxShadow: "none", width: "300px" }}
+                  className="search-header-input"
                   placeholder={t("search..")}
                   ref={keywordRef}
 
