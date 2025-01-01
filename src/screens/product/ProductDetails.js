@@ -24,6 +24,8 @@ import { Radio } from 'antd';
 import "../../styles/productdetails.css";
 import { cendre, chaud, dore, froid, irise, naturel, teinteImages, doré, doréCendre, cuivre, acajou, mat, beige, rouge, rougeCuivre, rougeViolin, brun, superr, metalic, metalicViolet, mix } from "./constants";
 import { beigeIrise, booster, chocolat, coffee, coldBrown, goldenAndCold, mahogany, marron, moka, naturell, ramati, rougee, sand, light, toner, violet, ash } from "./constants2"
+import { ReactComponent as FasebookIcon } from "../../components/square-facebook.svg";
+import { ReactComponent as InstagramIcon } from "../../components/instagram.svg";
 const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(0);
@@ -211,9 +213,6 @@ const ProductDetails = () => {
                 {" "}
                 {t("Product")} code: {product.code}
               </p>
-
-              <hr />
-
               <div className="d-flex align-items-end">
                 <h4 className="mb-0">
                   DT {value ? Number(value).toFixed(2) : product.price && product.price.toFixed(2)}
@@ -225,22 +224,13 @@ const ProductDetails = () => {
                   </h6>
                 )}
               </div>
+              <hr />
+              <h4>{t("Description")}</h4>
+              <p dangerouslySetInnerHTML={{ __html: product.description }} />
 
               <hr />
 
-              <div className="ratings mt-auto text-nowrap">
-                <div className="rating-outer">
-                  <div
-                    className="rating-inner"
-                    style={{ width: `${(product.ratings / 5) * 100}%` }}
-                  ></div>
-                </div>
-                <small id="no_of_reviews">
-                  &nbsp;({product.numOfReviews} {t("Reviews")})
-                </small>
-              </div>
 
-              <hr />
 
               <b>
                 {t("Status")}&nbsp;
@@ -763,11 +753,7 @@ const ProductDetails = () => {
               </div>}
 
 
-              <hr />
-              <h4>{t("Description")}</h4>
-              <p dangerouslySetInnerHTML={{ __html: product.description }} />
 
-              <hr />
               {/* {product?.colors && (
                 <div className="form-group" style={{display:"flex", gap:"5px"}}>
                   {product?.colors?.[0].split(",")?.map((color) => (
@@ -812,7 +798,7 @@ const ProductDetails = () => {
                 </Radio.Group>              <hr />
               </>}
 
-              <div className="row">
+              <div className="row" style={{ alignItems: "center" }}>
                 <div className="col">
                   <div className="input-group">
                     <div className="input-group-prepend">
@@ -849,8 +835,7 @@ const ProductDetails = () => {
                 <div className="col">
                   <button
                     type="button"
-                    className="btn btn-sm text-white w-100 h-100 text-nowrap"
-                    style={{ backgroundColor: "#FF9D1C" }}
+                    className="add-cart-btn"
                     disabled={product.stock === 0}
                     onClick={addToCart}
                   >
@@ -860,8 +845,21 @@ const ProductDetails = () => {
                 </div>
               </div>
 
-              <hr />
+              <div className="ratings mt-auto text-nowrap" style={{ display: "flex", justifyContent: "center", padding: "20px" }} >
+                <div className="rating-outer">
+                  <div
+                    className="rating-inner"
+                    style={{ width: `${(product.ratings / 5) * 100}%` }}
+                  ></div>
+                </div>
+                <small id="no_of_reviews">
+                  &nbsp;({product.numOfReviews} {t("Reviews")})
+                </small>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "5px", justifyContent: "center" }}>     <a href="https://www.facebook.com/lagha.shop1/"><FasebookIcon /></a>
+                <a href="https://www.instagram.com/laghashop/"><InstagramIcon style={{ width: "35px" }} /></a></div>
 
+              <hr />
               {/* <p>
 								Sold by: <strong>{product.seller}</strong>
 							</p> */}
@@ -924,7 +922,7 @@ const ProductDetails = () => {
                     </form>
                   ) : (
                     <Message
-                      color="warning"
+                      color="info"
                       message={t("Login to post your review.")}
                     />
                   )}

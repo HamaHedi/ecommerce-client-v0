@@ -29,18 +29,18 @@
   width: 100%;
   height: 50px;
   border-radius: 5px;
-  border: 1px solid rgb(209, 47, 40);
+  border: 1px solid #673995;
 }
 .login-link {
   color: #333;
 }
 .login-link:hover {
-  color: rgb(209, 47, 40);
+  color: #673995;
 }
 .login-button {
   margin-top: 15px;
   margin-bottom: 15px;
-  border: 1px solid rgb(209, 47, 40);
+  border: 1px solid #673995;
   border-radius: 5px;
   color: #333;
   display: inline-block;
@@ -60,6 +60,6 @@
   text-transform: uppercase;
 }
 .login-button:hover {
-  background-color: rgb(209, 47, 40);
+  background-color: #673995;
   color: white;
 }

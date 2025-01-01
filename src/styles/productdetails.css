@@ -1,8 +1,8 @@
 :where(.css-dev-only-do-not-override-djtmh8).ant-radio-wrapper
   .ant-radio-checked
   .ant-radio-inner {
-  border-color: rgb(209, 47, 40);
-  background-color: rgb(209, 47, 40);
+  border-color: #673995;
+  background-color: #673995;
 }
 /* ProductTeintes.css */
 
@@ -120,4 +120,11 @@
 }
 .ant-modal-content {
   width: 90%;
+}
+.add-cart-btn {
+  color: white;
+  background-color: #5a3584;
+  color: white;
+  border-radius: 7px;
+  padding: 8px 30px;
 }

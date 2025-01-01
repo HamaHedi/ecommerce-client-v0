@@ -50,7 +50,7 @@
   align-items: center;
 }
 .icon-container:hover {
-  background: rgb(209, 47, 40);
+  background: #673995;
 }
 .phone-contact {
   display: flex;
@@ -89,7 +89,7 @@ svg:hover {
   letter-spacing: 1px;
 }
 .title:hover {
-  color: rgb(209, 47, 40);
+  color: #673995;
 }
 span {
   color: #6a6a6a;

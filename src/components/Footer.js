@@ -153,7 +153,7 @@ const Footer = () => {
           }}
         >
           <a href="https://www.facebook.com/lagha.shop1/"><FasebookIcon /></a>
-          <a href="https://www.instagram.com/laghashop/"><InstagramIcon /></a>
+          <a href="https://www.instagram.com/laghashop/"><InstagramIcon style={{ width: "35px" }} /></a>
         </div>
       </div>
       <div className="footer-map-info">
