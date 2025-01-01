@@ -370,7 +370,7 @@ const Header = () => {
               <li className="nav-item dropdown">
                 <span
                   className="nav-link nav-link-icon"
-                  style={{ cursor: "pointer", display: "flex" }}
+                  style={{ cursor: "pointer", display: "flex", width: "55px" }}
                   id="navbar-default_dropdown_1"
                   role="button"
                   data-toggle="dropdown"
@@ -381,12 +381,9 @@ const Header = () => {
                     src={user && `https://api.lagha.shop${user.avatar}`}
                     alt="user"
                     className="rounded-circle"
-                    style={{ width: "25px", height: "25px" }}
+                    style={{ width: "35px", height: "35px" }}
                   />
-                  <span className="nav-link-inner--text font-weight-bold text-nowrap" style={{ color: "white", display: "flex" }}>
-                    &nbsp;{user && user.name}&nbsp;
-                    <ArrowDown style={{ width: "15px" }} />
-                  </span>
+
                 </span>
                 <div
                   className="dropdown-menu dropdown-menu-right"
