@@ -11,7 +11,6 @@ const Cart = () => {
 	const { t } = useTranslation('cart')
 
 	const { cartItems } = useSelector((state) => state.cart)
-	console.log(cartItems)
 	const removeCartItemHandler = (id) => {
 		dispatch(removeItemFromCart(id))
 	}
@@ -65,7 +64,7 @@ const Cart = () => {
 														<div className='col-md-2 col-lg-2 col-xl-2'>
 															<Link to={`/product/${item.product}`}>
 																<img
-																	src={item.image}
+																	src={"https://api.lagha.shop/products/" + item.image}
 																	className='img-fluid rounded-3'
 																	alt='Cotton T-shirt'
 																/>
