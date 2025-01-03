@@ -64,7 +64,7 @@ const Cart = () => {
 														<div className='col-md-2 col-lg-2 col-xl-2'>
 															<Link to={`/product/${item.product}`}>
 																<img
-																	src={"https://api.lagha.shop/products" + item.image}
+																	src={"https://api.lagha.shop" + item.image}
 																	className='img-fluid rounded-3'
 																	alt='Cotton T-shirt'
 																/>
