@@ -11,7 +11,7 @@ const Cart = () => {
 	const { t } = useTranslation('cart')
 
 	const { cartItems } = useSelector((state) => state.cart)
-
+	console.log(cartItems)
 	const removeCartItemHandler = (id) => {
 		dispatch(removeItemFromCart(id))
 	}
@@ -37,7 +37,7 @@ const Cart = () => {
 	}
 
 	return (
-		<section className='container my-4'>
+		<section className='container my-4' style={{ width: "100%" }}>
 			<div className='container py-5 h-100'>
 				<div className='row d-flex justify-content-center align-items-center h-100'>
 					<div className='col-12'>
@@ -71,6 +71,7 @@ const Cart = () => {
 																/>
 															</Link>
 														</div>
+
 
 														<div className='col-md-3 col-lg-3 col-xl-3'>
 															<h6 className='text-black text-center my-3'>
@@ -131,11 +132,29 @@ const Cart = () => {
 															</div>
 														</div>
 														<div className='col-md-3 col-lg-3 col-xl-3'>
+															<h6 className='text-black text-center my-3'>
+																<span
+																	className='text-dark'
+																>
+																	{item?.color}
+																</span>
+															</h6>
+														</div>
+														<div className='col-md-3 col-lg-3 col-xl-3'>
+															<h6 className='text-black text-center my-3'>
+																<span
+																	className='text-dark'
+																>
+																	{item?.size}
+																</span>
+															</h6>
+														</div>
+														<div className='col-md-3 col-lg-3 col-xl-3'>
 															<div className='d-flex justify-content-between'>
 																<h6 className='my-4'>
 																	DT
 																	{item.price &&
-																		item.price.toFixed(2)}
+																		item?.price?.toFixed(2)}
 																</h6>
 
 																<button

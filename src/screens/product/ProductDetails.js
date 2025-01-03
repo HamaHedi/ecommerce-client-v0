@@ -16,9 +16,7 @@ import ReactStars from "react-rating-stars-component";
 import Swal from "sweetalert2";
 import ListReviews from "../../components/ListReviews";
 import { useTranslation } from "react-i18next";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+
 import { Button, Image, Modal, Tooltip } from "antd";
 import { Radio } from 'antd';
 import "../../styles/productdetails.css";
@@ -69,7 +67,7 @@ const ProductDetails = () => {
   };
 
   const addToCart = () => {
-    dispatch(addItemToCart(id, quantity));
+    dispatch(addItemToCart(id, quantity, value, selectedColor));
 
     toast.success(t("Item Added to Cart"), {
       position: toast.POSITION.TOP_RIGHT,
@@ -122,49 +120,12 @@ const ProductDetails = () => {
   useEffect(() => {
     dispatch(clearErrors());
   }, [dispatch]);
-  var settings = {
-    dots: true,
 
-    slidesToShow: 6,
-    slidesToScroll: 6,
-    initialSlide: 0,
-    autoplay: true,
-    infinite: true,
-
-    speed: 1000,
-    autoplaySpeed: 4000,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: true,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
   const [value, setValue] = useState();
-  useEffect(() => { setValue(product?.sizes?.[0]?.sizePrice) }, [product])
-  const onChange = (e) => {
-    setValue(e.target.value);
-  };
+  const [selectedColor, setColor] = useState();
+
+  useEffect(() => { setValue(product?.sizes?.[0]); setColor(product?.colors?.[0]?.name); }, [product])
+
   const listRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -215,7 +176,7 @@ const ProductDetails = () => {
               </p>
               <div className="d-flex align-items-end">
                 <h4 className="mb-0">
-                  DT {value ? Number(value).toFixed(2) : product.price && product.price.toFixed(2)}
+                  DT {value?.sizePrice ? Number(value?.sizePrice).toFixed(2) : product.price && product.price.toFixed(2)}
                 </h4>
                 &nbsp;
                 {product.oldPrice !== 0 && (
@@ -764,39 +725,67 @@ const ProductDetails = () => {
               {product?.colors?.length > 0 && <> {product?.colors && <h4>{t("Colors")}</h4>}
 
                 <div
-                  className="promo-products-container"
-                  style={{ padding: "25px" }}
+                  className="products-colors-container"
+                  style={{ padding: "15px" }}
                 >
-                  <Slider {...settings}>
-                    {product?.colors &&
-                      product?.colors?.map((color, index) => (
-                        <Tooltip title={color?.name}>
-                          <div key={index}>
-                            <span
-                              style={{
-                                display: "inline-block",
-                                width: "30px",
-                                height: "30px",
-                                backgroundColor: color?.value,
-                                borderRadius: "50px",
-                                margin: "5px",
-                              }}
-                            ></span>
-                          </div>
-                        </Tooltip>
-                      ))}
-                  </Slider>
+
+                  {product?.colors &&
+                    product?.colors?.map((color, index) => (
+                      <Tooltip title={color?.name}>
+                        <div key={index}>
+                          <span
+                            onClick={() => setColor(color?.name)}
+                            style={{
+
+                              display: "inline-block",
+                              width: "50px",
+                              height: "30px",
+                              backgroundColor: color?.value,
+                              borderRadius: "5px",
+                              margin: "5px",
+                              cursor: "pointer",
+                              border: "1px solid black",
+                              boxShadow: selectedColor === color?.name
+                                ? "rgba(0, 0, 0, 0.5) 0px 8px 20px, rgba(0, 0, 0, 0.3) 0px 2px 4px"
+                                : "unset",
+                              outline: selectedColor === color?.name ? "2px solid rgba(0, 0, 0, 0.2)" : "none"
+                            }}
+                          ></span>
+                        </div>
+                      </Tooltip>
+                    ))}
+
                 </div>              <hr />
               </>}
 
-              {product?.sizes?.length > 0 && <>    <h4>{t("PACK/SIZE")}</h4>
-
-                <Radio.Group onChange={onChange} value={value} defaultValue={product?.sizes?.[0]?.sizePrice}>
-
-                  {product?.sizes?.map((size) => <Radio key={size?.sizePrice} value={size?.sizePrice}><p style={{ fontFamily: "monospace" }}>{size?.sizeName}</p></Radio>
-                  )}
-                </Radio.Group>              <hr />
-              </>}
+              {product?.sizes?.length > 0 && (
+                <>
+                  <h4>{t("PACK/SIZE")}</h4>
+                  <div style={{ display: "flex", gap: "10px" }}>
+                    {product?.sizes?.map((size, index) => (
+                      <div
+                        key={size?.sizePrice}
+                        onClick={() => setValue(size)}
+                        style={{
+                          border: value === size?.sizePrice ? "2px solid black" : "1px solid gray",
+                          borderRadius: "5px",
+                          padding: "10px",
+                          textAlign: "center",
+                          cursor: "pointer",
+                          backgroundColor: value?.sizePrice === size?.sizePrice ? "#f0f0f0" : "white",
+                          width: "150px",
+                        }}
+                      >
+                        <p style={{ fontWeight: value?.sizePrice === size?.sizePrice ? "bold" : "normal" }}>
+                          {size?.sizeName}
+                        </p>
+                        <p>{size?.sizePrice} dt</p>
+                      </div>
+                    ))}
+                  </div>
+                  <hr />
+                </>
+              )}
 
               <div className="row" style={{ alignItems: "center" }}>
                 <div className="col">
