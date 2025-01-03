@@ -706,10 +706,33 @@ const Products = () => {
             />
           </div>
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <img src="assets/brand4.jpeg" style={{ height: "120px", marginLeft: "50px" }}
+            <img src="assets/brand4.jpeg" style={{ height: "120px", marginLeft: "100px" }}
             />
           </div>
-
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <img src="assets/brand5.jpeg" style={{ height: "120px", marginLeft: "50px" }}
+            />
+          </div>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <img src="assets/brand6.jpeg" style={{ height: "120px", marginLeft: "0px" }}
+            />
+          </div>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <img src="assets/brand7.jpeg" style={{ height: "120px", marginLeft: "80px" }}
+            />
+          </div>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <img src="assets/brand8.jpeg" style={{ height: "120px", marginLeft: "50px" }}
+            />
+          </div>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <img src="assets/brand9.jpeg" style={{ height: "120px", marginLeft: "50px" }}
+            />
+          </div>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <img src="assets/brand10.jpeg" style={{ height: "120px", marginLeft: "50px" }}
+            />
+          </div>
         </Slider>
       </div>
     </section>
