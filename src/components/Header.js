@@ -11,6 +11,8 @@ import { ReactComponent as UserIcon } from "../assets/icons/mdi--user.svg";
 import { ReactComponent as CartIcon } from "../assets/icons/cart.svg";
 import { ReactComponent as PositionIcon } from "../assets/icons/position.svg";
 import { ReactComponent as ArrowDown } from "../assets/icons/arrowDown.svg";
+import { ReactComponent as FrenshIcon } from "../assets/icons/frensh.svg";
+import { ReactComponent as EnglishIcon } from "../assets/icons/english.svg";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -117,11 +119,12 @@ const Header = () => {
           className="navbar-flag-container"
           onClick={() => onChangeLanguage("fr")}
         >
-          <img
+          {/* <img
             src={"./assets/fr-flag.png"}
             alt="flag"
             className="navbar-flag"
-          />
+          /> */}
+          <FrenshIcon />
           <p>{t("language.fr")}</p>
         </div>
       ),
@@ -133,11 +136,13 @@ const Header = () => {
           className="navbar-flag-container"
           onClick={() => onChangeLanguage("en")}
         >
-          <img
+          {/* <img
             src={"./assets/en-flag.png"}
             alt="flag"
             className="navbar-flag"
-          />
+          /> */}
+          <EnglishIcon />
+
           <p>{t("language.en")}</p>
         </div>
       ),
@@ -461,9 +466,9 @@ const Header = () => {
           placement="bottomRight"
           arrow
         >
-          <Button type="link" shape="circle">
+          <Button type="link" shape="circle" style={{ marginBottom: "25px" }}>
             <div className="navbar-flag-container">
-              <img
+              {/* <img
                 src={
                   lang === "en"
                     ? "./assets/en-flag.png"
@@ -471,7 +476,8 @@ const Header = () => {
                 }
                 alt="flag"
                 className="navbar-flag"
-              />
+              /> */}
+              {lang === "en" ? <EnglishIcon className="navbar-flag" /> : <FrenshIcon className="navbar-flag" />}
             </div>
           </Button>
         </Dropdown>
