@@ -43,22 +43,28 @@ import {
 export const getProducts =
 	(keyword = "", currentPage = 1, price, category, rating = 0, subCategory, brand) =>
 		async (dispatch) => {
-
 			try {
 				dispatch({ type: ALL_PRODUCTS_REQUEST });
 
-				let link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&ratings[gte]=${rating}`;
+				// Base URL
+				let link = `https://api.lagha.shop/api/products?keyword=${encodeURIComponent(keyword)}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&ratings[gte]=${rating}`;
 
+				// Add category if it's not empty
 				if (category !== "") {
-					link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}${brand && `&brand=${brand}`}&ratings[gte]=${rating}`;
-				}
-				if (subCategory !== "") {
-					link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}${brand && `&brand=${brand}`}&subcategory=${subCategory}&ratings[gte]=${rating}`;
-				}
-				if (brand !== "") {
-					link = `https://api.lagha.shop/api/products?keyword=${keyword}&page=${currentPage}&brand=${brand}`;
+					link += `&category=${encodeURIComponent(category)}`;
 				}
 
+				// Add subCategory if it's not empty
+				if (subCategory !== "") {
+					link += `&subcategory=${encodeURIComponent(subCategory)}`;
+				}
+
+				// Add brand if it's not empty
+				if (brand !== "") {
+					link += `&brand=${encodeURIComponent(brand)}`;
+				}
+
+				// Fetch data from API
 				const { data } = await axios.get(link);
 
 				dispatch({
@@ -68,7 +74,7 @@ export const getProducts =
 			} catch (error) {
 				dispatch({
 					type: ALL_PRODUCTS_FAIL,
-					payload: error.response.data.message,
+					payload: error.response?.data?.message || "Something went wrong",
 				});
 			}
 		};
