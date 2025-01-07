@@ -148,32 +148,50 @@ const Brands = () => {
       </div>
       <div className="slider-container" style={{ padding: "25px" }}>
         <Slider {...settings}>
-          <div>
-            <img src="assets/nature.png" />
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <img src="assets/brand2.jpeg" style={{ height: "120px", marginLeft: "50px" }} />
           </div>
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
             <img
-              src="assets/logo-anea.png"
-              style={{ height: "60px", marginLeft: "60px" }}
+              src="assets/brand1.jpeg" style={{ height: "120px" }}
+            // style={{ height: "60px", marginLeft: "60px" }}
             />
           </div>
-          <div>
-            <img src="assets/nevitaly.png" />
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <img src="assets/nevitaly.png" style={{ marginTop: "30px" }}
+            />
           </div>
-          <div>
-            <img src="assets/5_x150.webp" />
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <img src="assets/brand3.jpeg" style={{ height: "120px", marginLeft: "50px" }}
+            />
           </div>
-          <div>
-            <img src="assets/3_x150.webp" />
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <img src="assets/brand4.jpeg" style={{ height: "120px", marginLeft: "100px" }}
+            />
           </div>
-          <div>
-            <img src="assets/5_x150.webp" />
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <img src="assets/brand5.jpeg" style={{ height: "120px", marginLeft: "50px" }}
+            />
           </div>
-          <div>
-            <img src="assets/3_x150.webp" />
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <img src="assets/brand6.jpeg" style={{ height: "120px", marginLeft: "0px" }}
+            />
           </div>
-          <div>
-            <img src="assets/5_x150.webp" />
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <img src="assets/brand7.jpeg" style={{ height: "120px", marginLeft: "80px" }}
+            />
+          </div>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <img src="assets/brand8.jpeg" style={{ height: "120px", marginLeft: "50px" }}
+            />
+          </div>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <img src="assets/brand9.jpeg" style={{ height: "120px", marginLeft: "50px" }}
+            />
+          </div>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <img src="assets/brand10.jpeg" style={{ height: "120px", marginLeft: "50px" }}
+            />
           </div>
         </Slider>
       </div>
