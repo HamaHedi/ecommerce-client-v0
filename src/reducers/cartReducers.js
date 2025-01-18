@@ -8,16 +8,9 @@ export const cartReducer = (state = { cartItems: [], shippingInfo: {} }, action)
 
             const isItemExist = state.cartItems.find(i => i.product === item.product)
 
-            if (isItemExist) {
-                return {
-                    ...state,
-                    cartItems: state.cartItems.map(i => i.product === isItemExist.product ? item : i)
-                }
-            } else {
-                return {
-                    ...state,
-                    cartItems: [...state.cartItems, item]
-                }
+            return {
+                ...state,
+                cartItems: [...state.cartItems, item]
             }
 
         case REMOVE_ITEM_CART:
