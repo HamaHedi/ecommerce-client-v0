@@ -151,7 +151,7 @@ const ProductDetails = () => {
     }
   };
   return (
-    <section className="container my-4">
+    <section className=" my-4" style={{ padding: "5%", paddingTop: "0px" }}>
       {loading ? (
         <Loader />
       ) : error ? (

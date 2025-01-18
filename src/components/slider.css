@@ -1,0 +1,37 @@
+.carousel-container {
+  width: 80%;
+  margin: auto;
+}
+
+.main-slider .main-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-slider .main-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+}
+
+.thumbnail-slider {
+  margin-top: 10px;
+}
+
+.thumbnail-slider .thumbnail-slide {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.thumbnail-slider .thumbnail-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border: 2px solid transparent;
+  border-radius: 4px;
+}
+
+.thumbnail-slider .thumbnail-slide.active .thumbnail-image {
+  border-color: #007bff;
+}
