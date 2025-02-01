@@ -65,7 +65,7 @@ const AdminOrdersProcess = () => {
 					{loading ? (
 						<Loader />
 					) : (
-						<div className='card border h-100'>
+						<div className='card  h-100' style={{border:0}}>
 							<div className='card-header'>
 								<h3 className='mb-0'>Order # {order._id}</h3>
 							</div>
@@ -104,38 +104,65 @@ const AdminOrdersProcess = () => {
 										<h4 className='my-4'>Order Items:</h4>
 
 										<hr />
-										<div className='cart-item my-1'>
-											{orderItems &&
-												orderItems.map((item) => (
-													<div key={item.product} className='row my-5'>
-														<div className='col-4 col-lg-2'>
-															<img
-																src={item.image}
-																alt={item.name}
-																height='45'
-																width='65'
-															/>
-														</div>
+										<div className="cart-item my-3">
+  {orderItems && (
+    <table className="table table-bordered">
+      <thead>
+        <tr>
+          <th className="text-center">Image</th>
+          <th className="text-center">Product Name</th>
+          <th className="text-center">Price</th>
+          <th className="text-center">Quantity</th>
+          <th className="text-center">Teint</th>
+          <th className="text-center">Color</th>
+          <th className="text-center">Size</th>
+        </tr>
+      </thead>
+      <tbody>
+        {orderItems.map((item) => (
+          <tr key={item.product}>
+            <td className="text-center">
+              <img
+                src={item.image}
+                alt={item.name}
+                className="img-fluid"
+                style={{ maxWidth: '65px', height: 'auto' }}
+              />
+            </td>
+            <td className="text-center">
+              <Link to={`/products/${item.product}`} className="text-muted">
+                {item.name}
+              </Link>
+            </td>
+            <td className="text-center">
+              <p className="mb-0">DT {item.price}</p>
+            </td>
+            <td className="text-center">
+              <p className="mb-0">{item.quantity} Piece(s)</p>
+            </td>
+            <td className="text-center">
+              {item?.teint && (
+                <img
+                  src={item?.teint}
+                  alt="Selected Image"
+                  className="img-fluid"
+                  style={{ maxWidth: '150px', height: 'auto' }}
+                />
+              )}
+            </td>
+            <td className="text-center">
+              {item?.color && <p className="mb-0">{item.color}</p>}
+            </td>
+            <td className="text-center">
+              {item?.size && <p className="mb-0">{item.size}</p>}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )}
+</div>
 
-														<div className='col-5 col-lg-5'>
-															<Link
-																to={`/products/${item.product}`}
-																className='text-muted'
-															>
-																{item.name}
-															</Link>
-														</div>
-
-														<div className='col-4 col-lg-2 mt-4 mt-lg-0'>
-															<p>DT {item.price}</p>
-														</div>
-
-														<div className='col-4 col-lg-3 mt-4 mt-lg-0'>
-															<p>{item.quantity} Piece(s)</p>
-														</div>
-													</div>
-												))}
-										</div>
 										<hr />
 									</div>
 
