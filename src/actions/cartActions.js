@@ -5,7 +5,7 @@ import {
 	SAVE_SHIPPING_INFO,
 } from "../constants/cartConstants";
 
-export const addItemToCart = (id, quantity, value, selectedColor) => async (dispatch, getState) => {
+export const addItemToCart = (id, quantity, value, selectedColor,selectedImage) => async (dispatch, getState) => {
 	const { data } = await axios.get(`https://api.lagha.shop/api/products/${id}`);
 
 	dispatch({
@@ -18,6 +18,7 @@ export const addItemToCart = (id, quantity, value, selectedColor) => async (disp
 			stock: data.product.stock,
 			color: selectedColor,
 			size: value?.sizeName,
+			teint:selectedImage,
 			quantity,
 		},
 	});

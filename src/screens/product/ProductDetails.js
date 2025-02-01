@@ -28,6 +28,14 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
+  const handleImageClick = (image) => {
+    setSelectedImage(image);
+    toast.success(t("teinte sélectionnée"), {
+      position: toast.POSITION.TOP_RIGHT,
+      className: "m-2",
+    });
+  };
   const { t } = useTranslation("product");
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
@@ -67,7 +75,7 @@ const ProductDetails = () => {
   };
 
   const addToCart = () => {
-    dispatch(addItemToCart(id, quantity, value, selectedColor));
+    dispatch(addItemToCart(id, quantity, value, selectedColor,selectedImage));
 
     toast.success(t("Item Added to Cart"), {
       position: toast.POSITION.TOP_RIGHT,
@@ -150,6 +158,8 @@ const ProductDetails = () => {
       listRef.current.scrollLeft = scrollLeft - walk;
     }
   };
+  const totalImages = 64;
+  const images = Array.from({ length: totalImages }, (_, index) => `${index + 1}.png`);
   return (
     <section className=" my-4" style={{ padding: "5%", paddingTop: "0px" }}>
       {loading ? (
@@ -225,12 +235,12 @@ const ProductDetails = () => {
                         style={{ width: '60px', height: '60px', marginRight: 10 }}
                       />
                     ))}
-                    {product?.teints === 'Togethair' && beigeIrise.colors.slice(0, 10).map((src, index) => (
+                    {product?.teints === 'Togethair' && images.slice(0, 10).map((image, index) => (
                       <img
                         key={index}
-                        src={src}
+                        src={`/togethair/${image}`} 
                         alt={`Teinte ${index + 1}`}
-                        style={{ width: '60px', height: '60px', marginRight: 10 }}
+                        style={{ width: '120px', height: '140px' }}
                       />
                     ))}
                   </div></div>
@@ -238,7 +248,7 @@ const ProductDetails = () => {
 
 
                 <Modal
-                  title="All Teintes"
+                  title="Toutes les Teintes"
                   visible={visible}
                   onCancel={handleCancel}
                   footer={null}
@@ -496,7 +506,20 @@ const ProductDetails = () => {
 
 
 
-                  {product?.teints === "Togethair" && <>   <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{beigeIrise?.name}</span>
+                  {product?.teints === "Togethair" && <> 
+
+<div style={{display:"flex", flexWrap:"wrap"}}>  {images.map((image, index) => (
+          <img 
+            key={index} 
+            src={`/togethair/${image}`} 
+            alt={`image-${index + 1}`} 
+            style={{ width: 140, height: 180, margin: 10, cursor: 'pointer' }}
+            onClick={() => handleImageClick(`/togethair/${image}`)} 
+
+                  />
+        ))}</div>
+                  
+                    {/* <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{beigeIrise?.name}</span>
                     <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
 
                       {beigeIrise.colors.map((src, index) => (
@@ -705,7 +728,8 @@ const ProductDetails = () => {
                           style={{ width: 100, height: 140, margin: 10 }}
                         />
                       ))}
-                    </div></>}
+                    </div> */}
+                    </>}
 
 
 
@@ -757,7 +781,17 @@ const ProductDetails = () => {
 
                 </div>              <hr />
               </>}
-
+              {selectedImage && (
+            <div style={{ marginTop: 20 }}>
+              <h4>Teinte sélectionnée
+              </h4>
+              <img
+                src={selectedImage}
+                alt="Selected Image"
+                style={{ width: 150, height: "auto" }}
+              />
+            </div>
+          )}
               {product?.sizes?.length > 0 && (
                 <>
                   <h4>{t("PACK/SIZE")}</h4>
