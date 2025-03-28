@@ -643,45 +643,45 @@ const Products = () => {
         <Slider {...settings2}>
           <div>
             <img
-              src="assets/2-0-seaforce-lotion-100ml.jpg"
+              src="assets/products_carousel/1.jpeg"
               style={{ padding: "5px" }}
             />
           </div>
           <div>
             <img
-              src="assets/2-0-seaforce-lotion.jpg"
+              src="assets/products_carousel/2.jpeg"
               style={{ padding: "5px" }}
             />
           </div>
           <div>
-            <img src="assets/20150.jpg" style={{ padding: "5px" }} />
+            <img src="assets/products_carousel/3.jpeg" style={{ padding: "5px" }} />
           </div>
           <div>
             <img
-              src="assets/20180-purepigments-neutral.jpg"
-              style={{ padding: "5px" }}
-            />
-          </div>
-          <div>
-            <img
-              src="assets/colorsave-hairmask250.jpg"
+              src="assets/products_carousel/4.jpeg"
               style={{ padding: "5px" }}
             />
           </div>
           <div>
             <img
-              src="assets/colorsave-shampoo-2501.jpg"
+              src="assets/products_carousel/5.jpeg"
               style={{ padding: "5px" }}
             />
           </div>
           <div>
             <img
-              src="assets/newave-perm-kit-web.png"
+              src="assets/products_carousel/6.jpeg"
               style={{ padding: "5px" }}
             />
           </div>
+          {/* <div>
+            <img
+              src="assets/products_carousel/7.jpeg"
+              style={{ padding: "5px" }}
+            />
+          </div> */}
           <div>
-            <img src="assets/orange-render.jpg" style={{ padding: "5px" }} />
+            <img src="assets/products_carousel/8.jpeg" style={{ padding: "5px" }} />
           </div>
         </Slider>
       </div>

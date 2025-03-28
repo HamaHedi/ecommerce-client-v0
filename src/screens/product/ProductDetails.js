@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getProductDetails,
@@ -25,6 +25,8 @@ import { beigeIrise, booster, chocolat, coffee, coldBrown, goldenAndCold, mahoga
 import { ReactComponent as FasebookIcon } from "../../components/square-facebook.svg";
 import { ReactComponent as InstagramIcon } from "../../components/instagram.svg";
 const ProductDetails = () => {
+  const navigate = useNavigate();
+
   const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
@@ -75,7 +77,7 @@ const ProductDetails = () => {
   };
 
   const addToCart = () => {
-    dispatch(addItemToCart(id, quantity, value, selectedColor,selectedImage));
+    dispatch(addItemToCart(id, quantity, value, selectedColor, selectedImage));
 
     toast.success(t("Item Added to Cart"), {
       position: toast.POSITION.TOP_RIGHT,
@@ -169,7 +171,12 @@ const ProductDetails = () => {
       ) : (
         <>
           <div className="row d-flex justify-content-around">
-
+            <Button
+              variant="secondary"
+              onClick={() => navigate(-1)}
+            >
+              ← Go Back
+            </Button>
             <div className="col-12 col-lg-5 img-fluid mt-4">
               <Sliders images={product?.images} />
               {/* <Sliders images={product?.certificates} width={100} /> */}
@@ -238,7 +245,7 @@ const ProductDetails = () => {
                     {product?.teints === 'Togethair' && images.slice(0, 10).map((image, index) => (
                       <img
                         key={index}
-                        src={`/togethair/${image}`} 
+                        src={`/togethair/${image}`}
                         alt={`Teinte ${index + 1}`}
                         style={{ width: '120px', height: '140px' }}
                       />
@@ -506,19 +513,19 @@ const ProductDetails = () => {
 
 
 
-                  {product?.teints === "Togethair" && <> 
+                  {product?.teints === "Togethair" && <>
 
-<div style={{display:"flex", flexWrap:"wrap"}}>  {images.map((image, index) => (
-          <img 
-            key={index} 
-            src={`/togethair/${image}`} 
-            alt={`image-${index + 1}`} 
-            style={{ width: 140, height: 180, margin: 10, cursor: 'pointer' }}
-            onClick={() => handleImageClick(`/togethair/${image}`)} 
+                    <div style={{ display: "flex", flexWrap: "wrap" }}>  {images.map((image, index) => (
+                      <img
+                        key={index}
+                        src={`/togethair/${image}`}
+                        alt={`image-${index + 1}`}
+                        style={{ width: 140, height: 180, margin: 10, cursor: 'pointer' }}
+                        onClick={() => handleImageClick(`/togethair/${image}`)}
 
-                  />
-        ))}</div>
-                  
+                      />
+                    ))}</div>
+
                     {/* <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{beigeIrise?.name}</span>
                     <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
 
@@ -729,7 +736,7 @@ const ProductDetails = () => {
                         />
                       ))}
                     </div> */}
-                    </>}
+                  </>}
 
 
 
@@ -782,16 +789,16 @@ const ProductDetails = () => {
                 </div>              <hr />
               </>}
               {selectedImage && (
-            <div style={{ marginTop: 20 }}>
-              <h4>Teinte sélectionnée
-              </h4>
-              <img
-                src={selectedImage}
-                alt="Selected Image"
-                style={{ width: 150, height: "auto" }}
-              />
-            </div>
-          )}
+                <div style={{ marginTop: 20 }}>
+                  <h4>Teinte sélectionnée
+                  </h4>
+                  <img
+                    src={selectedImage}
+                    alt="Selected Image"
+                    style={{ width: 150, height: "auto" }}
+                  />
+                </div>
+              )}
               {product?.sizes?.length > 0 && (
                 <>
                   <h4>{t("PACK/SIZE")}</h4>
