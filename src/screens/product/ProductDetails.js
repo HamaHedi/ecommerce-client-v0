@@ -171,12 +171,13 @@ const ProductDetails = () => {
       ) : (
         <>
           <div className="row d-flex justify-content-around">
-            <Button
-              variant="secondary"
+            <div
+
+              style={{ cursor: "pointer", color: "#5a3584" }}
               onClick={() => navigate(-1)}
             >
-              ← Go Back
-            </Button>
+              ← Retour
+            </div>
             <div className="col-12 col-lg-5 img-fluid mt-4">
               <Sliders images={product?.images} />
               {/* <Sliders images={product?.certificates} width={100} /> */}
