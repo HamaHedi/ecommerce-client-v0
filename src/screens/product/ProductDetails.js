@@ -162,6 +162,7 @@ const ProductDetails = () => {
   };
   const totalImages = 64;
   const images = Array.from({ length: totalImages }, (_, index) => `${index + 1}.png`);
+  console.log("first,", images)
   return (
     <section className=" my-4" style={{ padding: "5%", paddingTop: "0px" }}>
       {loading ? (
@@ -747,13 +748,6 @@ const ProductDetails = () => {
 
 
 
-              {/* {product?.colors && (
-                <div className="form-group" style={{display:"flex", gap:"5px"}}>
-                  {product?.colors?.[0].split(",")?.map((color) => (
-           
-                  ))}
-                </div>
-              )} */}
               {product?.colors?.length > 0 && <> {product?.colors && <h4>{t("Colors")}</h4>}
 
                 <div
