@@ -11,6 +11,7 @@ const NAV = [
 	{ key: 'brand', to: '/admin/brand', icon: 'fa-bookmark', label: 'brand' },
 	{ key: 'coupons', to: '/admin/coupons', icon: 'fa-ticket', label: 'coupons' },
 	{ key: 'banners', to: '/admin/banners', icon: 'fa-picture-o', label: 'banners' },
+	{ key: 'announcements', to: '/admin/announcements', icon: 'fa-bullhorn', label: 'announcements' },
 	{ key: 'reviews', to: '/admin/reviews', icon: 'fa-star', label: 'reviews' },
 	{ key: 'users', to: '/admin/users', icon: 'fa-users', label: 'users' },
 ]
@@ -21,7 +22,7 @@ const Sidebar = ({ item }) => {
 	return (
 		<nav className='admin-sidebar'>
 			<Link to='/' className='admin-sidebar-brand'>
-				<img src='/assets/new-logo-2.png' alt='lagha shop' />
+				<img src='/logo.svg' alt='lagha shop' />
 				<span>
 
 					<small>Espace Admin</small>

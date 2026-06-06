@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { allOrders, deleteOrder, clearErrors } from '../../actions/orderActions'
 import { DELETE_ORDER_RESET } from '../../constants/orderConstants'
 
-const STATUSES = ['Processing', 'Shipped', 'Delivered']
+const STATUSES = ['Processing', 'Shipped', 'Delivered', 'Cancelled', 'Returned']
 
 const AdminOrders = () => {
 	const dispatch = useDispatch()

@@ -1,22 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Marquee from "react-fast-marquee";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { API_BASE } from "../config";
 import "../styles/home-extras.css";
 
 export const AnnounceBar = () => {
   const { t } = useTranslation("home");
-  const items = [
+  const [items, setItems] = useState(null);
+
+  // Default items (shown until/unless the admin defines custom ones)
+  const defaultItems = [
     { icon: "fa-truck", text: t("announce.delivery") },
     { icon: "fa-certificate", text: t("announce.authentic") },
     { icon: "fa-lock", text: t("announce.secure") },
     { icon: "fa-heart", text: t("announce.clients") },
     { icon: "fa-comments", text: t("announce.support") },
   ];
+
+  useEffect(() => {
+    let active = true;
+    axios
+      .get(`${API_BASE}/api/announcements`)
+      .then(({ data }) => {
+        if (!active) return;
+        const list = (data.announcements || []).map((a) => ({
+          icon: a.icon || "fa-bullhorn",
+          text: a.text,
+        }));
+        setItems(list);
+      })
+      .catch(() => active && setItems([]));
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  // While loading use defaults; once loaded, use admin items if any exist,
+  // otherwise fall back to the defaults so the bar is never empty.
+  const list = items === null || items.length === 0 ? defaultItems : items;
+
   return (
     <div className="announce-bar">
       <Marquee gradient={false} speed={45} pauseOnHover>
-        {items.concat(items).map((it, i) => (
+        {list.concat(list).map((it, i) => (
           <span className="announce-item" key={i}>
             <i className={`fa ${it.icon}`} aria-hidden="true"></i>
             {it.text}

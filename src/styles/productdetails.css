@@ -180,6 +180,36 @@
 	box-shadow: none;
 }
 
+/* Order via WhatsApp */
+.pd-whatsapp-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	margin-top: var(--space-3);
+	color: #fff;
+	background: #25d366;
+	border: 0;
+	border-radius: var(--radius-pill);
+	padding: 13px 34px;
+	font-weight: var(--fw-semibold);
+	font-size: 0.82rem;
+	letter-spacing: var(--tracking-wide);
+	text-transform: uppercase;
+	cursor: pointer;
+	box-shadow: 0 10px 26px rgba(37, 211, 102, 0.32);
+	transition: all var(--dur) var(--ease);
+}
+.pd-whatsapp-btn .fa-whatsapp {
+	font-size: 1.15rem;
+}
+.pd-whatsapp-btn:hover {
+	background: #1ebe5a;
+	transform: translateY(-2px);
+	box-shadow: 0 16px 38px rgba(37, 211, 102, 0.42);
+	color: #fff;
+}
+
 /* Review card */
 .review-card {
 	background: var(--surface-2) !important;

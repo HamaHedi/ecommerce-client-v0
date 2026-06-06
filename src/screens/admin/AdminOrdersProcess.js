@@ -15,7 +15,18 @@ const AdminOrdersProcess = () => {
 	const dispatch = useDispatch()
 
 	const { loading, order = {} } = useSelector((state) => state.orderDetails)
-	const { shippingInfo, orderItems, user, totalPrice, orderStatus } = order
+	const {
+		shippingInfo,
+		orderItems,
+		user,
+		totalPrice,
+		orderStatus,
+		itemsPrice,
+		shippingPrice,
+		discount,
+		couponCode,
+		deliveryGovernorate,
+	} = order
 	const { error, isUpdated } = useSelector((state) => state.order)
 
 	const { id } = useParams()
@@ -82,8 +93,39 @@ const AdminOrdersProcess = () => {
 											<b>Address:</b>
 											{shippingDetails}
 										</p>
+										{deliveryGovernorate && (
+											<p>
+												<b>Gouvernorat:</b> {deliveryGovernorate}
+											</p>
+										)}
+
+										<hr />
+
+										<h4 className='my-4'>Payment Info</h4>
 										<p>
-											<b>Amount:</b> DT {totalPrice}
+											<b>Items Price:</b> DT{' '}
+											{Number(itemsPrice || 0).toFixed(2)}
+										</p>
+										<p>
+											<b>Delivery (Livraison):</b>{' '}
+											{Number(shippingPrice || 0) === 0 ? (
+												<span className='text-success'>Gratuite</span>
+											) : (
+												`DT ${Number(shippingPrice).toFixed(2)}`
+											)}
+										</p>
+										<p>
+											<b>Coupon:</b>{' '}
+											{couponCode ? (
+												<span className='text-success'>
+													{couponCode} (− DT {Number(discount || 0).toFixed(2)})
+												</span>
+											) : (
+												<span className='text-muted'>Aucun code utilisé</span>
+											)}
+										</p>
+										<p>
+											<b>Total Amount:</b> DT {Number(totalPrice || 0).toFixed(2)}
 										</p>
 
 										<hr />
@@ -94,7 +136,11 @@ const AdminOrdersProcess = () => {
 												order.orderStatus &&
 													String(order.orderStatus).includes('Delivered')
 													? 'text-success'
-													: 'text-danger'
+													: order.orderStatus &&
+														(String(order.orderStatus).includes('Cancelled') ||
+															String(order.orderStatus).includes('Returned'))
+														? 'text-danger'
+														: 'text-warning'
 											}
 										>
 											<b>{orderStatus}</b>
@@ -177,6 +223,8 @@ const AdminOrdersProcess = () => {
 											>
 												<option value='Processing'>Processing</option>
 												<option value='Delivered'>Delivered</option>
+												<option value='Cancelled'>Cancelled</option>
+												<option value='Returned'>Returned (Retour)</option>
 											</select>
 										</div>
 

@@ -7,6 +7,7 @@ import "../../styles/register.css"
 const Register = () => {
 	const [name, setName] = useState('')
 	const [email, setEmail] = useState('')
+	const [phoneNo, setPhoneNo] = useState('')
 	const [password, setPassword] = useState('')
 	const [confirmPassword, setConfirmPassword] = useState('')
 	const [confirmPasswordError, setConfirmPasswordError] = useState('')
@@ -25,7 +26,7 @@ const Register = () => {
 		if (password !== confirmPassword) {
 			setConfirmPasswordError("Passwords don't match")
 		} else {
-			dispatch(register(name, email, password))
+			dispatch(register(name, email, password, phoneNo))
 		}
 	}
 
@@ -82,6 +83,22 @@ const Register = () => {
 											{error && error.errors && error.errors.email && (
 												<small className='form-text text-danger text-left mt-2 mx-1'>
 													{error.errors.email}
+												</small>
+											)}
+										</div>
+
+										<div className='form-group mb-4'>
+											<input
+												type='tel'
+												required
+												className='login-input'
+												placeholder={t("enter_your_phone") !== "enter_your_phone" ? t("enter_your_phone") : "Numéro de téléphone"}
+												value={phoneNo}
+												onChange={(e) => setPhoneNo(e.target.value)}
+											/>
+											{error && error.errors && error.errors.phoneNo && (
+												<small className='form-text text-danger text-left mt-2 mx-1'>
+													{error.errors.phoneNo}
 												</small>
 											)}
 										</div>

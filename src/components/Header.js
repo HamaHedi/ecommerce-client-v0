@@ -1,8 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { logout } from "../actions/userActions";
+import { API_BASE } from "../config";
 import "../styles/header.css";
 import { useGlobalState } from "../context/context";
 import { useTranslation } from "react-i18next";
@@ -26,11 +28,67 @@ const Header = () => {
   const [lang, setLang] = useState(i18n?.language?.toString());
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openCat, setOpenCat] = useState(null);
-  const keywordRef = useRef("");
+
+  // Live search (smart suggestions dropdown)
+  const [searchTerm, setSearchTerm] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggest, setShowSuggest] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const searchBoxRef = useRef(null);
 
   const closeMobile = () => {
     setMobileOpen(false);
     setOpenCat(null);
+  };
+
+  // Debounced fetch of product suggestions as the user types
+  useEffect(() => {
+    const term = searchTerm.trim();
+    if (term.length < 2) {
+      setSuggestions([]);
+      setSearchLoading(false);
+      return;
+    }
+    setSearchLoading(true);
+    const controller = new AbortController();
+    const timer = setTimeout(() => {
+      axios
+        .get(`${API_BASE}/api/products?keyword=${encodeURIComponent(term)}`, {
+          signal: controller.signal,
+        })
+        .then(({ data }) => {
+          setSuggestions((data.products || []).slice(0, 6));
+          setSearchLoading(false);
+        })
+        .catch((err) => {
+          if (err.name !== "CanceledError" && err.code !== "ERR_CANCELED") {
+            setSearchLoading(false);
+          }
+        });
+    }, 280);
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [searchTerm]);
+
+  // Close the suggestions dropdown when clicking outside the search box
+  useEffect(() => {
+    const onDocClick = (e) => {
+      if (searchBoxRef.current && !searchBoxRef.current.contains(e.target)) {
+        setShowSuggest(false);
+      }
+    };
+    document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, []);
+
+  const goToProduct = (pid) => {
+    setShowSuggest(false);
+    setSearchTerm("");
+    setSuggestions([]);
+    closeMobile();
+    navigate(`/product/${pid}`);
   };
 
   const logoutHandler = () => {
@@ -48,11 +106,12 @@ const Header = () => {
 
   const searchHandler = (e) => {
     e.preventDefault();
-    const value = e.target.querySelector("input")?.value || "";
+    const value = (searchTerm || "").trim();
     setKeyword(value);
     setCategory("");
     setSubategory("");
     setBrand("");
+    setShowSuggest(false);
     closeMobile();
     navigate("/products");
   };
@@ -210,7 +269,7 @@ const Header = () => {
 
         {/* Brand */}
         <Link to="/" className="brand-logo" onClick={resetToHome}>
-          <img src="/assets/new-logo-2.png" alt="lagha shop" />
+          <img src="/logo.svg" alt="lagha shop" />
         </Link>
 
         {/* Primary nav (desktop) */}
@@ -234,17 +293,73 @@ const Header = () => {
 
         {/* Actions */}
         <div className="header-actions">
-          <form onSubmit={searchHandler} className="desktop-only">
-            <div className="search-header-input-container">
-              <input
-                type="text"
-                className="search-header-input"
-                placeholder={t("search..")}
-                ref={keywordRef}
-              />
-              <i className="fa fa-search" aria-hidden="true"></i>
-            </div>
-          </form>
+          <div className="header-search-box desktop-only" ref={searchBoxRef}>
+            <form onSubmit={searchHandler}>
+              <div className="search-header-input-container">
+                <input
+                  type="text"
+                  className="search-header-input"
+                  placeholder={t("search..")}
+                  value={searchTerm}
+                  onChange={(e) => {
+                    setSearchTerm(e.target.value);
+                    setShowSuggest(true);
+                  }}
+                  onFocus={() => setShowSuggest(true)}
+                />
+                <i className="fa fa-search" aria-hidden="true"></i>
+              </div>
+            </form>
+
+            {showSuggest && searchTerm.trim().length >= 2 && (
+              <div className="search-suggestions">
+                {searchLoading && suggestions.length === 0 ? (
+                  <div className="search-suggestion-empty">
+                    <i className="fa fa-spinner fa-spin" aria-hidden="true"></i>
+                    &nbsp; {t("Searching") !== "Searching" ? t("Searching") : "Recherche…"}
+                  </div>
+                ) : suggestions.length === 0 ? (
+                  <div className="search-suggestion-empty">
+                    {t("No results") !== "No results" ? t("No results") : "Aucun résultat"}
+                  </div>
+                ) : (
+                  <>
+                    {suggestions.map((p) => (
+                      <button
+                        type="button"
+                        className="search-suggestion"
+                        key={p._id}
+                        onClick={() => goToProduct(p._id)}
+                      >
+                        <img
+                          src={`${API_BASE}${p.images?.[0]?.path || ""}`}
+                          alt={p.name}
+                          className="search-suggestion-img"
+                        />
+                        <span className="search-suggestion-info">
+                          <span className="search-suggestion-name">{p.name}</span>
+                          <span className="search-suggestion-price">
+                            DT {Number(p.price || 0).toFixed(2)}
+                          </span>
+                        </span>
+                      </button>
+                    ))}
+                    <button
+                      type="button"
+                      className="search-suggestion-all"
+                      onClick={searchHandler}
+                    >
+                      <i className="fa fa-search" aria-hidden="true"></i>
+                      &nbsp;
+                      {t("See all results") !== "See all results"
+                        ? t("See all results")
+                        : "Voir tous les résultats"}
+                    </button>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
 
           <Link
             to="/contact"
@@ -331,12 +446,42 @@ const Header = () => {
       <div className={`mobile-drawer ${mobileOpen ? "open" : ""}`}>
         <form onSubmit={searchHandler}>
           <div className="mobile-search">
-            <input type="text" placeholder={t("search..")} />
+            <input
+              type="text"
+              placeholder={t("search..")}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
             <button type="submit" aria-label="Search">
               <i className="fa fa-search" aria-hidden="true"></i>
             </button>
           </div>
         </form>
+
+        {searchTerm.trim().length >= 2 && suggestions.length > 0 && (
+          <div className="mobile-search-suggestions">
+            {suggestions.map((p) => (
+              <button
+                type="button"
+                className="search-suggestion"
+                key={p._id}
+                onClick={() => goToProduct(p._id)}
+              >
+                <img
+                  src={`${API_BASE}${p.images?.[0]?.path || ""}`}
+                  alt={p.name}
+                  className="search-suggestion-img"
+                />
+                <span className="search-suggestion-info">
+                  <span className="search-suggestion-name">{p.name}</span>
+                  <span className="search-suggestion-price">
+                    DT {Number(p.price || 0).toFixed(2)}
+                  </span>
+                </span>
+              </button>
+            ))}
+          </div>
+        )}
 
         <div className="mobile-drawer-scroll">
           {mobileLink("/", t("home"), resetToHome)}

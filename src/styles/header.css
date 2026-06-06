@@ -122,6 +122,105 @@
   font-size: 0.95rem;
 }
 
+/* Live search suggestions dropdown */
+.header-search-box {
+  position: relative;
+}
+.search-suggestions {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  min-width: 320px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-elevated);
+  padding: var(--space-2);
+  z-index: 1200;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+.search-suggestion {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-sm);
+  padding: var(--space-2);
+  cursor: pointer;
+  transition: background var(--dur) var(--ease);
+}
+.search-suggestion:hover {
+  background: var(--brand-lavender-soft);
+}
+.search-suggestion-img {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  background: var(--surface-2);
+  border: 1px solid var(--hairline);
+}
+.search-suggestion-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.search-suggestion-name {
+  font-size: 0.88rem;
+  font-weight: var(--fw-medium);
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 240px;
+}
+.search-suggestion-price {
+  font-size: 0.82rem;
+  font-weight: var(--fw-bold);
+  color: var(--brand-purple);
+}
+.search-suggestion-empty {
+  padding: var(--space-4);
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.search-suggestion-all {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: var(--space-1);
+  padding: var(--space-3);
+  border: 0;
+  border-top: 1px solid var(--hairline);
+  background: transparent;
+  color: var(--brand-purple);
+  font-size: 0.8rem;
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+}
+.search-suggestion-all:hover {
+  background: var(--brand-lavender-soft);
+}
+
+/* Mobile suggestions (inside the drawer) */
+.mobile-search-suggestions {
+  margin: var(--space-2) 0 var(--space-3);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
 /* Icon buttons (account, cart, position, lang) */
 .header-icon-btn {
   position: relative;

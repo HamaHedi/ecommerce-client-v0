@@ -28,6 +28,7 @@ import axios from "axios";
 import ProductRail from "../../components/ProductRail";
 import NotifyBackInStock from "../../components/NotifyBackInStock";
 import { useGlobalState } from "../../context/context";
+import { WHATSAPP_NUMBER } from "../../components/WhatsAppButton";
 const ProductDetails = () => {
   const navigate = useNavigate();
 
@@ -110,6 +111,31 @@ const ProductDetails = () => {
       position: toast.POSITION.TOP_RIGHT,
       className: "m-2",
     });
+  };
+
+  // Build a WhatsApp order message with the product details + a link to this page
+  const orderViaWhatsApp = () => {
+    const price = value?.sizePrice
+      ? Number(value.sizePrice).toFixed(2)
+      : product?.price
+      ? Number(product.price).toFixed(2)
+      : "";
+    const lines = [
+      "Bonjour Bianas 👋, je souhaite commander ce produit :",
+      `*${product?.name || ""}*`,
+      product?.code ? `Code: ${product.code}` : "",
+      value?.sizeName ? `Pack/Taille: ${value.sizeName}` : "",
+      selectedColor ? `Couleur: ${selectedColor}` : "",
+      `Quantité: ${quantity}`,
+      price ? `Prix: DT ${price}` : "",
+      `Lien: ${window.location.href}`,
+    ].filter(Boolean);
+    const message = encodeURIComponent(lines.join("\n"));
+    window.open(
+      `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
   };
 
   const submitHandler = (e) => {
@@ -901,6 +927,18 @@ const ProductDetails = () => {
                   &nbsp;&nbsp;{t("Add to Cart")}
                 </button>
               </div>
+
+              <button
+                type="button"
+                className="pd-whatsapp-btn"
+                onClick={orderViaWhatsApp}
+              >
+                <i className="fa fa-whatsapp" aria-hidden="true"></i>
+                &nbsp;&nbsp;
+                {t("Order on WhatsApp") !== "Order on WhatsApp"
+                  ? t("Order on WhatsApp")
+                  : "Commander sur WhatsApp"}
+              </button>
 
               <div className="ratings mt-auto text-nowrap" style={{ display: "flex", justifyContent: "center", padding: "20px" }} >
                 <div className="rating-outer">

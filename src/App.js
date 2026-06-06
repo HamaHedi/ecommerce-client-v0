@@ -39,6 +39,7 @@ import Contact from './screens/contact/contact'
 import AdminBrand from './screens/admin/AdminBrands'
 import AdminCoupons from './screens/admin/AdminCoupons'
 import AdminBanners from './screens/admin/AdminBanners'
+import AdminAnnouncements from './screens/admin/AdminAnnouncements'
 import AdminBrandAdd from './screens/admin/AdminBrandAdd'
 import AdminBrandUpdate from './screens/admin/AdminBrandUpdate'
 import Brands from './screens/brand/brand'
@@ -127,6 +128,7 @@ const App = () => {
 							<Route path='/admin/brand' element={<AdminBrand />} exact />
 							<Route path='/admin/coupons' element={<AdminCoupons />} exact />
 							<Route path='/admin/banners' element={<AdminBanners />} exact />
+							<Route path='/admin/announcements' element={<AdminAnnouncements />} exact />
 							<Route
 								path='/admin/brand/add'
 								element={<AdminBrandAdd />}

@@ -36,8 +36,8 @@
 
 .admin-sidebar {
 	position: sticky;
-	top: 0;
-	height: 100vh;
+	top: var(--header-h);
+	height: calc(100vh - var(--header-h));
 	overflow-y: auto;
 	background: linear-gradient(185deg, #2a1b3d 0%, #1a1320 100%);
 	padding: var(--space-5) var(--space-4);
@@ -442,6 +442,14 @@
 .order-status-badge.s-delivered {
 	background: #e9f6ef;
 	color: #2f7d54;
+}
+.order-status-badge.s-cancelled {
+	background: #fdecec;
+	color: #c0392b;
+}
+.order-status-badge.s-returned {
+	background: #f3eefb;
+	color: #8e44ad;
 }
 
 /* Banners admin */
