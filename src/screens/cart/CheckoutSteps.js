@@ -1,41 +1,49 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
+import React from "react";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import "../../styles/checkout.css";
 
 const CheckoutSteps = ({ shipping, confirmOrder, payment }) => {
-	const { t } = useTranslation('cart')
+  const { t } = useTranslation("cart");
 
-	return (
-		<div className='checkout-progress d-flex justify-content-center mt-5'>
-			{shipping ? (
-				<Link to='/shipping' className='float-right'>
-					<div className='triangle2-active'></div>
-					<div className='step active-step'>{t("Shipping")}</div>
-					<div className='triangle-active'></div>
-				</Link>
-			) : (
-				<span disabled>
-					<div className='triangle2-incomplete'></div>
-					<div className='step incomplete'>{t("Shipping")}</div>
-					<div className='triangle-incomplete'></div>
-				</span>
-			)}
+  const steps = [
+    { key: "cart", label: t("Cart") !== "Cart" ? t("Cart") : "Panier", to: "/cart", done: true },
+    { key: "shipping", label: t("Shipping"), to: "/shipping", done: shipping },
+    {
+      key: "confirm",
+      label: t("Confirm Order"),
+      to: "/confirm",
+      done: confirmOrder,
+    },
+  ];
 
-			{confirmOrder ? (
-				<Link to='/order/confirm' className='float-right'>
-					<div className='triangle2-active'></div>
-					<div className='step active-step'>{t("Confirm Order")}</div>
-					<div className='triangle-active'></div>
-				</Link>
-			) : (
-				<span disabled>
-					<div className='triangle2-incomplete'></div>
-					<div className='step incomplete'>{t("Confirm Order")}</div>
-					<div className='triangle-incomplete'></div>
-				</span>
-			)}
-		</div>
-	)
-}
+  return (
+    <div className="checkout-steps">
+      {steps.map((step, i) => {
+        const Wrapper = step.done ? Link : "span";
+        return (
+          <React.Fragment key={step.key}>
+            {i > 0 && (
+              <span
+                className={`checkout-line ${
+                  steps[i].done ? "is-active" : ""
+                }`}
+              />
+            )}
+            <Wrapper
+              to={step.to}
+              className={`checkout-step ${step.done ? "is-active" : ""}`}
+            >
+              <span className="checkout-step-num">
+                {step.done ? <i className="fa fa-check" /> : i + 1}
+              </span>
+              <span className="checkout-step-label">{step.label}</span>
+            </Wrapper>
+          </React.Fragment>
+        );
+      })}
+    </div>
+  );
+};
 
-export default CheckoutSteps
+export default CheckoutSteps;

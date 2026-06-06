@@ -1,101 +1,116 @@
+/* ============================================================
+   Contact page (all selectors scoped to avoid global leakage)
+   ============================================================ */
 .map-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 25px;
-  width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	padding: var(--space-7) var(--space-5);
+	gap: var(--space-7);
+	width: 100%;
+	max-width: var(--container-max);
+	margin: 0 auto;
 }
-.contacts-container {
-  display: flex;
-  padding: 20px;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 100%;
-}
-.contact-form-container {
-  width: 100%;
-  display: flex;
-  gap: 15px;
-  max-width: 600px;
-  flex-direction: column;
-}
-.contact-form-title {
-  color: #1a1a1a;
-  font-family: Montserrat;
-  font-weight: 700;
-  font-size: 25px;
-  text-align: center;
-  letter-spacing: 0em;
-  margin: 0 0 15px;
-  line-height: 1.4;
-}
-.contact-info-container {
-  display: flex;
-  flex-direction: column;
-  width: 50%;
-  flex-wrap: wrap;
-  padding: 50px;
-  gap: 80px;
-  justify-content: center;
-}
-.icon-container {
-  background: #333333;
-  width: 50px;
-  display: flex;
-  justify-content: center;
-  height: 50px;
-  border-radius: 50%;
-  align-items: center;
-}
-.icon-container:hover {
-  background: #673995;
-}
-.phone-contact {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 10px;
-}
-.email-contact {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 10px;
-}
-.address-contact {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 10px;
-}
-svg {
-  width: 30px;
-}
-svg:hover {
-  width: 25px;
-  fill: #333333;
+.map-container .leaflet-container {
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-soft);
+	border: 1px solid var(--hairline);
 }
 
-.title {
-  color: #1a1a1a;
-  font-family: Montserrat;
-  font-weight: 700;
-  font-size: 20px;
-  letter-spacing: 1px;
+.contacts-container {
+	display: flex;
+	gap: var(--space-7);
+	align-items: stretch;
+	flex-wrap: wrap;
+	justify-content: center;
+	width: 100%;
 }
-.title:hover {
-  color: #673995;
+
+.contact-info-container {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 280px;
+	max-width: 360px;
+	gap: var(--space-6);
+	justify-content: center;
+	padding: var(--space-6);
+	background: var(--gradient-soft);
+	border: 1px solid var(--hairline);
+	border-radius: var(--radius-lg);
 }
-span {
-  color: #6a6a6a;
-  letter-spacing: 0em;
-  font-family: Cardo;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 1.5;
+
+.contact-form-container {
+	width: 100%;
+	display: flex;
+	gap: var(--space-3);
+	max-width: 560px;
+	flex: 1 1 380px;
+	flex-direction: column;
+	padding: var(--space-6);
+	background: var(--surface);
+	border: 1px solid var(--hairline);
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-soft);
+}
+.contact-form-title {
+	color: var(--ink);
+	font-family: var(--font-display);
+	font-weight: var(--fw-bold);
+	font-size: 1.8rem;
+	text-align: center;
+	margin: 0 0 var(--space-3);
+}
+
+.phone-contact,
+.email-contact,
+.address-contact {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	gap: var(--space-2);
+	text-align: center;
+}
+
+.icon-container {
+	background: var(--gradient-brand);
+	width: 56px;
+	height: 56px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: var(--radius-pill);
+	box-shadow: var(--shadow-soft);
+	transition: transform var(--dur) var(--ease);
+}
+.icon-container:hover {
+	transform: translateY(-3px) scale(1.05);
+}
+.contacts-container .icon-container svg {
+	width: 24px;
+	height: 24px;
+	fill: #fff;
+}
+
+.contacts-container .title {
+	color: var(--ink);
+	font-family: var(--font-sans);
+	font-weight: var(--fw-bold);
+	font-size: 0.95rem;
+	letter-spacing: var(--tracking-wide);
+	text-transform: uppercase;
+}
+.contacts-container span {
+	color: var(--body);
+	font-family: var(--font-sans);
+	font-weight: var(--fw-regular);
+	font-size: 0.92rem;
+	line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+	.map-container .leaflet-container {
+		width: 100% !important;
+	}
 }

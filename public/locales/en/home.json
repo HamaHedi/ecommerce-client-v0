@@ -1,0 +1,53 @@
+{
+  "announce": {
+    "delivery": "Fast delivery across Tunisia",
+    "authentic": "100% authentic products",
+    "secure": "Secure payment",
+    "clients": "+10,000 happy customers",
+    "support": "7/7 support"
+  },
+  "benefits": {
+    "delivery_t": "Fast delivery",
+    "delivery_s": "Shipped within 24-48h",
+    "quality_t": "Quality guaranteed",
+    "quality_s": "Authentic products",
+    "secure_t": "Secure payment",
+    "secure_s": "On delivery or online",
+    "support_t": "Dedicated support",
+    "support_s": "A team at your service"
+  },
+  "cat_eyebrow": "Explore",
+  "cat_title": "Shop by",
+  "cat_title_em": "category",
+  "cat_sub": "subcategories",
+  "discover": "Discover",
+  "promo_eyebrow": "Beauty edition",
+  "promo_title": "Reveal your natural glow",
+  "promo_text": "An expert selection of hair care and makeup from the biggest brands, chosen to enhance you every day.",
+  "promo_btn": "Discover our brands",
+  "stats_brands": "Premium brands",
+  "stats_products": "Products",
+  "stats_clients": "Happy customers",
+  "stats_rating": "Average rating",
+  "editorial_badge": "Since 2018",
+  "editorial_eyebrow": "Our world",
+  "editorial_title": "Professional beauty,",
+  "editorial_title_em": "accessible",
+  "editorial_title_end": " to everyone",
+  "editorial_text": "Bianas curates the best in hair care, makeup and fragrance — expert brands chosen for their quality and authenticity. Reveal your glow with products worthy of the finest salons.",
+  "editorial_btn1": "Discover our brands",
+  "editorial_btn2": "Contact us",
+  "testi_eyebrow": "They trust us",
+  "testi_title": "Our customers'",
+  "testi_title_em": "reviews",
+  "testimonials": [
+    { "text": "100% authentic products and super fast delivery. My favorite beauty shop in Tunisia!", "name": "Amira B.", "role": "Loyal customer" },
+    { "text": "An incredible choice of professional brands. The advice and service are top-notch.", "name": "Sonia M.", "role": "Hairdresser" },
+    { "text": "Finally salon products at home. Flawless quality, I recommend with my eyes closed.", "name": "Yasmine K.", "role": "Make-up artist" },
+    { "text": "Order received in 48h, careful packaging and matching products. Well done to the whole team.", "name": "Khaled T.", "role": "Customer" }
+  ],
+  "ig_eyebrow": "@laghashop",
+  "ig_title": "Follow us on",
+  "ig_title_em": "Instagram",
+  "ig_btn": "Follow @laghashop"
+}

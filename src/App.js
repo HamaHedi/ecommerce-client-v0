@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Products from './screens/product/Products'
@@ -36,15 +37,35 @@ import AdminCategoryAdd from './screens/admin/AdminCategoryAdd'
 import AdminCategoryUpdate from './screens/admin/AdminCategoryUpdate'
 import Contact from './screens/contact/contact'
 import AdminBrand from './screens/admin/AdminBrands'
+import AdminCoupons from './screens/admin/AdminCoupons'
+import AdminBanners from './screens/admin/AdminBanners'
 import AdminBrandAdd from './screens/admin/AdminBrandAdd'
 import AdminBrandUpdate from './screens/admin/AdminBrandUpdate'
 import Brands from './screens/brand/brand'
+import Wishlist from './screens/user/Wishlist'
+import WhatsAppButton from './components/WhatsAppButton'
 import ScrollToTop from './scrollTotp'
 
 const App = () => {
+	const { i18n } = useTranslation()
+
 	useEffect(() => {
 		store.dispatch(loadUser())
 	}, [])
+
+	// Apply text direction (RTL for Arabic) on language change
+	useEffect(() => {
+		const apply = (lng) => {
+			const lang = lng || i18n.language || 'fr'
+			const isRtl = lang === 'ar'
+			document.documentElement.setAttribute('dir', isRtl ? 'rtl' : 'ltr')
+			document.documentElement.setAttribute('lang', lang)
+			document.body.classList.toggle('rtl', isRtl)
+		}
+		apply(i18n.language)
+		i18n.on('languageChanged', apply)
+		return () => i18n.off('languageChanged', apply)
+	}, [i18n])
 
 	return (
 		<>
@@ -54,6 +75,7 @@ const App = () => {
 				<main>
 					<Routes>
 						<Route path='/' element={<Products />} exact />
+						<Route path='/products' element={<Products />} exact />
 						<Route path='/product/:id' element={<ProductDetails />} />
 
 						<Route path='/cart' element={<Cart />} exact />
@@ -61,6 +83,7 @@ const App = () => {
 						<Route path='/confirm' element={<ConfirmOrder />} exact />
 						<Route path='/contact' element={<Contact />} exact />
 						<Route path='/brands' element={<Brands />} exact />
+						<Route path='/wishlist' element={<Wishlist />} exact />
 
 						<Route path='/login' element={<Login />} />
 						<Route path='/register' element={<Register />} />
@@ -102,6 +125,8 @@ const App = () => {
 								exact
 							/>
 							<Route path='/admin/brand' element={<AdminBrand />} exact />
+							<Route path='/admin/coupons' element={<AdminCoupons />} exact />
+							<Route path='/admin/banners' element={<AdminBanners />} exact />
 							<Route
 								path='/admin/brand/add'
 								element={<AdminBrandAdd />}
@@ -116,6 +141,7 @@ const App = () => {
 					</Routes>
 				</main>
 				<Footer />
+				<WhatsAppButton />
 			</Router>
 
 			<ToastContainer />

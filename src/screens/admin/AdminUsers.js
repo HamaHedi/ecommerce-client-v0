@@ -116,16 +116,15 @@ const AdminUsers = () => {
 	}
 
 	return (
-		<section className='container my-4'>
+		<section className='container-fluid admin-page'>
 			<div className='row' style={{ minHeight: '80vh' }}>
 				<div
-					className='col-12 col-md-3 px-3 py-4 my-4'
-					style={{ backgroundColor: '#1A2D3C', borderRadius: '10px' }}
+					className='col-12 col-md-2 admin-nav-col'
 				>
 					<Sidebar item='users' />
 				</div>
 
-				<div className='col-12 col-md-9 px-3 my-4'>
+				<div className='col-12 col-md-10 admin-content-col'>
 					<div className='card border h-100'>
 						<div className='card-header'>
 							<h3 className='mb-0'>Users</h3>

@@ -24,3 +24,34 @@
   font-family: Montserrat;
   padding: 10px;
 }
+
+/* Admin-managed banner caption overlay */
+.banner-caption {
+  position: absolute;
+  left: 8%;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: left;
+  max-width: 520px;
+  color: #fff;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
+}
+.banner-caption h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 4vw, 3.4rem);
+  color: #fff;
+  margin: 0 0 8px;
+  line-height: 1.1;
+}
+.banner-caption p {
+  font-size: clamp(0.9rem, 1.6vw, 1.2rem);
+  margin: 0;
+  opacity: 0.95;
+}
+@media (max-width: 600px) {
+  .banner-caption {
+    left: 6%;
+    max-width: 80%;
+  }
+}

@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addItemToCart, removeItemFromCart } from "../../actions/cartActions";
 import { useTranslation } from "react-i18next";
+import "../../styles/checkout.css";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -36,7 +37,7 @@ const Cart = () => {
   };
   console.log(cartItems);
   return (
-    <section className="container my-4" style={{ width: "100%" }}>
+    <section className="container my-4 cart-page" style={{ width: "100%" }}>
       <div className="container py-5 h-100">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-12">
@@ -204,7 +205,7 @@ const Cart = () => {
 
                       <button
                         type="button"
-                        className="btn btn-dark btn-block btn-lg"
+                        className="btn btn-block btn-lg cart-checkout-btn"
                         onClick={checkoutHandler}
                         disabled={cartItems.length === 0 ? true : false}
                       >

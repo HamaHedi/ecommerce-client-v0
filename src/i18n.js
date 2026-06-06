@@ -8,9 +8,14 @@ i18n
     .use(LanguageDetector)
     .use(initReactI18next)
     .init({
-        fallbackLng: "en",
+        fallbackLng: "fr",
         debug: false,
-        lng: "en",
+        supportedLngs: ["fr", "en", "ar"],
+        detection: {
+            order: ["querystring", "localStorage", "navigator", "htmlTag"],
+            lookupQuerystring: "lng",
+            caches: ["localStorage"],
+        },
         ns: [
             "auth",
             "cart",
@@ -19,7 +24,8 @@ i18n
             "product",
             "sidebar",
             "user",
-            "contact"
+            "contact",
+            "home"
         ],
         interpolation: {
             escapeValue: false,

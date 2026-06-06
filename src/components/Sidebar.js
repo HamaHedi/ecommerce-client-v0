@@ -1,173 +1,52 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import '../styles/admin.css'
+
+const NAV = [
+	{ key: 'dashboard', to: '/dashboard', icon: 'fa-tachometer', label: 'dashboard' },
+	{ key: 'products', to: '/admin/products', icon: 'fa-cubes', label: 'products' },
+	{ key: 'orders', to: '/admin/orders', icon: 'fa-shopping-cart', label: 'orders' },
+	{ key: 'category', to: '/admin/category', icon: 'fa-tags', label: 'categories' },
+	{ key: 'brand', to: '/admin/brand', icon: 'fa-bookmark', label: 'brand' },
+	{ key: 'coupons', to: '/admin/coupons', icon: 'fa-ticket', label: 'coupons' },
+	{ key: 'banners', to: '/admin/banners', icon: 'fa-picture-o', label: 'banners' },
+	{ key: 'reviews', to: '/admin/reviews', icon: 'fa-star', label: 'reviews' },
+	{ key: 'users', to: '/admin/users', icon: 'fa-users', label: 'users' },
+]
 
 const Sidebar = ({ item }) => {
 	const { t } = useTranslation('sidebar')
 
 	return (
-		<nav>
-			<div className='row'>
-				<div className='col-6 col-sm-6 col-md-12'>
-					<Link
-						to='/dashboard'
-						className={
-							item === 'dashboard'
-								? 'btn btn-block mt-3 bg-primary'
-								: 'btn btn-block mt-3'
-						}
-					>
-						<div className='text-center'>
-							<img
-								src='/assets/img/dashboard/dashboard.png'
-								alt='dashboard'
-								style={{ width: '60px', height: '60px' }}
-							/>
-						</div>
-						<div className='text-center mt-2'>
-							<strong className='text-white'>{
-								t("dashboard")}</strong>
-						</div>
-					</Link>
-				</div>
+		<nav className='admin-sidebar'>
+			<Link to='/' className='admin-sidebar-brand'>
+				<img src='/assets/new-logo-2.png' alt='lagha shop' />
+				<span>
 
-				<div className='col-6 col-sm-6 col-md-12'>
-					<Link
-						to='/admin/products'
-						className={
-							item === 'products'
-								? 'btn btn-block mt-3 bg-primary'
-								: 'btn btn-block mt-3'
-						}
-					>
-						<div className='text-center'>
-							<img
-								src='/assets/img/dashboard/products.png'
-								alt='products'
-								style={{ width: '60px', height: '60px' }}
-							/>
-						</div>
-						<div className='text-center mt-2'>
-							<strong className='text-white'>{
-								t("products")}</strong>
-						</div>
-					</Link>
-				</div>
+					<small>Espace Admin</small>
+				</span>
+			</Link>
 
-				<div className='col-6 col-sm-6 col-md-12'>
-					<Link
-						to='/admin/orders'
-						className={
-							item === 'orders'
-								? 'btn btn-block mt-3 bg-primary'
-								: 'btn btn-block mt-3'
-						}
-					>
-						<div className='text-center'>
-							<img
-								src='/assets/img/dashboard/orders.png'
-								alt='orders'
-								style={{ width: '60px', height: '60px' }}
-							/>
-						</div>
-						<div className='text-center mt-2'>
-							<strong className='text-white'>{
-								t("orders")}</strong>
-						</div>
-					</Link>
-				</div>
+			<div className='admin-sidebar-section'>Gestion</div>
+			<ul className='admin-nav-list'>
+				{NAV.map((n) => (
+					<li key={n.key}>
+						<Link
+							to={n.to}
+							className={`admin-nav-link ${item === n.key ? 'active' : ''}`}
+						>
+							<i className={`fa ${n.icon}`} aria-hidden='true'></i>
+							<span>{t(n.label)}</span>
+						</Link>
+					</li>
+				))}
+			</ul>
 
-				<div className='col-6 col-sm-6 col-md-12'>
-					<Link
-						to='/admin/reviews'
-						className={
-							item === 'reviews'
-								? 'btn btn-block mt-3 bg-primary'
-								: 'btn btn-block mt-3'
-						}
-					>
-						<div className='text-center'>
-							<img
-								src='/assets/img/dashboard/reviews.png'
-								alt='reviews'
-								style={{ width: '60px', height: '60px' }}
-							/>
-						</div>
-						<div className='text-center mt-2'>
-							<strong className='text-white'>{
-								t("reviews")}</strong>
-						</div>
-					</Link>
-				</div>
-
-				<div className='col-6 col-sm-6 col-md-12'>
-					<Link
-						to='/admin/category'
-						className={
-							item === 'category'
-								? 'btn btn-block mt-3 bg-primary'
-								: 'btn btn-block mt-3'
-						}
-					>
-						<div className='text-center'>
-							<img
-								src='/assets/img/dashboard/category.png'
-								alt='category'
-								style={{ width: '60px', height: '60px' }}
-							/>
-						</div>
-						<div className='text-center mt-2'>
-							<strong className='text-white'>{
-								t("categories")}</strong>
-						</div>
-					</Link>
-				</div>
-
-				<div className='col-6 col-sm-6 col-md-12'>
-					<Link
-						to='/admin/users'
-						className={
-							item === 'users'
-								? 'btn btn-block mt-3 bg-primary'
-								: 'btn btn-block mt-3'
-						}
-					>
-						<div className='text-center'>
-							<img
-								src='/assets/img/dashboard/users.png'
-								alt='users'
-								style={{ width: '60px', height: '60px' }}
-							/>
-						</div>
-						<div className='text-center mt-2'>
-							<strong className='text-white'>{
-								t("users")}</strong>
-						</div>
-					</Link>
-				</div>
-				<div className='col-6 col-sm-6 col-md-12'>
-					<Link
-						to='/admin/brand'
-						className={
-							item === 'brand'
-								? 'btn btn-block mt-3 bg-primary'
-								: 'btn btn-block mt-3'
-						}
-					>
-						<div className='text-center'>
-							<img
-								src='/assets/img/dashboard/brand.png'
-								alt='brnads'
-								style={{ width: '60px', height: '60px' }}
-							/>
-						</div>
-						<div className='text-center mt-2'>
-							<strong className='text-white'>{
-								t("brand")}</strong>
-						</div>
-					</Link>
-				</div>
-			</div>
+			<Link to='/' className='admin-nav-link admin-nav-back'>
+				<i className='fa fa-arrow-left' aria-hidden='true'></i>
+				<span>{t('store') !== 'store' ? t('store') : 'Retour boutique'}</span>
+			</Link>
 		</nav>
 	)
 }

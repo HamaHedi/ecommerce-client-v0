@@ -1,0 +1,77 @@
+.order-timeline {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	max-width: 640px;
+	margin: var(--space-4) 0 var(--space-5);
+}
+.ot-step {
+	position: relative;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-2);
+	text-align: center;
+}
+.ot-node {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	border-radius: var(--radius-pill);
+	background: var(--surface);
+	border: 2px solid var(--hairline-strong);
+	color: var(--muted);
+	font-size: 1rem;
+	z-index: 1;
+	transition: all var(--dur) var(--ease);
+}
+.ot-step.done .ot-node {
+	background: var(--gradient-brand);
+	border-color: transparent;
+	color: #fff;
+}
+.ot-step.current .ot-node {
+	box-shadow: 0 0 0 4px var(--brand-lavender-soft);
+}
+.ot-label {
+	font-size: 0.78rem;
+	font-weight: var(--fw-semibold);
+	color: var(--muted);
+}
+.ot-step.done .ot-label {
+	color: var(--ink);
+}
+.ot-line {
+	position: absolute;
+	top: 22px;
+	right: 50%;
+	width: 100%;
+	height: 3px;
+	background: var(--hairline-strong);
+	z-index: 0;
+}
+.ot-line.done {
+	background: var(--brand-purple);
+}
+.order-cancelled-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-2);
+	background: #fdeceb;
+	color: var(--danger);
+	border-radius: var(--radius-pill);
+	padding: 10px 18px;
+	font-weight: var(--fw-semibold);
+}
+@media (max-width: 520px) {
+	.ot-label {
+		font-size: 0.68rem;
+	}
+	.ot-node {
+		width: 38px;
+		height: 38px;
+	}
+}

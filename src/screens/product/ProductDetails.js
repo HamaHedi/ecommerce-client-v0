@@ -24,6 +24,10 @@ import { cendre, chaud, dore, froid, irise, naturel, teinteImages, doré, doréC
 import { beigeIrise, booster, chocolat, coffee, coldBrown, goldenAndCold, mahogany, marron, moka, naturell, ramati, rougee, sand, light, toner, violet, ash } from "./constants2"
 import { ReactComponent as FasebookIcon } from "../../components/square-facebook.svg";
 import { ReactComponent as InstagramIcon } from "../../components/instagram.svg";
+import axios from "axios";
+import ProductRail from "../../components/ProductRail";
+import NotifyBackInStock from "../../components/NotifyBackInStock";
+import { useGlobalState } from "../../context/context";
 const ProductDetails = () => {
   const navigate = useNavigate();
 
@@ -54,6 +58,29 @@ const ProductDetails = () => {
     (state) => state.productDetails
   );
   const { user } = useSelector((state) => state.auth);
+  const { addRecentlyViewed, recentlyViewed } = useGlobalState();
+  const [related, setRelated] = useState([]);
+
+  useEffect(() => {
+    if (product && product._id) {
+      addRecentlyViewed(product);
+      const params = product.category
+        ? `category=${encodeURIComponent(product.category)}`
+        : product.brand
+        ? `brand=${encodeURIComponent(product.brand)}`
+        : "";
+      axios
+        .get(`https://api.lagha.shop/api/products?page=1&${params}`)
+        .then(({ data }) => {
+          const list = (data.products || [])
+            .filter((p) => p._id !== product._id)
+            .slice(0, 10);
+          setRelated(list);
+        })
+        .catch(() => {});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product?._id]);
   const { error: reviewError, success } = useSelector(
     (state) => state.newReview
   );
@@ -164,21 +191,19 @@ const ProductDetails = () => {
   const images = Array.from({ length: totalImages }, (_, index) => `${index + 1}.png`);
   console.log("first,", images)
   return (
-    <section className=" my-4" style={{ padding: "5%", paddingTop: "0px" }}>
+    <section className="product-detail my-4" style={{ padding: "4% 5%", paddingTop: "16px" }}>
       {loading ? (
         <Loader />
       ) : error ? (
         <Message color="danger" message={error} />
       ) : (
         <>
-          <div className="row d-flex justify-content-around">
-            <div
-
-              style={{ cursor: "pointer", color: "#5a3584" }}
-              onClick={() => navigate(-1)}
-            >
+          <div style={{ width: "100%" }}>
+            <span className="pd-back" onClick={() => navigate(-1)}>
               ← Retour
-            </div>
+            </span>
+          </div>
+          <div className="row d-flex justify-content-around">
             <div className="col-12 col-lg-5 img-fluid mt-4">
               <Sliders images={product?.images} />
               {/* <Sliders images={product?.certificates} width={100} /> */}
@@ -220,6 +245,15 @@ const ProductDetails = () => {
                   {product.stock > 0 ? t("In Stock") : t("Out of Stock")}
                 </span>
               </b>
+              {product.stock > 0 && product.stock <= 5 && (
+                <div className="pd-lowstock">
+                  <i className="fa fa-fire" aria-hidden="true"></i>
+                  &nbsp;Dépêchez-vous, plus que {product.stock} en stock !
+                </div>
+              )}
+              {product.stock === 0 && (
+                <NotifyBackInStock productId={product._id} />
+              )}
 
               <hr />
               {product?.teints !== undefined && product?.teints !== "undefined" && <div className="teintes-container">
@@ -767,14 +801,15 @@ const ProductDetails = () => {
                               width: "50px",
                               height: "30px",
                               backgroundColor: color?.value,
-                              borderRadius: "5px",
-                              margin: "5px",
+                              borderRadius: "8px",
+                              margin: "3px",
                               cursor: "pointer",
-                              border: "1px solid black",
+                              border: "1px solid rgba(0,0,0,0.12)",
                               boxShadow: selectedColor === color?.name
-                                ? "rgba(0, 0, 0, 0.5) 0px 8px 20px, rgba(0, 0, 0, 0.3) 0px 2px 4px"
+                                ? "rgba(103, 57, 149, 0.35) 0px 6px 16px"
                                 : "unset",
-                              outline: selectedColor === color?.name ? "2px solid rgba(0, 0, 0, 0.2)" : "none"
+                              outline: selectedColor === color?.name ? "2px solid #673995" : "none",
+                              outlineOffset: "2px"
                             }}
                           ></span>
                         </div>
@@ -803,13 +838,14 @@ const ProductDetails = () => {
                         key={size?.sizePrice}
                         onClick={() => setValue(size)}
                         style={{
-                          border: value === size?.sizePrice ? "2px solid black" : "1px solid gray",
-                          borderRadius: "5px",
-                          padding: "10px",
+                          border: value?.sizePrice === size?.sizePrice ? "2px solid #673995" : "1px solid var(--hairline-strong)",
+                          borderRadius: "12px",
+                          padding: "12px",
                           textAlign: "center",
                           cursor: "pointer",
-                          backgroundColor: value?.sizePrice === size?.sizePrice ? "#f0f0f0" : "white",
+                          backgroundColor: value?.sizePrice === size?.sizePrice ? "var(--brand-lavender-soft)" : "white",
                           width: "150px",
+                          transition: "all 0.2s ease",
                         }}
                       >
                         <p style={{ fontWeight: value?.sizePrice === size?.sizePrice ? "bold" : "normal" }}>
@@ -823,51 +859,47 @@ const ProductDetails = () => {
                 </>
               )}
 
-              <div className="row" style={{ alignItems: "center" }}>
-                <div className="col">
-                  <div className="input-group">
-                    <div className="input-group-prepend">
-                      <button
-                        className="btn btn-sm btn-outline-danger px-3"
-                        type="button"
-                        disabled={product.stock === 0}
-                        onClick={decreaseQty}
-                      >
-                        <i className="fa fa-minus" aria-hidden="true"></i>
-                      </button>
-                    </div>
+              <div className="pd-actions">
+                <div className="input-group">
+                  <div className="input-group-prepend">
+                    <button
+                      className="btn btn-sm px-3"
+                      type="button"
+                      disabled={product.stock === 0}
+                      onClick={decreaseQty}
+                    >
+                      <i className="fa fa-minus" aria-hidden="true"></i>
+                    </button>
+                  </div>
 
-                    <input
-                      type="number"
-                      className="form-control form-control-sm text-center count"
-                      value={quantity}
-                      readOnly
-                    />
+                  <input
+                    type="number"
+                    className="form-control form-control-sm text-center count"
+                    value={quantity}
+                    readOnly
+                  />
 
-                    <div className="input-group-prepend">
-                      <button
-                        className="btn btn-sm btn-outline-success px-3"
-                        type="button"
-                        disabled={product.stock === 0}
-                        onClick={increaseQty}
-                      >
-                        <i className="fa fa-plus" aria-hidden="true"></i>
-                      </button>
-                    </div>
+                  <div className="input-group-prepend">
+                    <button
+                      className="btn btn-sm px-3"
+                      type="button"
+                      disabled={product.stock === 0}
+                      onClick={increaseQty}
+                    >
+                      <i className="fa fa-plus" aria-hidden="true"></i>
+                    </button>
                   </div>
                 </div>
 
-                <div className="col">
-                  <button
-                    type="button"
-                    className="add-cart-btn"
-                    disabled={product.stock === 0}
-                    onClick={addToCart}
-                  >
-                    <i className="fa fa-shopping-cart" aria-hidden="true"></i>
-                    &nbsp;&nbsp;{t("Add to Cart")}
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  className="add-cart-btn"
+                  disabled={product.stock === 0}
+                  onClick={addToCart}
+                >
+                  <i className="fa fa-shopping-cart" aria-hidden="true"></i>
+                  &nbsp;&nbsp;{t("Add to Cart")}
+                </button>
               </div>
 
               <div className="ratings mt-auto text-nowrap" style={{ display: "flex", justifyContent: "center", padding: "20px" }} >
@@ -895,10 +927,7 @@ const ProductDetails = () => {
 
           <div className="row d-flex justify-content-center">
             <div className="col-md-12">
-              <div
-                className="card shadow-0 border"
-                style={{ backgroundColor: "#F6F9FC" }}
-              >
+              <div className="card shadow-0 border review-card">
                 <div className="card-body p-4">
                   {user ? (
                     <form onSubmit={submitHandler}>
@@ -935,11 +964,7 @@ const ProductDetails = () => {
                       <div className="text-center mt-4">
                         <button
                           type="submit"
-                          className="btn py-2 text-white text-nowrap"
-                          style={{
-                            backgroundColor: "#FF9D1C",
-                            borderRadius: "25px",
-                          }}
+                          className="btn py-2 text-white text-nowrap review-submit-btn"
                         >
                           {t("Submit")}
                         </button>
@@ -963,6 +988,18 @@ const ProductDetails = () => {
               </div>
             </div>
           </div>
+
+          <ProductRail
+            eyebrow="Sélection"
+            title={t("You may also like") !== "You may also like" ? t("You may also like") : "Vous aimerez aussi"}
+            products={related}
+          />
+
+          <ProductRail
+            eyebrow="Historique"
+            title={t("Recently viewed") !== "Recently viewed" ? t("Recently viewed") : "Récemment consultés"}
+            products={(recentlyViewed || []).filter((p) => p._id !== product._id).slice(0, 10)}
+          />
 
         </>
       )}

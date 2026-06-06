@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -6,7 +6,7 @@ import { logout } from "../actions/userActions";
 import "../styles/header.css";
 import { useGlobalState } from "../context/context";
 import { useTranslation } from "react-i18next";
-import { Button, Divider, Dropdown, Menu } from "antd";
+import { Button, Dropdown, Menu } from "antd";
 import { ReactComponent as UserIcon } from "../assets/icons/mdi--user.svg";
 import { ReactComponent as CartIcon } from "../assets/icons/cart.svg";
 import { ReactComponent as PositionIcon } from "../assets/icons/position.svg";
@@ -18,28 +18,20 @@ const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user, loading } = useSelector((state) => state.auth);
-  const {
-    keyword,
-    setKeyword,
-    category,
-    setCategory,
-    subcategory,
-    setSubategory,
-    setBrand,
-  } = useGlobalState();
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
+  const { cartItems } = useSelector((state) => state.cart);
+  const { category: allCategory } = useSelector((state) => state.categorys);
+  const { setKeyword, setCategory, setSubategory, setBrand, wishlist } = useGlobalState();
 
-    window.addEventListener("resize", handleResize);
+  const { t, i18n } = useTranslation("header");
+  const [lang, setLang] = useState(i18n?.language?.toString());
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [openCat, setOpenCat] = useState(null);
+  const keywordRef = useRef("");
 
-    // Cleanup the event listener
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []); // Empty dependency array ensures this effect runs only once
+  const closeMobile = () => {
+    setMobileOpen(false);
+    setOpenCat(null);
+  };
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -48,68 +40,105 @@ const Header = () => {
       className: "m-2",
     });
   };
-  const { category: allCategory } = useSelector((state) => state.categorys);
-
-  const CategoriesItem = () => {
-    return (
-      <div className="categories-list-container">
-        <div className="categories-items-container">
-          {allCategory?.map((category) => (
-            <span className="category-title" key={category.title}>
-              <Dropdown
-                overlay={
-                  <Menu>
-                    {category?.subcategories?.map((subCategory) => (
-                      <Menu.Item
-                        key={subCategory}
-                        className="gategory-title"
-                        onClick={() => {
-                          setKeyword("");
-                          setCategory(category.title);
-                          setSubategory(subCategory);
-                        }}
-                      >
-                        {subCategory}
-                      </Menu.Item>
-                    ))}
-                  </Menu>
-                }
-                placement="bottom"
-                arrow
-              >
-                <span
-                  onClick={() => {
-                    setKeyword("");
-                    setCategory(category?.title);
-                    setSubategory("");
-                  }}
-                  className="gategory-title"
-                >
-                  {category?.title}
-                </span>
-              </Dropdown>
-            </span>
-          ))}
-        </div>
-      </div>
-    );
-  };
-  const { t, i18n } = useTranslation("header");
-
-  const [lang, setLang] = useState(i18n?.language?.toString());
 
   const onChangeLanguage = (language) => {
     i18n.changeLanguage(language);
     setLang(language);
   };
-  const keywordRef = useRef("");
 
   const searchHandler = (e) => {
     e.preventDefault();
-
-
-    setKeyword(keywordRef.current.value);
+    const value = e.target.querySelector("input")?.value || "";
+    setKeyword(value);
+    setCategory("");
+    setSubategory("");
+    setBrand("");
+    closeMobile();
+    navigate("/products");
   };
+
+  const resetToHome = () => {
+    setKeyword("");
+    setCategory("");
+    setSubategory("");
+    setBrand("");
+    closeMobile();
+  };
+
+  // Select a category/subcategory (used by desktop dropdown + mobile drawer).
+  // Always closes the mobile navbar after redirecting.
+  const selectCategory = (catTitle, subTitle = "") => {
+    setKeyword("");
+    setCategory(catTitle);
+    setSubategory(subTitle);
+    setBrand("");
+    closeMobile();
+    navigate("/products");
+  };
+
+  const CategoriesItem = () => (
+    <div className="categories-list-container">
+      <div className="categories-items-container">
+        {allCategory?.map((cat) => (
+          <span key={cat.title}>
+            <Dropdown
+              overlay={
+                <Menu>
+                  {cat?.subcategories?.map((subCategory) => (
+                    <Menu.Item
+                      key={subCategory}
+                      onClick={() => selectCategory(cat.title, subCategory)}
+                    >
+                      {subCategory}
+                    </Menu.Item>
+                  ))}
+                </Menu>
+              }
+              placement="bottom"
+            >
+              <span
+                onClick={() => selectCategory(cat?.title)}
+                className="gategory-title"
+              >
+                {cat?.title}
+              </span>
+            </Dropdown>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+
+  const AccountMenu = () => (
+    <div className="account-menu">
+      <div className="account-menu-header">
+        <img src={user && `https://api.lagha.shop${user.avatar}`} alt="user" />
+        <b>{user && user.name}</b>
+      </div>
+      {user && user.role === "admin" && (
+        <Link to="/dashboard" className="account-menu-item">
+          <i className="fa fa-bar-chart" aria-hidden="true"></i>
+          {t("dashboard")}
+        </Link>
+      )}
+      <Link to="/orders" className="account-menu-item">
+        <i className="fa fa-credit-card-alt" aria-hidden="true"></i>
+        {t("orders")}
+      </Link>
+      <Link to="/profile" className="account-menu-item">
+        <i className="fa fa-user-circle" aria-hidden="true"></i>
+        {t("profile")}
+      </Link>
+      <Link to="/settings" className="account-menu-item">
+        <i className="fa fa-cog" aria-hidden="true"></i>
+        {t("settings")}
+      </Link>
+      <button className="account-menu-item danger" onClick={logoutHandler}>
+        <i className="fa fa-sign-out" aria-hidden="true"></i>
+        {t("logout")}
+      </button>
+    </div>
+  );
 
   const languagesItems = [
     {
@@ -119,11 +148,6 @@ const Header = () => {
           className="navbar-flag-container"
           onClick={() => onChangeLanguage("fr")}
         >
-          {/* <img
-            src={"./assets/fr-flag.png"}
-            alt="flag"
-            className="navbar-flag"
-          /> */}
           <FrenshIcon />
           <p>{t("language.fr")}</p>
         </div>
@@ -136,353 +160,285 @@ const Header = () => {
           className="navbar-flag-container"
           onClick={() => onChangeLanguage("en")}
         >
-          {/* <img
-            src={"./assets/en-flag.png"}
-            alt="flag"
-            className="navbar-flag"
-          /> */}
           <EnglishIcon />
-
           <p>{t("language.en")}</p>
+        </div>
+      ),
+    },
+    {
+      key: "3",
+      label: (
+        <div
+          className="navbar-flag-container"
+          onClick={() => onChangeLanguage("ar")}
+        >
+          <span className="lang-ar-badge">ع</span>
+          <p>{t("language.ar")}</p>
         </div>
       ),
     },
   ];
 
-  return (
-    <nav
-      className="navbar navbar-expand-lg navbar-defailt py-2 border-bottom"
-    // style={{ height: "150px", background: "#fff" }}
+  const mobileLink = (to, label, onClick) => (
+    <Link
+      to={to}
+      className="mobile-nav-link"
+      onClick={() => {
+        onClick && onClick();
+        closeMobile();
+      }}
     >
-      <div className="container" onSubmit={searchHandler} >
+      {label}
+    </Link>
+  );
 
-        {windowWidth > 550 ? <Link to="/" className="navbar-brand">
-          <b
-            onClick={() => {
-              setKeyword();
-              setCategory("")
-              setSubategory("")
-              setBrand("");
-            }}
-          >
-            <img
-              src="/assets/new-logo-2.png"
-              alt="logo"
-              style={{ height: "150px", width: "100px" }}
-            />
-          </b>
-        </Link> : null}
-
-
+  return (
+    <>
+    <header className="site-header">
+      <div className="header-inner">
+        {/* Mobile burger */}
         <button
-          className="navbar-toggler border"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbar-default"
-          aria-controls="navbar-default"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
+          className="header-icon-btn header-burger"
+          aria-label="Menu"
+          onClick={() => setMobileOpen((o) => !o)}
         >
           <i
-            className="fa fa-bars"
+            className={`fa ${mobileOpen ? "fa-times" : "fa-bars"}`}
             aria-hidden="true"
-            style={{ color: "#A0A0A0" }}
           ></i>
         </button>
 
-        <div className="collapse navbar-collapse" id="navbar-default">
-          <div className="navbar-collapse-header">
-            <div className="row">
-              <div className="col-6 collapse-brand">
-                <Link to="/">
-                  <b>
-                    <img src="/assets/new-logo-2.png" alt="logo" style={{ height: "55px" }} />
-                  </b>
-                </Link>
-              </div>
-              <div className="col-6 collapse-close">
-                <button
-                  type="button"
-                  className="navbar-toggler"
-                  data-toggle="collapse"
-                  data-target="#navbar-default"
-                  aria-controls="navbar-default"
-                  aria-expanded="false"
-                  aria-label="Toggle navigation"
-                >
-                  <span></span>
-                  <span></span>
-                </button>
-              </div>
+        {/* Brand */}
+        <Link to="/" className="brand-logo" onClick={resetToHome}>
+          <img src="/assets/new-logo-2.png" alt="lagha shop" />
+        </Link>
+
+        {/* Primary nav (desktop) */}
+        <nav className="primary-nav">
+          <Link to="/" className="nav-link-item" onClick={resetToHome}>
+            {t("home")}
+          </Link>
+          <Dropdown overlay={<CategoriesItem />} placement="bottom">
+            <span className="nav-link-item">
+              {t("categories")}
+              <ArrowDown style={{ width: "12px" }} />
+            </span>
+          </Dropdown>
+          <Link to="/brands" className="nav-link-item">
+            {t("brands") !== "brands" ? t("brands") : "Brands"}
+          </Link>
+          <Link to="/contact" className="nav-link-item">
+            {t("contact")}
+          </Link>
+        </nav>
+
+        {/* Actions */}
+        <div className="header-actions">
+          <form onSubmit={searchHandler} className="desktop-only">
+            <div className="search-header-input-container">
+              <input
+                type="text"
+                className="search-header-input"
+                placeholder={t("search..")}
+                ref={keywordRef}
+              />
+              <i className="fa fa-search" aria-hidden="true"></i>
             </div>
-          </div>
-          {
-            <div
-              className="navbar-nav-items"
-              style={{
-                width: "50%",
-                display: "flex",
-                justifyContent: "center",
-                gap: "25px",
-              }}
+          </form>
+
+          <Link
+            to="/contact"
+            className="header-icon-btn desktop-only"
+            aria-label="Store location"
+          >
+            <PositionIcon />
+          </Link>
+
+          {user && user.name ? (
+            <Dropdown
+              overlay={<AccountMenu />}
+              placement="bottomRight"
+              trigger={["click", "hover"]}
             >
-              {windowWidth <= 1000 && <><Link to="/">
-
-                <span
-                  data-toggle="collapse"
-                  data-target="#navbar-default"
-                  aria-expanded="false"
-
-                  className="navigation-item"
-                  onClick={() => {
-                    setKeyword();
-                    setBrand("");
+              <button
+                className="header-icon-btn desktop-only"
+                aria-label="Account"
+              >
+                <img
+                  src={user && `https://api.lagha.shop${user.avatar}`}
+                  alt="user"
+                  style={{
+                    width: "30px",
+                    height: "30px",
+                    borderRadius: "999px",
+                    objectFit: "cover",
                   }}
-                >
-                  {t("home")}
-                </span>
-              </Link>
-
-                <Link to="/contact" >
-                  <span className="navigation-item"
-                    data-toggle="collapse"
-                    data-target="#navbar-default"
-                    aria-expanded="false"
-
-                  >
-                    {t("contact")}
-                  </span>
-                </Link>
-                <Dropdown
-                  overlay={<CategoriesItem />}
-                  placement="bottom"
-                  arrow
-                  overlayStyle={{
-                    borderRadius: "5px",
-                    background: "white",
-                    padding: "25px",
-                    boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-                  }}
-                >
-                  <span className="navigation-item">{t("categories")}</span>
-                </Dropdown>
-                {user && user.name ? (
-                  <li className="nav-item dropdown">
-                    <span
-                      className="nav-link nav-link-icon"
-                      style={{ cursor: "pointer", display: "flex" }}
-                      id="navbar-default_dropdown_1"
-                      role="button"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      <img
-                        src={user && `https://api.lagha.shop${user.avatar}`}
-                        alt="user"
-                        className="rounded-circle"
-                        style={{ width: "25px", height: "25px" }}
-                      />
-                      <span className="nav-link-inner--text font-weight-bold text-nowrap" style={{ display: "flex" }}>
-                        &nbsp;{user && user.name}&nbsp;
-                        <ArrowDown style={{ width: "15px" }} />
-                      </span>
-                    </span>
-                    <div
-                      className="dropdown-menu dropdown-menu-right"
-                      aria-labelledby="navbar-default_dropdown_1"
-                    >
-                      {user && user.role === "admin" && (
-                        <Link
-                          to="/dashboard"
-                          className="dropdown-item d-flex align-items-center"
-                        >
-                          <i className="fa fa-bar-chart" aria-hidden="true"></i>
-                          {t("dashboard")}
-                        </Link>
-                      )}
-
-                      <Link
-                        to="/orders"
-                        className="dropdown-item d-flex align-items-center"
-                      >
-                        <i className="fa fa-credit-card-alt" aria-hidden="true"></i>
-                        {t("orders")}
-                      </Link>
-
-                      <Link
-                        to="/profile"
-                        className="dropdown-item d-flex align-items-center"
-                      >
-                        <i className="fa fa-user-circle" aria-hidden="true"></i>
-                        {t("profile")}
-                      </Link>
-
-                      <Link
-                        to="/settings"
-                        className="dropdown-item d-flex align-items-center"
-                      >
-                        <i className="fa fa-cog" aria-hidden="true"></i>
-                        {t("settings")}
-                      </Link>
-
-                      <div className="dropdown-divider"></div>
-
-                      <button
-                        className="dropdown-item d-flex align-items-center"
-                        onClick={logoutHandler}
-                      >
-                        <i className="fa fa-sign-out" aria-hidden="true"></i>
-                        {t("logout")}
-                      </button>
-                    </div>
-                  </li>
-                ) : (
-                  !loading && (
-                    <Link to="/login"  >
-
-                      <span className="navigation-item" data-toggle="collapse"
-                        data-target="#navbar-default"
-                        aria-expanded="false"
-                      >
-                        {t("sign_in")}
-                      </span>
-                    </Link>
-                  )
-                )}</>}
-            </div>
-          }
-          <ul className="navbar-nav ml-lg-auto" style={{ display: "flex", alignItems: "center" }}>
-            <form style={{ width: "100%" }}>
-              <div className={"search-header-input-container"} >
-                <input
-                  type="text"
-                  className="search-header-input"
-                  placeholder={t("search..")}
-                  ref={keywordRef}
-
                 />
-                <i className="fa fa-search" aria-hidden="true" style={{ paddingRight: "10px" }}></i>
-              </div>
-            </form>
-            <li className="nav-item">
-              <Link to="/contact" className="nav-link nav-link-icon mt-3 mt-lg-0" style={{ display: "flex", alignItems: "center" }}>
-                <PositionIcon style={{ width: "35px" }} />
-
+              </button>
+            </Dropdown>
+          ) : (
+            !loading && (
+              <Link
+                to="/login"
+                className="header-icon-btn desktop-only"
+                aria-label="Sign in"
+              >
+                <UserIcon />
               </Link>
-            </li>
-            {windowWidth > 1000 && user && user.name ? (
-              <li className="nav-item dropdown">
-                <span
-                  className="nav-link nav-link-icon"
-                  style={{ cursor: "pointer", display: "flex", width: "55px" }}
-                  id="navbar-default_dropdown_1"
-                  role="button"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <img
-                    src={user && `https://api.lagha.shop${user.avatar}`}
-                    alt="user"
-                    className="rounded-circle"
-                    style={{ width: "35px", height: "35px" }}
-                  />
+            )
+          )}
 
-                </span>
-                <div
-                  className="dropdown-menu dropdown-menu-right"
-                  aria-labelledby="navbar-default_dropdown_1"
-                >
-                  {user && user.role === "admin" && (
-                    <Link
-                      to="/dashboard"
-                      className="dropdown-item d-flex align-items-center"
-                    >
-                      <i className="fa fa-bar-chart" aria-hidden="true"></i>
-                      {t("dashboard")}
-                    </Link>
-                  )}
-
-                  <Link
-                    to="/orders"
-                    className="dropdown-item d-flex align-items-center"
-                  >
-                    <i className="fa fa-credit-card-alt" aria-hidden="true"></i>
-                    {t("orders")}
-                  </Link>
-
-                  <Link
-                    to="/profile"
-                    className="dropdown-item d-flex align-items-center"
-                  >
-                    <i className="fa fa-user-circle" aria-hidden="true"></i>
-                    {t("profile")}
-                  </Link>
-
-                  <Link
-                    to="/settings"
-                    className="dropdown-item d-flex align-items-center"
-                  >
-                    <i className="fa fa-cog" aria-hidden="true"></i>
-                    {t("settings")}
-                  </Link>
-
-                  <div className="dropdown-divider"></div>
-
-                  <button
-                    className="dropdown-item d-flex align-items-center"
-                    onClick={logoutHandler}
-                  >
-                    <i className="fa fa-sign-out" aria-hidden="true"></i>
-                    {t("logout")}
-                  </button>
-                </div>
-              </li>
-            ) : (
-              !loading && (
-                <li className="nav-item">
-                  <Link to="/login" className="nav-link nav-link-icon" style={{ display: "flex", alignItems: "center" }}>
-                    <UserIcon style={{ width: "30px" }} />
-
-                  </Link>
-                </li>
-              )
+          <Link
+            to="/wishlist"
+            className="header-icon-btn desktop-only"
+            aria-label="Favoris"
+          >
+            <i className="fa fa-heart-o" style={{ fontSize: "20px" }}></i>
+            {wishlist && wishlist.length > 0 && (
+              <span className="cart-badge">{wishlist.length}</span>
             )}
+          </Link>
 
-            <li className="nav-item">
-              <Link to="/cart" className="nav-link nav-link-icon mt-3 mt-lg-0" style={{ display: "flex" }}>
-                <CartIcon style={{ width: "30px", fill: 'white' }} />
+          {/* Cart — always visible */}
+          <Link to="/cart" className="header-icon-btn" aria-label="Cart">
+            <CartIcon />
+            {cartItems && cartItems.length > 0 && (
+              <span className="cart-badge">{cartItems.length}</span>
+            )}
+          </Link>
 
-
-              </Link>
-            </li>
-
-          </ul>
+          <Dropdown
+            menu={{ items: languagesItems }}
+            trigger={["click"]}
+            placement="bottomRight"
+          >
+            <Button type="text" className="header-icon-btn lang-flag desktop-only">
+              {lang === "ar" ? (
+                <span className="lang-ar-badge">ع</span>
+              ) : lang === "en" ? (
+                <EnglishIcon />
+              ) : (
+                <FrenshIcon />
+              )}
+            </Button>
+          </Dropdown>
         </div>
-        <Dropdown
-          menu={{ items: languagesItems }}
-          trigger={["click"]}
-          placement="bottomRight"
-          arrow
-        >
-          <Button type="link" shape="circle" style={{ marginBottom: "25px" }}>
-            <div className="navbar-flag-container">
-              {/* <img
-                src={
-                  lang === "en"
-                    ? "./assets/en-flag.png"
-                    : "./assets/fr-flag.png"
-                }
-                alt="flag"
-                className="navbar-flag"
-              /> */}
-              {lang === "en" ? <EnglishIcon className="navbar-flag" /> : <FrenshIcon className="navbar-flag" />}
-            </div>
-          </Button>
-        </Dropdown>
       </div>
-    </nav>
+    </header>
+
+      {/* Mobile drawer (outside <header> so position:fixed escapes the
+          backdrop-filter containing block) */}
+      <div className={`mobile-drawer ${mobileOpen ? "open" : ""}`}>
+        <form onSubmit={searchHandler}>
+          <div className="mobile-search">
+            <input type="text" placeholder={t("search..")} />
+            <button type="submit" aria-label="Search">
+              <i className="fa fa-search" aria-hidden="true"></i>
+            </button>
+          </div>
+        </form>
+
+        <div className="mobile-drawer-scroll">
+          {mobileLink("/", t("home"), resetToHome)}
+
+          {/* Categories accordion */}
+          {allCategory && allCategory.length > 0 && (
+            <div className="mobile-accordion">
+              {allCategory.map((cat) => (
+                <div className="mobile-acc-item" key={cat.title}>
+                  <button
+                    className="mobile-nav-link mobile-acc-toggle"
+                    onClick={() =>
+                      setOpenCat(openCat === cat.title ? null : cat.title)
+                    }
+                  >
+                    <span>{cat.title}</span>
+                    <i
+                      className={`fa fa-chevron-${
+                        openCat === cat.title ? "up" : "down"
+                      }`}
+                      aria-hidden="true"
+                    ></i>
+                  </button>
+                  {openCat === cat.title && (
+                    <div className="mobile-subcats">
+                      <span
+                        className="mobile-subcat"
+                        onClick={() => selectCategory(cat.title)}
+                      >
+                        {t("All") !== "All" ? t("All") : "Tout"} — {cat.title}
+                      </span>
+                      {cat?.subcategories?.map((sub) => (
+                        <span
+                          key={sub}
+                          className="mobile-subcat"
+                          onClick={() => selectCategory(cat.title, sub)}
+                        >
+                          {sub}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {mobileLink(
+            "/brands",
+            t("brands") !== "brands" ? t("brands") : "Brands"
+          )}
+          {mobileLink("/contact", t("contact"))}
+
+          {!user && !loading && mobileLink("/login", t("sign_in"))}
+
+          {user && user.name && (
+            <>
+              {user.role === "admin" && mobileLink("/dashboard", t("dashboard"))}
+              {mobileLink("/orders", t("orders"))}
+              {mobileLink("/profile", t("profile"))}
+              {mobileLink("/settings", t("settings"))}
+              <button
+                className="mobile-nav-link mobile-logout"
+                onClick={() => {
+                  logoutHandler();
+                  closeMobile();
+                }}
+              >
+                {t("logout")}
+              </button>
+            </>
+          )}
+
+          {/* Language switch */}
+          <div className="mobile-lang">
+            <button
+              className={`mobile-lang-btn ${lang === "fr" ? "active" : ""}`}
+              onClick={() => onChangeLanguage("fr")}
+            >
+              <FrenshIcon /> {t("language.fr")}
+            </button>
+            <button
+              className={`mobile-lang-btn ${lang === "en" ? "active" : ""}`}
+              onClick={() => onChangeLanguage("en")}
+            >
+              <EnglishIcon /> {t("language.en")}
+            </button>
+            <button
+              className={`mobile-lang-btn ${lang === "ar" ? "active" : ""}`}
+              onClick={() => onChangeLanguage("ar")}
+            >
+              <span className="lang-ar-badge">ع</span> {t("language.ar")}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Backdrop */}
+      {mobileOpen && (
+        <div className="mobile-drawer-backdrop" onClick={closeMobile} />
+      )}
+    </>
   );
 };
 

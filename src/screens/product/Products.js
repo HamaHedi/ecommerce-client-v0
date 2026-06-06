@@ -10,6 +10,13 @@ import {
 import Loader from "../../components/Loader";
 import Message from "../../components/Message";
 import Banner from "../../components/Banner";
+import HomeExtras, { AnnounceBar } from "../../components/HomeExtras";
+import {
+  StatsBand,
+  EditorialStory,
+  Testimonials,
+  InstagramGallery,
+} from "../../components/HomeSections";
 import { getCategory } from "../../actions/categoryAction";
 import Pagination from "react-js-pagination";
 import { useGlobalState } from "../../context/context";
@@ -18,8 +25,8 @@ import { useTranslation } from "react-i18next";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Divider, Dropdown, Menu } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Dropdown } from "antd";
+import { useNavigate, useLocation } from "react-router-dom";
 import { getBrands } from "../../actions/brandActions";
 import prevArrow from '../../assets/icons/prev.svg';
 import nextArrow from '../../assets/icons/next.svg';
@@ -28,6 +35,8 @@ const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [price, setPrice] = useState([0, 1000]);
   const navigate = useNavigate();
+  const location = useLocation();
+  const isShop = location.pathname.startsWith("/products");
   const [rating, setRating] = useState(0);
   // const [keyword, setKeyword] = useState('')
   const { t } = useTranslation("product");
@@ -232,6 +241,7 @@ const Products = () => {
     setRating(0);
 
     setKeyword(keywordRef.current.value);
+    if (!isShop) navigate("/products");
   };
 
   useEffect(() => {
@@ -270,8 +280,30 @@ const Products = () => {
     dispatch(clearErrors());
   }, [dispatch]);
 
+  // On the home route, clear any active filters so the featured grid stays general.
+  useEffect(() => {
+    if (!isShop) {
+      if (keyword !== undefined) setKeyword(undefined);
+      if (category) setCategory("");
+      if (subcategory) setSubategory("");
+      if (brand) setBrand("");
+      setCurrentPage(1);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
+
+  const handleHomeCategory = (title) => {
+    setKeyword("");
+    setCategory(title);
+    setSubategory("");
+    setBrand("");
+    setCurrentPage(1);
+    navigate("/products");
+  };
+
   return (
     <section>
+      <AnnounceBar />
       <div className="categories-container">
         <span
           onClick={() => {
@@ -285,27 +317,46 @@ const Products = () => {
         {allCategory?.map((category) => (
           <span className="category-title" key={category.title}>
             <Dropdown
+              overlayClassName="subcat-dropdown"
               overlay={
-                <Menu style={{ borderRadius: "5px" }}>
+                <div className="subcat-menu">
+                  <div className="subcat-menu-head">{category.title}</div>
+                  <button
+                    type="button"
+                    className="subcat-item subcat-all"
+                    onClick={() => {
+                      setKeyword("");
+                      setCategory(category.title);
+                      setSubategory("");
+                      setBrand("");
+                      setCurrentPage(1);
+                      navigate("/products");
+                    }}
+                  >
+                    <span>Tout voir</span>
+                    <i className="fa fa-th-large" aria-hidden="true"></i>
+                  </button>
                   {category?.subcategories?.map((subCategory) => (
-                    <Menu.Item
+                    <button
+                      type="button"
+                      className="subcat-item"
+                      key={subCategory}
                       onClick={() => {
                         setKeyword("");
                         setCategory(category.title);
                         setSubategory(subCategory);
                         setBrand("");
                         setCurrentPage(1);
+                        navigate("/products");
                       }}
-                      key={subCategory}
-                      className="gategory-title"
                     >
-                      {subCategory} <Divider />
-                    </Menu.Item>
+                      <span>{subCategory}</span>
+                      <i className="fa fa-angle-right" aria-hidden="true"></i>
+                    </button>
                   ))}
-                </Menu>
+                </div>
               }
               placement="bottom"
-              arrow
             >
               <span
                 onClick={() => {
@@ -314,6 +365,7 @@ const Products = () => {
                   setSubategory("");
                   setBrand("");
                   setCurrentPage(1);
+                  navigate("/products");
                 }}
                 className="category-title"
               >
@@ -337,77 +389,66 @@ const Products = () => {
 
       </div>
       <div className="row">
-        {keyword !== undefined && (
+        {isShop && (
 
-          <div className="col-12 col-md-3" style={{ padding: "30px" }}>
+          <div className="col-12 col-md-3 filters-sidebar">
 
-            <div className="p-2 h-100">
-              <form onSubmit={submitHandler}>
-                <h6>
-                  <b>
-                    {t("Price Range")} {price[0]}-{price[1]}
-                  </b>
-                </h6>
+            <div className="filters-card">
+              <h5 className="filters-title">{t("Filters") !== "Filters" ? t("Filters") : "Filtres"}</h5>
+              <form onSubmit={submitHandler} className="filter-group">
+                <span className="filter-label">
+                  {t("Price Range")}
+                  <span className="filter-range-value">{price[0]} - {price[1]} DT</span>
+                </span>
 
-                <div className="row mt-3 mb-2">
-                  <div className="col">
-                    <div className="form-group">
-                      <small>Min</small>
-                      <input
-                        type="number"
-                        min={0}
-                        max={1000}
-                        className="form-control form-control-sm text-center"
-                        placeholder="Min"
-                        defaultValue={0}
-                        required
-                        ref={minPriceRef}
-                      />
-                    </div>
+                <div className="filter-price-row">
+                  <div className="filter-price-field">
+                    <small>Min</small>
+                    <input
+                      type="number"
+                      min={0}
+                      max={1000}
+                      className="form-control form-control-sm text-center"
+                      placeholder="Min"
+                      defaultValue={0}
+                      required
+                      ref={minPriceRef}
+                    />
                   </div>
-                  <div className="col">
-                    <div className="form-group">
-                      <small>Max</small>
-                      <input
-                        type="number"
-                        min={0}
-                        max={1000}
-                        className="form-control form-control-sm text-center"
-                        placeholder="Max"
-                        defaultValue={1000}
-                        required
-                        ref={maxPriceRef}
-                      />
-                    </div>
+                  <div className="filter-price-field">
+                    <small>Max</small>
+                    <input
+                      type="number"
+                      min={0}
+                      max={1000}
+                      className="form-control form-control-sm text-center"
+                      placeholder="Max"
+                      defaultValue={1000}
+                      required
+                      ref={maxPriceRef}
+                    />
                   </div>
                 </div>
 
-                <div className="text-center">
-                  <button type="submit" className="btnS btn-sm btn-success">
-                    {t("Search")}
-                  </button>
-                </div>
+                <button type="submit" className="filter-search-btn">
+                  {t("Search")}
+                </button>
               </form>
 
-              <hr />
+              <div className="filter-group">
+              <span className="filter-label">{t("Categories")}</span>
 
-              <h6>
-                <b> {t("Categories")}</b>
-              </h6>
-
-              <ul className="list-group">
-                <li className="list-group-item p-2">
-                  <b
-                    onClick={() => {
-                      setCategory("");
-                      setSubategory("");
-                      setBrand("");
-                      setCurrentPage(1);
-                    }}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {t("All")}
-                  </b>
+              <ul className="filter-list">
+                <li
+                  className={`filter-item ${!category ? "active" : ""}`}
+                  onClick={() => {
+                    setCategory("");
+                    setSubategory("");
+                    setBrand("");
+                    setCurrentPage(1);
+                  }}
+                >
+                  {t("All")}
                 </li>
 
                 {categoryLoading ? (
@@ -418,40 +459,35 @@ const Products = () => {
                   </div>
                 ) : (
                   allCategory &&
-                  allCategory.map((category) => (
-                    <li className="list-group-item p-2" key={category._id}>
-                      <small
-                        onClick={() => {
-                          setKeyword("");
-                          setCategory(category?.title);
-                          setSubategory("");
-                          setBrand("");
-                          setCurrentPage(1);
-                        }}
-                        style={{ cursor: "pointer" }}
-                      >
-                        {category.title}
-                      </small>
+                  allCategory.map((cat) => (
+                    <li
+                      className={`filter-item ${category === cat?.title ? "active" : ""}`}
+                      key={cat._id}
+                      onClick={() => {
+                        setKeyword("");
+                        setCategory(cat?.title);
+                        setSubategory("");
+                        setBrand("");
+                        setCurrentPage(1);
+                      }}
+                    >
+                      {cat.title}
                     </li>
                   ))
                 )}
               </ul>
+              </div>
 
-              <h6>
-                <b> {t("Brands")}</b>
-              </h6>
-              <ul className="list-group">
-                <li className="list-group-item p-2">
-                  <b
-                    onClick={() => {
-                      // setCategory("");
-                      // setSubategory("");
-                      setBrand("");
-                    }}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {t("All")}
-                  </b>
+              <div className="filter-group">
+              <span className="filter-label">{t("Brands")}</span>
+              <ul className="filter-list">
+                <li
+                  className={`filter-item ${!brand ? "active" : ""}`}
+                  onClick={() => {
+                    setBrand("");
+                  }}
+                >
+                  {t("All")}
                 </li>
 
                 {BrandLoading ? (
@@ -462,36 +498,30 @@ const Products = () => {
                   </div>
                 ) : (
                   brands &&
-                  brands.map((brand) => (
-                    <li className="list-group-item p-2" key={brand.id}>
-                      <small
-                        onClick={() => {
-                          setKeyword("");
-                          setCurrentPage(1);
-
-                          setBrand(brand?.title);
-                        }}
-                        style={{ cursor: "pointer" }}
-                      >
-                        {brand.title}
-                      </small>
+                  brands.map((b) => (
+                    <li
+                      className={`filter-item ${brand === b?.title ? "active" : ""}`}
+                      key={b.id}
+                      onClick={() => {
+                        setKeyword("");
+                        setCurrentPage(1);
+                        setBrand(b?.title);
+                      }}
+                    >
+                      {b.title}
                     </li>
                   ))
                 )}
               </ul>
-              <hr />
+              </div>
 
-              <h6>
-                <b>{t("Ratings")}</b>
-              </h6>
+              <div className="filter-group">
+              <span className="filter-label">{t("Ratings")}</span>
 
-              <ul className="pl-0">
+              <ul className="filter-ratings">
                 {[5, 4, 3, 2, 1, 0].map((star) => (
                   <li
-                    style={{
-                      cursor: "pointer",
-                      listStyleType: "none",
-                    }}
+                    className={`filter-rating-item ${rating === star ? "active" : ""}`}
                     key={star}
                     onClick={() => setRating(star)}
                   >
@@ -507,12 +537,22 @@ const Products = () => {
                   </li>
                 ))}
               </ul>
+              </div>
             </div>
           </div>
         )}
 
-        <div className={keyword !== undefined ? "col-12 col-md-9" : "col"} style={{ justifyContent: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
-          {keyword === undefined && <Banner />}
+        <div className={isShop ? "col-12 col-md-9" : "col"} style={{ justifyContent: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
+          {!isShop && <Banner />}
+          {!isShop && (
+            <>
+              <StatsBand />
+              <HomeExtras
+                categories={allCategory}
+                onCategory={handleHomeCategory}
+              />
+            </>
+          )}
           {/* {keyword === undefined && (
             <div className="about-container">
               <div className="about-images-container">
@@ -532,9 +572,7 @@ const Products = () => {
               </div>
             </div>
           )} */}
-          {!keyword && !category &&
-
-            !subcategory && <div className="new-product-container" ><span className="new-products-title">
+          {!isShop && <div className="new-product-container" ><span className="new-products-title">
               Nouveaux produits
             </span>
               {/* {newProducts?.newProducts &&
@@ -555,12 +593,13 @@ const Products = () => {
               )}
             </div>}
 
+          {!isShop && <EditorialStory />}
 
           <section
             className="container my-4"
             style={{ width: "100%", maxWidth: "80%" }}
           >
-            {keyword && <form onSubmit={searchHandler}>
+            {isShop && <form onSubmit={searchHandler}>
               <div className="input-group mb-4">
                 <input
                   type="text"
@@ -585,23 +624,21 @@ const Products = () => {
               <Message color="danger" message={error} />
             ) : (
               <>
-                <div
-                  className="row"
-                  style={{ gap: "35px", justifyContent: "center" }}
-                >
-                  {!keyword && !category &&
-
-                    !subcategory && <span className="new-products-title">
-                      Nos produits
-                    </span>}
-
+                <span className="new-products-title">
+                  {isShop
+                    ? keyword
+                      ? `Résultats pour « ${keyword} »`
+                      : category || "Nos produits"
+                    : "Nos produits"}
+                </span>
+                <div className="products-grid">
                   {products &&
                     products?.map((product) => (
                       <Product key={product._id} product={product} />
                     ))}
                 </div>
 
-                {resPerPage < count && (
+                {isShop && resPerPage < count && (
                   <div
                     className="d-flex justify-content-center"
                     style={{ paddingTop: "15px" }}
@@ -625,8 +662,8 @@ const Products = () => {
           </section>
         </div>
       </div>
-      {productsPromo?.length > 0 && <span className="nos-marque">Promo</span>}
-      {productsPromo?.length > 0 && (
+      {!isShop && productsPromo?.length > 0 && <span className="nos-marque">Promo</span>}
+      {!isShop && productsPromo?.length > 0 && (
         <div className="promo-products-container" style={{ padding: "25px" }}>
           <Slider {...settings3}>
             {productsPromo &&
@@ -639,7 +676,7 @@ const Products = () => {
         </div>
       )}
 
-      <div className="slider-container" style={{ padding: "25px" }}>
+      {!isShop && <div className="slider-container" style={{ padding: "25px" }}>
         <Slider {...settings2}>
           <div>
             <img
@@ -684,9 +721,12 @@ const Products = () => {
             <img src="assets/products_carousel/8.jpeg" style={{ padding: "5px" }} />
           </div>
         </Slider>
-      </div>
-      <span className="nos-marque">NOS MARQUES</span>
-      <div className="slider-container" style={{ padding: "25px" }}>
+      </div>}
+
+      {!isShop && <Testimonials />}
+
+      {!isShop && <span className="nos-marque">NOS MARQUES</span>}
+      {!isShop && <div className="slider-container" style={{ padding: "25px" }}>
         <Slider {...settings}>
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
             <img src="assets/brand2.jpeg" style={{ height: "120px", marginLeft: "50px" }} />
@@ -734,7 +774,9 @@ const Products = () => {
             />
           </div>
         </Slider>
-      </div>
+      </div>}
+
+      {!isShop && <InstagramGallery />}
     </section>
   );
 };

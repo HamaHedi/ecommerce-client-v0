@@ -1,25 +1,12 @@
+@import './styles/tokens.css';
+
 * {
 	box-sizing: border-box;
 }
 
 main {
 	min-height: 80vh;
-}
-
-::-webkit-scrollbar-track {
-	background-color: #f5f5f5;
-}
-
-::-webkit-scrollbar {
-	width: 8px;
-	background-color: #f5f5f5;
-}
-
-::-webkit-scrollbar-thumb {
-	background-color: rgba(66, 66, 66, 0.2);
-	border: 0px;
-	background-clip: padding-box;
-	border-radius: 5px;
+	background: var(--surface);
 }
 
 .custom-page-link-color {
@@ -31,7 +18,7 @@ main {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: 30%;
+	margin-top: 12%;
 	width: 80px;
 	height: 80px;
 	padding-left: 0;
@@ -44,9 +31,33 @@ main {
 	height: 64px;
 	margin: 8px;
 	border-radius: 50%;
-	border: 6px solid #a8dadc;
-	border-color: #a8dadc transparent;
-	animation: lds-dual-ring 1.2s linear infinite;
+	border: 5px solid var(--brand-purple);
+	border-color: var(--brand-purple) var(--brand-lavender) var(--brand-coral) var(--brand-lavender);
+	animation: lds-dual-ring 0.9s linear infinite;
+}
+
+/* Brand-styled alerts (Message component) */
+.alert {
+	border-radius: var(--radius-md);
+	border: 1px solid var(--hairline);
+	font-family: var(--font-sans);
+	font-weight: var(--fw-medium);
+	padding: var(--space-4) var(--space-5);
+}
+.alert-info {
+	background: var(--brand-lavender-soft);
+	border-color: var(--brand-lavender);
+	color: var(--brand-purple-dark);
+}
+.alert-danger {
+	background: #fdeceb;
+	border-color: #f3c3c0;
+	color: #b23b38;
+}
+.alert-success {
+	background: #e9f6ef;
+	border-color: #bfe3cf;
+	color: #2f7d54;
 }
 
 @keyframes lds-dual-ring {
@@ -109,79 +120,7 @@ main {
 	}
 }
 
-/* Checkout Steps */
-
-.checkout-progress div {
-	box-sizing: border-box;
-}
-
-.checkout-progress {
-	display: block;
-	clear: both;
-	margin: 20px auto;
-	width: auto;
-	font-family: sans-serif;
-	overflow: auto;
-}
-
-.step {
-	margin: 0;
-	border: 0;
-	letter-spacing: 1px;
-	line-height: 30px;
-	padding: 5px 10px 5px 15px;
-	color: grey;
-	text-decoration: none;
-	cursor: default;
-	font-weight: bold;
-	float: left;
-	height: auto;
-}
-
-.incomplete {
-	background: #eeeeee;
-}
-
-.active-step {
-	background: #fa9c23;
-	color: #fff;
-}
-
-.triangle-active {
-	float: left;
-	width: 0;
-	border-top: 20px solid transparent;
-	border-left: 15px solid #fa9c23;
-	border-bottom: 20px solid transparent;
-	margin-left: -1px;
-}
-
-.triangle2-active {
-	width: 0;
-	float: left;
-	border-top: 20px solid #fa9c23;
-	border-left: 15px solid #fff;
-	border-bottom: 20px solid #fa9c23;
-	margin-right: -1px;
-}
-
-.triangle-incomplete {
-	float: left;
-	width: 0;
-	border-top: 20px solid transparent;
-	border-left: 15px solid #eeeeee;
-	border-bottom: 20px solid transparent;
-	margin-left: -1px;
-}
-
-.triangle2-incomplete {
-	width: 0;
-	float: left;
-	border-top: 20px solid #eeeeee;
-	border-left: 15px solid #fff;
-	border-bottom: 20px solid #eeeeee;
-	margin-right: -1px;
-}
+/* Checkout steps now live in styles/checkout.css */
 
 .dataTables_paginate {
 	margin-top: 25px;

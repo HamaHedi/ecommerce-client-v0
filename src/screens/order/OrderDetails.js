@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 
 import Loader from '../../components/Loader'
+import OrderTimeline from '../../components/OrderTimeline'
 
 import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
@@ -42,6 +43,9 @@ const OrderDetails = () => {
 							<h3 className='mb-0'>Order # {order._id}</h3>
 						</div>
 						<div className='card-body'>
+							<h4 className='mb-4'>Suivi de la commande</h4>
+							<OrderTimeline status={orderStatus} />
+							<hr />
 							<h4 className='mb-4'>Shipping Info</h4>
 							<p>
 								<b>Name:</b> {user && user.name}

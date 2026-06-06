@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
+import axios from 'axios'
+import { API_BASE } from '../../config'
 import { Link, useNavigate } from 'react-router-dom'
 import { MDBDataTable } from 'mdbreact'
 
@@ -9,6 +11,8 @@ import Pagination from "react-js-pagination";
 import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAdminProducts, deleteProduct, clearErrors } from '../../actions/productActions'
+import { getCategory } from '../../actions/categoryAction'
+import { getBrands } from '../../actions/brandActions'
 import { DELETE_PRODUCT_RESET } from '../../constants/productConstants'
 
 const AdminProducts = () => {
@@ -17,10 +21,80 @@ const AdminProducts = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const { loading, error, products, pagination } = useSelector((state) => state.products)
 	const { error: deleteError, isDeleted } = useSelector((state) => state.product)
+	const { category: allCategory } = useSelector((state) => state.categorys)
+	const { brands } = useSelector((state) => state.brands)
 	const [searchString, setSearchString] = useState("")
+	const [filterCategory, setFilterCategory] = useState("")
+	const [filterBrand, setFilterBrand] = useState("")
+	const [filterStock, setFilterStock] = useState("")
 	function setCurrentPageNo(pageNumber) {
 		setCurrentPage(pageNumber);
 	}
+
+	const resetFilters = () => {
+		setSearchString("")
+		setFilterCategory("")
+		setFilterBrand("")
+		setFilterStock("")
+		setCurrentPage(1)
+	}
+
+	const importRef = useRef(null)
+
+	const parseCSV = (text) => {
+		const lines = text.split(/\r?\n/).filter((l) => l.trim())
+		if (!lines.length) return []
+		const parseLine = (line) => {
+			const out = []; let cur = ''; let q = false
+			for (let i = 0; i < line.length; i++) {
+				const c = line[i]
+				if (q) { if (c === '"') { if (line[i + 1] === '"') { cur += '"'; i++ } else q = false } else cur += c }
+				else { if (c === '"') q = true; else if (c === ',') { out.push(cur); cur = '' } else cur += c }
+			}
+			out.push(cur); return out
+		}
+		const headers = parseLine(lines[0]).map((h) => h.trim())
+		return lines.slice(1).map((l) => { const v = parseLine(l); const o = {}; headers.forEach((h, i) => (o[h] = v[i])); return o })
+	}
+
+	const importCSV = (e) => {
+		const file = e.target.files[0]; if (!file) return
+		const reader = new FileReader()
+		reader.onload = async (ev) => {
+			const rows = parseCSV(String(ev.target.result))
+			if (!rows.length) { toast.error('CSV vide'); return }
+			try {
+				const { data } = await axios.post(`${API_BASE}/api/admin/products/import`, { products: rows }, { headers: { Authorization: localStorage.getItem('token') } })
+				toast.success(`${data.updated} produit(s) mis à jour`)
+				dispatch(getAdminProducts(currentPage, searchString))
+			} catch (err) { toast.error(err?.response?.data?.message || 'Import échoué') }
+			e.target.value = ''
+		}
+		reader.readAsText(file)
+	}
+
+	const downloadTemplate = () => {
+		const csv = 'id,name,brand,category,price,oldPrice,stock\n66f16667ddbc19cfec415914,PURE PIGMENTS,Togethair,Coiffure,28,0,15\n66f94e81ddbc19cfec4198d9,crème oxygénée,Togethair,Coiffure,9,12,40\n'
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' })
+		const url = URL.createObjectURL(blob)
+		const a = document.createElement('a'); a.href = url; a.download = 'modele-import-produits.csv'; a.click(); URL.revokeObjectURL(url)
+	}
+
+	const exportCSV = () => {
+		const rows = (products || []).map((p) => ({ id: p._id, name: p.name, brand: p.brand || '', category: p.category || '', price: p.price, oldPrice: p.oldPrice || 0, stock: p.stock }))
+		const headers = ['id', 'name', 'brand', 'category', 'price', 'oldPrice', 'stock']
+		const csv = [headers.join(','), ...rows.map((r) => headers.map((h) => `"${String(r[h] ?? '').replace(/"/g, '""')}"`).join(','))].join('\n')
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' })
+		const url = URL.createObjectURL(blob)
+		const a = document.createElement('a')
+		a.href = url; a.download = 'produits.csv'; a.click(); URL.revokeObjectURL(url)
+	}
+
+	useEffect(() => {
+		dispatch(getCategory())
+		dispatch(getBrands("", "", ""))
+	}, [dispatch])
+
 	useEffect(() => {
 		dispatch(getAdminProducts(currentPage, searchString))
 
@@ -90,7 +164,15 @@ const AdminProducts = () => {
 			rows: [],
 		}
 
-		products.forEach((product) => {
+		const filtered = (products || []).filter((product) => {
+			if (filterCategory && product.category !== filterCategory) return false
+			if (filterBrand && product.brand !== filterBrand) return false
+			if (filterStock === "in" && !(product.stock > 0)) return false
+			if (filterStock === "out" && product.stock > 0) return false
+			return true
+		})
+
+		filtered.forEach((product) => {
 			data.rows.push({
 				id: product._id,
 				image: (
@@ -126,23 +208,59 @@ const AdminProducts = () => {
 	}
 
 	return (
-		<section className='container my-4'>
+		<section className='container-fluid admin-page'>
 			<div className='row' style={{ minHeight: '80vh' }}>
 				<div
-					className='col-12 col-md-3 px-3 py-4 my-4'
-					style={{ backgroundColor: '#1A2D3C', borderRadius: '10px' }}
+					className='col-12 col-md-2 admin-nav-col'
 				>
 					<Sidebar item='products' />
 				</div>
 
-				<div className='col-12 col-md-9 px-3  my-4'>
+				<div className='col-12 col-md-10 admin-content-col'>
 					<div className='card border h-100'>
 						<div className='card-header d-flex justify-content-between'>
-							<h3 className='mb-0'>Products</h3>
-							<Link to='/admin/products/add' className='btn btn-success'>
-								<i className='fa fa-plus' aria-hidden='true'></i>
-							</Link>
+							<h3 className='mb-0'>Produits</h3>
+							<div style={{ display: 'flex', gap: '10px' }}>
+								<button type='button' className='btn admin-export-btn' onClick={exportCSV}><i className='fa fa-download' aria-hidden='true'></i>&nbsp; Exporter CSV</button>
+									<button type='button' className='btn admin-export-btn' onClick={() => importRef.current && importRef.current.click()}><i className='fa fa-upload' aria-hidden='true'></i>&nbsp; Importer CSV</button>
+									<input type='file' ref={importRef} accept='.csv' style={{ display: 'none' }} onChange={importCSV} />
+									<button type='button' className='btn admin-export-btn' onClick={downloadTemplate}><i className='fa fa-file-text-o' aria-hidden='true'></i>&nbsp; Modèle CSV</button>
+								<Link to='/admin/products/add' className='btn btn-success'><i className='fa fa-plus' aria-hidden='true'></i>&nbsp; Ajouter</Link>
+							</div>
 						</div>
+
+						<div className='admin-import-hint'><i className='fa fa-info-circle'></i> Import : exportez vos produits, modifiez <b>price / oldPrice / stock</b> dans Excel, puis réimportez. La colonne <b>id</b> doit correspondre à un produit existant. <a href='/exemple-import-produits.csv' download>Voir un exemple</a></div>
+
+						<div className='admin-filters'>
+							<div className='admin-filter' style={{ flex: '2 1 220px' }}>
+								<label>Recherche</label>
+								<input type='text' placeholder='Nom du produit…' value={searchString} onChange={(e) => { setSearchString(e.target.value); setCurrentPage(1) }} />
+							</div>
+							<div className='admin-filter'>
+								<label>Catégorie</label>
+								<select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)}>
+									<option value=''>Toutes</option>
+									{allCategory?.map((c) => (<option key={c._id || c.title} value={c.title}>{c.title}</option>))}
+								</select>
+							</div>
+							<div className='admin-filter'>
+								<label>Marque</label>
+								<select value={filterBrand} onChange={(e) => setFilterBrand(e.target.value)}>
+									<option value=''>Toutes</option>
+									{brands?.map((b) => (<option key={b.id || b.title} value={b.title}>{b.title}</option>))}
+								</select>
+							</div>
+							<div className='admin-filter'>
+								<label>Stock</label>
+								<select value={filterStock} onChange={(e) => setFilterStock(e.target.value)}>
+									<option value=''>Tous</option>
+									<option value='in'>En stock</option>
+									<option value='out'>Rupture</option>
+								</select>
+							</div>
+							<button className='admin-filter-reset' onClick={resetFilters}><i className='fa fa-refresh' aria-hidden='true'></i> Réinitialiser</button>
+						</div>
+
 						<div className='card-body px-0'>
 							{
 								<MDBDataTable

@@ -1,0 +1,292 @@
+/* ============================================================
+   Modern home sections: stats, editorial, testimonials, instagram
+   (reuses .home-section / .home-eyebrow / .home-title from home-extras.css)
+   ============================================================ */
+
+/* ---------------- Stats band ---------------- */
+.stats-band {
+	width: 100%;
+	background: var(--gradient-brand);
+	color: #fff;
+	margin: var(--space-7) auto;
+	max-width: var(--container-max);
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-elevated);
+	position: relative;
+	overflow: hidden;
+}
+.stats-band::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(
+			circle at 15% 20%,
+			rgba(242, 100, 96, 0.35),
+			transparent 45%
+		),
+		radial-gradient(circle at 85% 90%, rgba(203, 185, 215, 0.3), transparent 50%);
+}
+.stats-inner {
+	position: relative;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: var(--space-4);
+	padding: var(--space-7) var(--space-6);
+}
+.stat-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	gap: var(--space-1);
+	position: relative;
+}
+.stat-item:not(:last-child)::after {
+	content: "";
+	position: absolute;
+	right: calc(var(--space-4) * -0.5);
+	top: 15%;
+	height: 70%;
+	width: 1px;
+	background: rgba(255, 255, 255, 0.22);
+}
+.stat-value {
+	font-family: var(--font-display);
+	font-weight: var(--fw-bold);
+	font-size: clamp(2.2rem, 5vw, 3.4rem);
+	line-height: 1;
+}
+.stat-value em {
+	font-style: normal;
+	color: var(--brand-coral);
+	margin-left: 2px;
+}
+.stat-label {
+	font-size: 0.78rem;
+	font-weight: var(--fw-semibold);
+	letter-spacing: var(--tracking-wide);
+	text-transform: uppercase;
+	opacity: 0.9;
+}
+@media (max-width: 700px) {
+	.stats-inner {
+		grid-template-columns: repeat(2, 1fr);
+		gap: var(--space-6) var(--space-4);
+		padding: var(--space-6) var(--space-5);
+	}
+	.stat-item:nth-child(2)::after {
+		display: none;
+	}
+}
+
+/* ---------------- Editorial split ---------------- */
+.editorial {
+	width: 100%;
+	max-width: var(--container-max);
+	margin: var(--space-9) auto;
+	padding: 0 var(--space-5);
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--space-8);
+	align-items: center;
+}
+.editorial-media {
+	position: relative;
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+	box-shadow: var(--shadow-elevated);
+	aspect-ratio: 4 / 3;
+}
+.editorial-media img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.6s var(--ease);
+}
+.editorial-media:hover img {
+	transform: scale(1.05);
+}
+.editorial-badge {
+	position: absolute;
+	bottom: var(--space-4);
+	left: var(--space-4);
+	background: rgba(255, 255, 255, 0.92);
+	color: var(--brand-purple);
+	font-weight: var(--fw-bold);
+	font-size: 0.72rem;
+	letter-spacing: var(--tracking-wide);
+	text-transform: uppercase;
+	padding: 8px 16px;
+	border-radius: var(--radius-pill);
+	box-shadow: var(--shadow-soft);
+}
+.editorial-content {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: var(--space-4);
+}
+.editorial-content .home-title {
+	text-align: left;
+}
+.editorial-content p {
+	color: var(--body);
+	font-size: 1rem;
+	line-height: 1.7;
+	margin: 0;
+	max-width: 520px;
+}
+.editorial-actions {
+	display: flex;
+	gap: var(--space-3);
+	flex-wrap: wrap;
+	margin-top: var(--space-2);
+}
+.btn-ghost {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 13px 28px;
+	border-radius: var(--radius-pill);
+	border: 1.5px solid var(--hairline-strong);
+	background: transparent;
+	color: var(--ink);
+	font-family: var(--font-sans);
+	font-weight: var(--fw-semibold);
+	font-size: 0.82rem;
+	letter-spacing: var(--tracking-wide);
+	text-transform: uppercase;
+	cursor: pointer;
+	transition: all var(--dur) var(--ease);
+}
+.btn-ghost:hover {
+	border-color: var(--brand-purple);
+	color: var(--brand-purple);
+	background: var(--brand-lavender-soft);
+}
+@media (max-width: 860px) {
+	.editorial {
+		grid-template-columns: 1fr;
+		gap: var(--space-5);
+		margin: var(--space-8) auto;
+	}
+	.editorial-content {
+		align-items: center;
+		text-align: center;
+	}
+	.editorial-content .home-title {
+		text-align: center;
+	}
+}
+
+/* ---------------- Testimonials ---------------- */
+.testimonials-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	gap: var(--space-5);
+}
+.testimonial-card {
+	margin: 0;
+	background: var(--surface);
+	border: 1px solid var(--hairline);
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-soft);
+	padding: var(--space-5);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+	transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.testimonial-card:hover {
+	transform: translateY(-6px);
+	box-shadow: var(--shadow-elevated);
+}
+.testimonial-stars {
+	color: var(--star);
+	font-size: 0.95rem;
+	letter-spacing: 2px;
+}
+.testimonial-card blockquote {
+	margin: 0;
+	color: var(--ink-soft);
+	font-size: 0.96rem;
+	line-height: 1.6;
+	flex: 1;
+}
+.testimonial-card figcaption {
+	display: flex;
+	align-items: center;
+	gap: var(--space-3);
+	border-top: 1px solid var(--hairline);
+	padding-top: var(--space-3);
+}
+.testimonial-avatar {
+	width: 42px;
+	height: 42px;
+	border-radius: var(--radius-pill);
+	background: var(--gradient-brand);
+	color: #fff;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-family: var(--font-display);
+	font-weight: var(--fw-bold);
+	font-size: 1.1rem;
+}
+.testimonial-card figcaption strong {
+	display: block;
+	color: var(--ink);
+	font-size: 0.9rem;
+}
+.testimonial-card figcaption small {
+	color: var(--muted);
+	font-size: 0.78rem;
+}
+
+/* ---------------- Instagram gallery ---------------- */
+.instagram-grid {
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	gap: var(--space-3);
+}
+@media (max-width: 900px) {
+	.instagram-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+@media (max-width: 480px) {
+	.instagram-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+.instagram-cell {
+	position: relative;
+	aspect-ratio: 1 / 1;
+	border-radius: var(--radius-md);
+	overflow: hidden;
+	display: block;
+}
+.instagram-cell img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform var(--dur-slow) var(--ease);
+}
+.instagram-overlay {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	font-size: 1.6rem;
+	background: linear-gradient(135deg, rgba(103, 57, 149, 0.7), rgba(242, 100, 96, 0.6));
+	opacity: 0;
+	transition: opacity var(--dur) var(--ease);
+}
+.instagram-cell:hover img {
+	transform: scale(1.08);
+}
+.instagram-cell:hover .instagram-overlay {
+	opacity: 1;
+}

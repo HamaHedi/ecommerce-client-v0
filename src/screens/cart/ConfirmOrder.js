@@ -1,5 +1,6 @@
-import React, { Fragment, useEffect } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 import CheckoutSteps from './CheckoutSteps'
 
@@ -7,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { createOrder, clearErrors } from '../../actions/orderActions'
 import { toast } from 'react-toastify'
+import { API_BASE, GOVERNORATES, FREE_SHIPPING_THRESHOLD } from '../../config'
 
 const ConfirmOrder = () => {
 	const { cartItems, shippingInfo } = useSelector((state) => state.cart)
@@ -17,11 +19,55 @@ const ConfirmOrder = () => {
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 
+	const [couponInput, setCouponInput] = useState('')
+	const [couponCode, setCouponCode] = useState('')
+	const [discount, setDiscount] = useState(0)
+	const [couponMsg, setCouponMsg] = useState(null)
+	const [couponLoading, setCouponLoading] = useState(false)
+	const [governorate, setGovernorate] = useState(shippingInfo?.governorate || '')
+
 	// Calculate Order Prices
 	const itemsPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
-	const shippingPrice = 0
 	const taxPrice = 0
-	const totalPrice = (itemsPrice + shippingPrice + taxPrice).toFixed(2)
+	const gov = GOVERNORATES.find((g) => g.name === governorate)
+	const baseShipping = gov ? gov.fee : 0
+	const freeShipping = FREE_SHIPPING_THRESHOLD > 0 && itemsPrice >= FREE_SHIPPING_THRESHOLD
+	const shippingPrice = freeShipping ? 0 : baseShipping
+	const totalPrice = Math.max(0, itemsPrice + shippingPrice + taxPrice - discount)
+
+	const applyCoupon = async () => {
+		if (!couponInput.trim()) return
+		setCouponLoading(true)
+		setCouponMsg(null)
+		try {
+			const { data } = await axios.post(`${API_BASE}/api/coupon/validate`, {
+				code: couponInput.trim(),
+				cartTotal: itemsPrice,
+			})
+			setDiscount(data.discount)
+			setCouponCode(data.coupon.code)
+			setCouponMsg({
+				type: 'success',
+				text: `Code « ${data.coupon.code} » appliqué : -${data.discount.toFixed(2)} DT`,
+			})
+		} catch (err) {
+			setDiscount(0)
+			setCouponCode('')
+			setCouponMsg({
+				type: 'error',
+				text: err?.response?.data?.message || 'Code promo invalide',
+			})
+		} finally {
+			setCouponLoading(false)
+		}
+	}
+
+	const removeCoupon = () => {
+		setDiscount(0)
+		setCouponCode('')
+		setCouponInput('')
+		setCouponMsg(null)
+	}
 
 	const order = {
 		orderItems: cartItems,
@@ -29,15 +75,25 @@ const ConfirmOrder = () => {
 		itemsPrice,
 		shippingPrice,
 		taxPrice,
-		totalPrice,
+		totalPrice: Number(totalPrice.toFixed(2)),
+		couponCode,
+		discount,
+		deliveryGovernorate: governorate,
 	}
 
 	const processToPayment = () => {
+		if (!governorate) {
+			toast.error('Veuillez choisir votre gouvernorat de livraison', {
+				position: toast.POSITION.TOP_RIGHT,
+				className: 'm-2',
+			})
+			return
+		}
 		const data = {
 			itemsPrice: itemsPrice.toFixed(2),
 			shippingPrice,
 			taxPrice,
-			totalPrice,
+			totalPrice: totalPrice.toFixed(2),
 		}
 
 		dispatch(createOrder(order))
@@ -112,6 +168,22 @@ const ConfirmOrder = () => {
 					<div id='order_summary'>
 						<h4>{t("Order Summary")}</h4>
 						<hr />
+						<div className='co-field'>
+							<label>Gouvernorat de livraison</label>
+							<select className='co-select' value={governorate} onChange={(e) => setGovernorate(e.target.value)}>
+								<option value=''>Choisir…</option>
+								{GOVERNORATES.map((g) => (<option key={g.name} value={g.name}>{g.name} — {g.fee} DT</option>))}
+							</select>
+						</div>
+						<div className='co-field'>
+							<label>Code promo</label>
+							{couponCode ? (
+								<div className='co-coupon-applied'><span><i className='fa fa-check-circle'></i> {couponCode}</span><button type='button' onClick={removeCoupon}>Retirer</button></div>
+							) : (
+								<div className='co-coupon'><input type='text' placeholder='Ex: BIANAS10' value={couponInput} onChange={(e) => setCouponInput(e.target.value.toUpperCase())} /><button type='button' onClick={applyCoupon} disabled={couponLoading}>{couponLoading ? '…' : 'Appliquer'}</button></div>
+							)}
+							{couponMsg && <small className={`co-coupon-msg ${couponMsg.type}`}>{couponMsg.text}</small>}
+						</div>
 						<p>
 							{t("Subtotal")}:{' '}
 							<span className='order-summary-values'>
@@ -121,7 +193,7 @@ const ConfirmOrder = () => {
 						<p>
 							{t("Shipping")}:{' '}
 							<span className='order-summary-values'>
-								DT {shippingPrice && shippingPrice.toFixed(2)}
+								{freeShipping ? <span style={{ color: 'var(--success)' }}>Gratuite</span> : governorate ? `DT ${shippingPrice.toFixed(2)}` : '—'}
 							</span>
 						</p>
 						<p>
@@ -130,20 +202,23 @@ const ConfirmOrder = () => {
 								DT {taxPrice && taxPrice.toFixed(2)}
 							</span>
 						</p>
+						{discount > 0 && (
+							<p>Remise:{' '}<span className='order-summary-values' style={{ color: 'var(--brand-coral-deep)' }}>- DT {discount.toFixed(2)}</span></p>
+						)}
 
 						<hr />
 
 						<p>
 							{t("Total")}:{' '}
 							<span className='order-summary-values'>
-								DT {totalPrice && totalPrice}
+								DT {totalPrice.toFixed(2)}
 							</span>
 						</p>
 
 						<hr />
 						<button
 							id='checkout_btn'
-							className='btn btn-primary btn-block'
+							className='btn btn-block cart-checkout-btn'
 							onClick={processToPayment}
 						>
 							{t("Confirm")}

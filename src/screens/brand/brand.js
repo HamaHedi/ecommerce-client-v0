@@ -87,7 +87,7 @@ const Brands = () => {
                         setKeyword("");
                         setCategory(category.title);
                         setSubategory(subCategory);
-                        navigate("/")
+                        navigate("/products")
                       }}
                       key={subCategory}
                       className="gategory-title"
@@ -105,7 +105,7 @@ const Brands = () => {
                   setKeyword("");
                   setCategory(category?.title);
                   setSubategory("");
-                  navigate("/")
+                  navigate("/products")
 
                 }}
                 className="category-title"
@@ -136,7 +136,7 @@ const Brands = () => {
           <span className="brand-name">{brand?.title}</span>
           <span className="brand-name">{brand?.productCount} Produits</span>
           <span className="brand-name product-link" onClick={() => {
-            navigate('/')
+            navigate("/products")
             setBrand(brand?.title)
             setKeyword("");
             setCategory("");

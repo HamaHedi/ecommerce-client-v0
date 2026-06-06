@@ -1,0 +1,347 @@
+/* ============================================================
+   Design Tokens — Bianas / lagha.shop premium refresh
+   Single source of truth for color, type, spacing, elevation.
+   Brand colors are preserved exactly; everything references
+   these variables instead of hard-coded hex values.
+   ============================================================ */
+
+:root {
+	/* ---- Brand ---- */
+	--brand-purple: #673995;
+	--brand-purple-dark: #5a3584;
+	--brand-purple-deep: #43215f;
+	--brand-lavender: #cbb9d7;
+	--brand-lavender-soft: #ede7f3;
+	--brand-coral: #f9c3bb;
+	--brand-coral-deep: #f26460;
+	--brand-peach: #f3c69b;
+	--brand-gold: #c9a86a;
+
+	/* Gradients (bold) */
+	--gradient-brand: linear-gradient(135deg, #7a45ab 0%, #43215f 100%);
+	--gradient-vibrant: linear-gradient(120deg, #673995 0%, #9b4bbf 45%, #f26460 100%);
+	--gradient-soft: linear-gradient(135deg, #ede7f3 0%, #faf0ee 100%);
+
+	/* Primary aliases (semantic) */
+	--color-primary: var(--brand-purple);
+	--color-primary-hover: var(--brand-purple-dark);
+	--color-primary-active: var(--brand-purple-deep);
+	--color-accent: var(--brand-coral);
+
+	/* ---- Neutrals ---- */
+	--ink: #1a1320;
+	--ink-soft: #3d3447;
+	--body: #4a4453;
+	--muted: #857d90;
+	--hairline: #ece8f1;
+	--hairline-strong: #ddd5e6;
+	--surface: #ffffff;
+	--surface-2: #faf8fc;
+	--canvas: #f7f4fa;
+	--overlay: rgba(26, 19, 32, 0.55);
+
+	/* ---- Status ---- */
+	--success: #3f9d6b;
+	--warning: #d99a3c;
+	--danger: #d9534f;
+	--star: #e7b53c;
+
+	/* ---- Typography ---- */
+	--font-display: 'Cormorant Garamond', 'Times New Roman', serif;
+	--font-sans: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	--fw-regular: 400;
+	--fw-medium: 500;
+	--fw-semibold: 600;
+	--fw-bold: 700;
+	--tracking-wide: 0.08em;
+	--tracking-wider: 0.18em;
+
+	/* ---- Spacing scale ---- */
+	--space-1: 4px;
+	--space-2: 8px;
+	--space-3: 12px;
+	--space-4: 16px;
+	--space-5: 24px;
+	--space-6: 32px;
+	--space-7: 48px;
+	--space-8: 64px;
+	--space-9: 96px;
+
+	/* ---- Radii ---- */
+	--radius-sm: 8px;
+	--radius-md: 14px;
+	--radius-lg: 22px;
+	--radius-pill: 999px;
+
+	/* ---- Elevation ---- */
+	--shadow-xs: 0 1px 2px rgba(26, 19, 32, 0.06);
+	--shadow-soft: 0 8px 24px rgba(67, 33, 95, 0.08);
+	--shadow-elevated: 0 18px 50px rgba(67, 33, 95, 0.14);
+	--shadow-focus: 0 0 0 3px rgba(103, 57, 149, 0.22);
+
+	/* ---- Motion ---- */
+	--ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+	--dur: 0.22s;
+	--dur-slow: 0.4s;
+
+	/* ---- Layout ---- */
+	--container-max: 1280px;
+	--header-h: 84px;
+}
+
+/* ============================================================
+   Base resets & global typography
+   ============================================================ */
+
+body {
+	margin: 0;
+	font-family: var(--font-sans);
+	color: var(--body);
+	background: var(--surface);
+	font-size: 15px;
+	line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	color: var(--ink);
+	font-weight: var(--fw-semibold);
+	line-height: 1.2;
+}
+
+a {
+	color: var(--color-primary);
+	text-decoration: none;
+	transition: color var(--dur) var(--ease);
+}
+a:hover {
+	color: var(--color-primary-hover);
+}
+
+::selection {
+	background: var(--brand-lavender);
+	color: var(--ink);
+}
+
+:focus-visible {
+	outline: none;
+	box-shadow: var(--shadow-focus);
+	border-radius: var(--radius-sm);
+}
+
+/* Refined scrollbar */
+::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+	background-color: var(--surface-2);
+}
+::-webkit-scrollbar-track {
+	background-color: var(--surface-2);
+}
+::-webkit-scrollbar-thumb {
+	background-color: var(--brand-lavender);
+	border: 2px solid var(--surface-2);
+	border-radius: var(--radius-pill);
+	background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+	background-color: var(--brand-purple);
+}
+
+/* ============================================================
+   Shared utility classes
+   ============================================================ */
+
+/* Display / section headings (editorial serif) */
+.u-eyebrow {
+	font-family: var(--font-sans);
+	font-size: 0.72rem;
+	font-weight: var(--fw-semibold);
+	letter-spacing: var(--tracking-wider);
+	text-transform: uppercase;
+	color: var(--brand-coral-deep);
+}
+.u-section-title {
+	font-family: var(--font-display);
+	font-weight: var(--fw-bold);
+	font-size: clamp(1.9rem, 4vw, 2.8rem);
+	letter-spacing: 0.01em;
+	color: var(--ink);
+	margin: 0;
+}
+.u-section-head {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-2);
+	text-align: center;
+	padding: var(--space-7) var(--space-4) var(--space-5);
+}
+.u-section-head .u-rule {
+	width: 64px;
+	height: 2px;
+	background: linear-gradient(90deg, transparent, var(--brand-purple), transparent);
+	margin-top: var(--space-2);
+}
+
+/* Buttons */
+.btn-brand,
+.btn-outline {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-2);
+	font-family: var(--font-sans);
+	font-weight: var(--fw-semibold);
+	font-size: 0.82rem;
+	letter-spacing: var(--tracking-wide);
+	text-transform: uppercase;
+	padding: 13px 28px;
+	border-radius: var(--radius-pill);
+	border: 1.5px solid transparent;
+	cursor: pointer;
+	transition: all var(--dur) var(--ease);
+	white-space: nowrap;
+}
+.btn-brand {
+	background: var(--gradient-brand);
+	color: #fff;
+	box-shadow: 0 10px 26px rgba(103, 57, 149, 0.35);
+}
+.btn-brand:hover {
+	background: var(--gradient-vibrant);
+	color: #fff;
+	transform: translateY(-3px);
+	box-shadow: 0 16px 38px rgba(103, 57, 149, 0.45);
+	letter-spacing: 0.1em;
+}
+.btn-brand:active {
+	transform: translateY(0);
+	background: var(--color-primary-active);
+}
+.btn-outline {
+	background: transparent;
+	color: var(--color-primary);
+	border-color: var(--hairline-strong);
+}
+.btn-outline:hover {
+	border-color: var(--color-primary);
+	color: var(--color-primary-hover);
+	background: var(--brand-lavender-soft);
+}
+.btn-brand:disabled,
+.btn-outline:disabled {
+	opacity: 0.55;
+	cursor: not-allowed;
+	transform: none;
+	box-shadow: none;
+}
+
+/* ---- Global form inputs (Bootstrap .form-control polish) ---- */
+.form-control {
+	border-radius: var(--radius-sm);
+	border: 1px solid var(--hairline-strong);
+	color: var(--ink);
+	transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.form-control:focus {
+	border-color: var(--brand-purple);
+	box-shadow: var(--shadow-focus);
+}
+.form-group label,
+.form-control-label {
+	color: var(--ink-soft);
+	font-weight: var(--fw-medium);
+	font-size: 0.85rem;
+	margin-bottom: var(--space-1);
+}
+
+/* Surfaces */
+.card-surface {
+	background: var(--surface);
+	border: 1px solid var(--hairline);
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-soft);
+}
+
+/* Page width helper */
+.u-container {
+	max-width: var(--container-max);
+	margin: 0 auto;
+	padding: 0 var(--space-5);
+}
+
+/* ============================================================
+   RTL / Arabic
+   ============================================================ */
+.lang-ar-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 24px;
+	height: 18px;
+	padding: 0 4px;
+	border-radius: 4px;
+	background: var(--brand-purple);
+	color: #fff;
+	font-family: 'Tajawal', sans-serif;
+	font-weight: 700;
+	font-size: 0.85rem;
+	line-height: 1;
+}
+
+body.rtl {
+	direction: rtl;
+	text-align: right;
+	/* Use an Arabic-capable typeface across the app */
+	--font-sans: 'Tajawal', 'Montserrat', -apple-system, sans-serif;
+	--font-display: 'Tajawal', 'Cormorant Garamond', serif;
+}
+body.rtl input,
+body.rtl textarea,
+body.rtl select {
+	text-align: right;
+}
+/* keep prices / numeric + latin-only bits readable */
+body.rtl .product-price,
+body.rtl .product-old-price,
+body.rtl .qv-price,
+body.rtl .stat-value {
+	direction: ltr;
+	unicode-bidi: embed;
+}
+/* mirror the few absolutely-positioned badges to the opposite corner */
+body.rtl .promo-percentage,
+body.rtl .qv-badge {
+	left: auto;
+	right: var(--space-4);
+}
+body.rtl .product-wish {
+	right: auto;
+	left: var(--space-3);
+}
+body.rtl .cart-badge {
+	right: auto;
+	left: 4px;
+}
+body.rtl .filter-item.active::before {
+	left: auto;
+	right: 0;
+}
+body.rtl .whatsapp-fab {
+	right: auto;
+	left: 20px;
+}
+/* react-responsive-carousel & slick compute slide transforms for LTR;
+   force them LTR so images render correctly in Arabic/RTL. */
+body.rtl .carousel-root,
+body.rtl .carousel,
+body.rtl .carousel .slider-wrapper,
+body.rtl .carousel .slider,
+body.rtl .slick-slider,
+body.rtl .slick-list,
+body.rtl .slick-track {
+	direction: ltr;
+}
