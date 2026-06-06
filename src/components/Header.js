@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { logout } from "../actions/userActions";
-import { API_BASE } from "../config";
+import { API_BASE, authHeaders } from "../config";
 import "../styles/header.css";
 import { useGlobalState } from "../context/context";
 import { useTranslation } from "react-i18next";
@@ -90,6 +90,91 @@ const Header = () => {
     closeMobile();
     navigate(`/product/${pid}`);
   };
+
+  // ----- Admin notifications -----
+  const isAdmin = user && user.role === "admin";
+  const [notifications, setNotifications] = useState([]);
+  const [unreadNotif, setUnreadNotif] = useState(0);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    let active = true;
+    const fetchNotifs = () => {
+      axios
+        .get(`${API_BASE}/api/admin/notifications`, authHeaders())
+        .then(({ data }) => {
+          if (!active) return;
+          setNotifications(data.notifications || []);
+          setUnreadNotif(data.unread || 0);
+        })
+        .catch(() => {});
+    };
+    fetchNotifs();
+    const iv = setInterval(fetchNotifs, 60000);
+    return () => {
+      active = false;
+      clearInterval(iv);
+    };
+  }, [isAdmin]);
+
+  const markAllNotifRead = () => {
+    axios
+      .put(`${API_BASE}/api/admin/notifications/read-all`, {}, authHeaders())
+      .then(() => {
+        setUnreadNotif(0);
+        setNotifications((list) => list.map((x) => ({ ...x, read: true })));
+      })
+      .catch(() => {});
+  };
+
+  const openNotif = (n) => {
+    if (!n.read) {
+      axios
+        .put(`${API_BASE}/api/admin/notifications/${n._id}/read`, {}, authHeaders())
+        .catch(() => {});
+      setUnreadNotif((u) => Math.max(0, u - 1));
+      setNotifications((list) =>
+        list.map((x) => (x._id === n._id ? { ...x, read: true } : x))
+      );
+    }
+    if (n.link) navigate(n.link);
+  };
+
+  const NotificationMenu = () => (
+    <div className="account-menu notif-menu">
+      <div className="notif-menu-header">
+        <b>Notifications</b>
+        {unreadNotif > 0 && (
+          <button type="button" onClick={markAllNotifRead}>
+            Tout marquer lu
+          </button>
+        )}
+      </div>
+      {notifications.length === 0 ? (
+        <div className="notif-empty">Aucune notification</div>
+      ) : (
+        notifications.slice(0, 12).map((n) => (
+          <button
+            type="button"
+            key={n._id}
+            className={`notif-item ${n.read ? "" : "unread"}`}
+            onClick={() => openNotif(n)}
+          >
+            <i
+              className={`fa ${
+                n.type === "order" ? "fa-shopping-bag" : "fa-exclamation-triangle"
+              } notif-item-icon ${n.type}`}
+              aria-hidden="true"
+            ></i>
+            <span className="notif-item-body">
+              <strong>{n.title}</strong>
+              <small>{n.message}</small>
+            </span>
+          </button>
+        ))
+      )}
+    </div>
+  );
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -401,6 +486,24 @@ const Header = () => {
                 <UserIcon />
               </Link>
             )
+          )}
+
+          {isAdmin && (
+            <Dropdown
+              overlay={<NotificationMenu />}
+              placement="bottomRight"
+              trigger={["click"]}
+            >
+              <button
+                className="header-icon-btn desktop-only"
+                aria-label="Notifications"
+              >
+                <i className="fa fa-bell-o" style={{ fontSize: "20px" }}></i>
+                {unreadNotif > 0 && (
+                  <span className="cart-badge">{unreadNotif}</span>
+                )}
+              </button>
+            </Dropdown>
           )}
 
           <Link

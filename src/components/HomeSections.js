@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { API_BASE } from "../config";
 import "../styles/home-sections.css";
 
 /* ---------------- Stats / trust band ---------------- */
@@ -117,10 +120,79 @@ const TESTIMONIALS = [
   },
 ];
 
+const emptyForm = { name: "", role: "", text: "", rating: 5 };
+
 export const Testimonials = () => {
   const { t } = useTranslation("home");
-  const list = t("testimonials", { returnObjects: true });
-  const items = Array.isArray(list) ? list : TESTIMONIALS;
+
+  const [items, setItems] = useState(null); // null = loading
+  const [showForm, setShowForm] = useState(false);
+  const [form, setForm] = useState(emptyForm);
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    axios
+      .get(`${API_BASE}/api/testimonials`)
+      .then(({ data }) => {
+        if (active) setItems(data.testimonials || []);
+      })
+      .catch(() => active && setItems([]));
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const onImage = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
+  };
+
+  const submit = async (e) => {
+    e.preventDefault();
+    if (!form.name.trim() || !form.text.trim()) {
+      toast.error(t("testi_required") !== "testi_required" ? t("testi_required") : "Nom et avis requis");
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const data = new FormData();
+      data.append("name", form.name.trim());
+      data.append("role", form.role.trim());
+      data.append("text", form.text.trim());
+      data.append("rating", String(form.rating));
+      if (imageFile) data.append("files", imageFile);
+
+      const { data: res } = await axios.post(`${API_BASE}/api/testimonials`, data);
+      toast.success(res.message || "Merci ! Votre avis sera publié après validation.", {
+        position: toast.POSITION.TOP_RIGHT,
+        className: "m-2",
+      });
+      setForm(emptyForm);
+      setImageFile(null);
+      setImagePreview(null);
+      setShowForm(false);
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Échec de l'envoi", {
+        position: toast.POSITION.TOP_RIGHT,
+        className: "m-2",
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // Use admin-approved testimonials when available, otherwise the curated defaults
+  const fallback = (() => {
+    const list = t("testimonials", { returnObjects: true });
+    return Array.isArray(list) ? list : TESTIMONIALS;
+  })();
+  const display = items && items.length > 0 ? items : fallback;
+
   return (
     <section className="home-section testimonials">
       <div className="home-section-head">
@@ -130,15 +202,23 @@ export const Testimonials = () => {
         </h2>
         <span className="home-rule" />
       </div>
+
       <div className="testimonials-grid">
-        {items.map((item, idx) => (
-          <figure className="testimonial-card" key={item.name || idx}>
+        {display.map((item, idx) => (
+          <figure className="testimonial-card" key={item._id || item.name || idx}>
             <div className="testimonial-stars">
-              {"★★★★★".split("").map((s, i) => (
+              {"★★★★★".split("").slice(0, item.rating || 5).map((s, i) => (
                 <span key={i}>{s}</span>
               ))}
             </div>
             <blockquote>“{item.text}”</blockquote>
+            {item.image?.path && (
+              <img
+                className="testimonial-photo"
+                src={`${API_BASE}${item.image.path}`}
+                alt={item.name}
+              />
+            )}
             <figcaption>
               <span className="testimonial-avatar">
                 {(item.name || "?").charAt(0)}
@@ -151,6 +231,77 @@ export const Testimonials = () => {
           </figure>
         ))}
       </div>
+
+      <div className="testimonial-cta">
+        <button
+          type="button"
+          className="testimonial-share-btn"
+          onClick={() => setShowForm((v) => !v)}
+        >
+          <i className="fa fa-pencil" aria-hidden="true"></i>&nbsp;
+          {t("testi_share") !== "testi_share" ? t("testi_share") : "Partagez votre avis"}
+        </button>
+      </div>
+
+      {showForm && (
+        <form className="testimonial-form" onSubmit={submit}>
+          <div className="testimonial-form-row">
+            <input
+              type="text"
+              placeholder={t("testi_name") !== "testi_name" ? t("testi_name") : "Votre nom"}
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder={t("testi_role") !== "testi_role" ? t("testi_role") : "Profession (optionnel)"}
+              value={form.role}
+              onChange={(e) => setForm({ ...form, role: e.target.value })}
+            />
+          </div>
+          <textarea
+            placeholder={t("testi_text") !== "testi_text" ? t("testi_text") : "Votre avis…"}
+            value={form.text}
+            onChange={(e) => setForm({ ...form, text: e.target.value })}
+            rows={4}
+          />
+          <div className="testimonial-form-row testimonial-form-meta">
+            <label className="testimonial-rating">
+              {t("testi_rating") !== "testi_rating" ? t("testi_rating") : "Note"} :
+              <select
+                value={form.rating}
+                onChange={(e) => setForm({ ...form, rating: Number(e.target.value) })}
+              >
+                {[5, 4, 3, 2, 1].map((n) => (
+                  <option key={n} value={n}>
+                    {n} ★
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="testimonial-upload">
+              <i className="fa fa-camera" aria-hidden="true"></i>&nbsp;
+              {t("testi_photo") !== "testi_photo" ? t("testi_photo") : "Ajouter une photo"}
+              <input type="file" accept="image/*" onChange={onImage} hidden />
+            </label>
+            {imagePreview && (
+              <img className="testimonial-form-preview" src={imagePreview} alt="preview" />
+            )}
+          </div>
+          <button type="submit" className="testimonial-submit" disabled={submitting}>
+            {submitting
+              ? "…"
+              : t("testi_send") !== "testi_send"
+              ? t("testi_send")
+              : "Envoyer mon avis"}
+          </button>
+          <small className="testimonial-note">
+            {t("testi_moderation") !== "testi_moderation"
+              ? t("testi_moderation")
+              : "Votre avis sera publié après validation par notre équipe."}
+          </small>
+        </form>
+      )}
     </section>
   );
 };

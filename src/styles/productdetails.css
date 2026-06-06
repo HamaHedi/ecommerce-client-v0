@@ -180,6 +180,18 @@
 	box-shadow: none;
 }
 
+/* View counter */
+.pd-views {
+	display: inline-flex;
+	align-items: center;
+	color: var(--muted);
+	font-size: 0.85rem;
+	font-weight: var(--fw-medium);
+}
+.pd-views .fa-eye {
+	color: var(--brand-purple);
+}
+
 /* Order via WhatsApp */
 .pd-whatsapp-btn {
 	display: inline-flex;

@@ -40,6 +40,8 @@ import AdminBrand from './screens/admin/AdminBrands'
 import AdminCoupons from './screens/admin/AdminCoupons'
 import AdminBanners from './screens/admin/AdminBanners'
 import AdminAnnouncements from './screens/admin/AdminAnnouncements'
+import AdminBestSellers from './screens/admin/AdminBestSellers'
+import AdminTestimonials from './screens/admin/AdminTestimonials'
 import AdminBrandAdd from './screens/admin/AdminBrandAdd'
 import AdminBrandUpdate from './screens/admin/AdminBrandUpdate'
 import Brands from './screens/brand/brand'
@@ -129,6 +131,8 @@ const App = () => {
 							<Route path='/admin/coupons' element={<AdminCoupons />} exact />
 							<Route path='/admin/banners' element={<AdminBanners />} exact />
 							<Route path='/admin/announcements' element={<AdminAnnouncements />} exact />
+							<Route path='/admin/best-sellers' element={<AdminBestSellers />} exact />
+							<Route path='/admin/testimonials' element={<AdminTestimonials />} exact />
 							<Route
 								path='/admin/brand/add'
 								element={<AdminBrandAdd />}

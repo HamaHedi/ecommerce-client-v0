@@ -244,6 +244,13 @@ const ProductDetails = () => {
                 {" "}
                 {t("Product")} code: {product.code}
               </p>
+              {product.views > 0 && (
+                <p className="pd-views">
+                  <i className="fa fa-eye" aria-hidden="true"></i>
+                  &nbsp;{product.views}&nbsp;
+                  {t("views") !== "views" ? t("views") : "vues"}
+                </p>
+              )}
               <div className="d-flex align-items-end">
                 <h4 className="mb-0">
                   DT {value?.sizePrice ? Number(value?.sizePrice).toFixed(2) : product.price && product.price.toFixed(2)}

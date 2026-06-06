@@ -536,6 +536,149 @@
 	color: var(--danger);
 }
 
+/* Best sellers admin */
+.bestseller-results {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+	margin-top: var(--space-3);
+}
+.bestseller-row {
+	display: flex;
+	align-items: center;
+	gap: var(--space-3);
+	padding: var(--space-2) var(--space-3);
+	border: 1px solid var(--hairline);
+	border-radius: var(--radius-md);
+	background: var(--surface);
+}
+.bestseller-row img {
+	width: 52px;
+	height: 52px;
+	flex: 0 0 auto;
+	object-fit: cover;
+	border-radius: var(--radius-sm);
+	border: 1px solid var(--hairline);
+	background: var(--surface-2);
+}
+.bestseller-row-info {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	min-width: 0;
+}
+.bestseller-row-info strong {
+	color: var(--ink);
+	font-size: 0.9rem;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.bestseller-row-info span {
+	color: var(--brand-purple);
+	font-weight: var(--fw-bold);
+	font-size: 0.85rem;
+}
+
+/* Testimonials admin */
+.testi-pending-badge {
+	margin-left: var(--space-3);
+	display: inline-block;
+	padding: 4px 12px;
+	border-radius: var(--radius-pill);
+	background: #fff4e8;
+	color: #b9772a;
+	font-size: 0.72rem;
+	font-weight: var(--fw-bold);
+	vertical-align: middle;
+}
+.admin-testi-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: var(--space-4);
+}
+.admin-testi-card {
+	border: 1px solid var(--hairline);
+	border-left: 4px solid var(--hairline-strong);
+	border-radius: var(--radius-md);
+	padding: var(--space-4);
+	background: var(--surface);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+}
+.admin-testi-card.is-pending {
+	border-left-color: var(--warning);
+	background: #fffdf9;
+}
+.admin-testi-card.is-approved {
+	border-left-color: var(--success);
+}
+.admin-testi-head {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+}
+.admin-testi-avatar {
+	width: 40px;
+	height: 40px;
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: var(--radius-pill);
+	background: var(--gradient-brand);
+	color: #fff;
+	font-weight: var(--fw-bold);
+}
+.admin-testi-head strong {
+	display: block;
+	color: var(--ink);
+	font-size: 0.9rem;
+}
+.admin-testi-head small {
+	color: var(--muted);
+	font-size: 0.76rem;
+}
+.admin-testi-status {
+	margin-left: auto;
+	padding: 3px 10px;
+	border-radius: var(--radius-pill);
+	font-size: 0.68rem;
+	font-weight: var(--fw-bold);
+}
+.admin-testi-status.on {
+	background: #e9f6ef;
+	color: #2f7d54;
+}
+.admin-testi-status.off {
+	background: #fff4e8;
+	color: #b9772a;
+}
+.admin-testi-stars {
+	color: var(--star);
+	font-size: 0.95rem;
+}
+.admin-testi-text {
+	color: var(--body);
+	font-size: 0.88rem;
+	font-style: italic;
+	margin: 0;
+}
+.admin-testi-photo {
+	width: 100%;
+	max-height: 180px;
+	object-fit: cover;
+	border-radius: var(--radius-sm);
+	border: 1px solid var(--hairline);
+}
+.admin-testi-actions {
+	display: flex;
+	gap: var(--space-2);
+	margin-top: auto;
+	padding-top: var(--space-2);
+}
+
 /* Stat cards (dashboard) */
 .admin-stat {
 	border: 0 !important;

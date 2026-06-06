@@ -12,6 +12,8 @@ const NAV = [
 	{ key: 'coupons', to: '/admin/coupons', icon: 'fa-ticket', label: 'coupons' },
 	{ key: 'banners', to: '/admin/banners', icon: 'fa-picture-o', label: 'banners' },
 	{ key: 'announcements', to: '/admin/announcements', icon: 'fa-bullhorn', label: 'announcements' },
+	{ key: 'bestsellers', to: '/admin/best-sellers', icon: 'fa-fire', label: 'bestsellers' },
+	{ key: 'testimonials', to: '/admin/testimonials', icon: 'fa-comment', label: 'testimonials' },
 	{ key: 'reviews', to: '/admin/reviews', icon: 'fa-star', label: 'reviews' },
 	{ key: 'users', to: '/admin/users', icon: 'fa-users', label: 'users' },
 ]

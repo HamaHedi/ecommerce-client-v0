@@ -10,6 +10,7 @@ import {
 import Loader from "../../components/Loader";
 import Message from "../../components/Message";
 import Banner from "../../components/Banner";
+import BestSellers from "../../components/BestSellers";
 import HomeExtras, { AnnounceBar } from "../../components/HomeExtras";
 import {
   StatsBand,
@@ -675,6 +676,8 @@ const Products = () => {
           </Slider>
         </div>
       )}
+
+      {!isShop && <BestSellers />}
 
       {!isShop && <div className="slider-container" style={{ padding: "25px" }}>
         <Slider {...settings2}>
