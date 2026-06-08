@@ -168,7 +168,11 @@ const AdminOrdersProcess = () => {
           <tr key={item.product}>
             <td className="text-center">
               <img
-                src={item.image}
+                src={
+                  item.image && item.image.startsWith('http')
+                    ? item.image
+                    : `https://api.lagha.shop${item.image}`
+                }
                 alt={item.name}
                 className="img-fluid"
                 style={{ maxWidth: '65px', height: 'auto' }}
