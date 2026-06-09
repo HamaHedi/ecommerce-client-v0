@@ -517,6 +517,41 @@ const Header = () => {
             )}
           </Link>
 
+          {/* Account — mobile only (orders / profile / settings / logout) */}
+          {user && user.name ? (
+            <Dropdown
+              overlay={<AccountMenu />}
+              placement="bottomRight"
+              trigger={["click"]}
+            >
+              <button
+                className="header-icon-btn mobile-only"
+                aria-label="Account"
+              >
+                <img
+                  src={user && `https://api.lagha.shop${user.avatar}`}
+                  alt="user"
+                  style={{
+                    width: "28px",
+                    height: "28px",
+                    borderRadius: "999px",
+                    objectFit: "cover",
+                  }}
+                />
+              </button>
+            </Dropdown>
+          ) : (
+            !loading && (
+              <Link
+                to="/login"
+                className="header-icon-btn mobile-only"
+                aria-label="Sign in"
+              >
+                <UserIcon />
+              </Link>
+            )
+          )}
+
           {/* Cart — always visible */}
           <Link to="/cart" className="header-icon-btn" aria-label="Cart">
             <CartIcon />
@@ -637,26 +672,6 @@ const Header = () => {
             t("brands") !== "brands" ? t("brands") : "Brands"
           )}
           {mobileLink("/contact", t("contact"))}
-
-          {!user && !loading && mobileLink("/login", t("sign_in"))}
-
-          {user && user.name && (
-            <>
-              {user.role === "admin" && mobileLink("/dashboard", t("dashboard"))}
-              {mobileLink("/orders", t("orders"))}
-              {mobileLink("/profile", t("profile"))}
-              {mobileLink("/settings", t("settings"))}
-              <button
-                className="mobile-nav-link mobile-logout"
-                onClick={() => {
-                  logoutHandler();
-                  closeMobile();
-                }}
-              >
-                {t("logout")}
-              </button>
-            </>
-          )}
 
           {/* Language switch */}
           <div className="mobile-lang">

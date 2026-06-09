@@ -470,6 +470,11 @@
   display: none;
 }
 
+/* Shown only on mobile (<=768) — hidden on larger screens */
+.mobile-only {
+  display: none;
+}
+
 @media (max-width: 1024px) {
   .primary-nav {
     display: none;
@@ -492,6 +497,10 @@
   /* hide desktop-only actions, keep cart + burger + logo */
   .desktop-only {
     display: none !important;
+  }
+  /* show mobile-only actions (account dropdown) */
+  .mobile-only {
+    display: inline-flex !important;
   }
   /* Pin actions (cart) to the top-right of the header bar */
   .header-actions {
