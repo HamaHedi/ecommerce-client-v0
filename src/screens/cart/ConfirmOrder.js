@@ -7,6 +7,7 @@ import CheckoutSteps from './CheckoutSteps'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { createOrder, clearErrors } from '../../actions/orderActions'
+import { clearCart } from '../../actions/cartActions'
 import { toast } from 'react-toastify'
 import { API_BASE, GOVERNORATES, FREE_SHIPPING_THRESHOLD } from '../../config'
 
@@ -97,6 +98,7 @@ const ConfirmOrder = () => {
 		}
 
 		dispatch(createOrder(order))
+		dispatch(clearCart())
 
 		toast.success('Your Order has been placed successfully', {
 			position: toast.POSITION.TOP_RIGHT,

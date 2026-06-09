@@ -3,6 +3,7 @@ import {
 	ADD_TO_CART,
 	REMOVE_ITEM_CART,
 	SAVE_SHIPPING_INFO,
+	CLEAR_CART,
 } from "../constants/cartConstants";
 
 export const addItemToCart = (id, quantity, value, selectedColor,selectedImage) => async (dispatch, getState) => {
@@ -33,6 +34,14 @@ export const removeItemFromCart = (id) => async (dispatch, getState) => {
 	});
 
 	localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
+};
+
+export const clearCart = () => async (dispatch) => {
+	dispatch({
+		type: CLEAR_CART,
+	});
+
+	localStorage.removeItem("cartItems");
 };
 
 export const saveShippingInfo = (data) => async (dispatch) => {
