@@ -35,8 +35,10 @@
 }
 
 .admin-sidebar {
-	position: sticky;
+	position: fixed;
 	top: var(--header-h);
+	left: 0;
+	width: 260px;
 	height: calc(100vh - var(--header-h));
 	overflow-y: auto;
 	background: linear-gradient(185deg, #2a1b3d 0%, #1a1320 100%);
@@ -49,6 +51,7 @@
 	.admin-sidebar {
 		position: static;
 		height: auto;
+		width: 100%;
 	}
 }
 

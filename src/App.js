@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -48,6 +48,14 @@ import Brands from './screens/brand/brand'
 import Wishlist from './screens/user/Wishlist'
 import WhatsAppButton from './components/WhatsAppButton'
 import ScrollToTop from './scrollTotp'
+
+// Footer is hidden on admin views (dashboard + /admin/*)
+const AppFooter = () => {
+	const { pathname } = useLocation()
+	const isAdminView = pathname === '/dashboard' || pathname.startsWith('/admin')
+	if (isAdminView) return null
+	return <Footer />
+}
 
 const App = () => {
 	const { i18n } = useTranslation()
@@ -146,7 +154,7 @@ const App = () => {
 						</Route>
 					</Routes>
 				</main>
-				<Footer />
+				<AppFooter />
 				<WhatsAppButton />
 			</Router>
 

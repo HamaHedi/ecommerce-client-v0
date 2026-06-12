@@ -2,7 +2,7 @@ import React from "react";
 import "../styles/whatsapp.css";
 
 // Update this number to the shop's WhatsApp (international format, no +, no spaces)
-export const WHATSAPP_NUMBER = "21627220666";
+export const WHATSAPP_NUMBER = "21620297772";
 
 const WhatsAppButton = () => {
   const message = encodeURIComponent(
