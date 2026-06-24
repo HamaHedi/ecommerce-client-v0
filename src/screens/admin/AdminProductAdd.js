@@ -520,7 +520,7 @@ const AdminProductAdd = () => {
                 </div>
                 <div className="form-group">
                   <label>
-                    Certificates <small>*</small>
+                    Certificates
                   </label>
 
                   <div className="custom-file">
