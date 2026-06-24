@@ -193,7 +193,7 @@ const AdminProducts = () => {
 			if (filterStock === "in" && !(product.stock > 0)) return false
 			if (filterStock === "out" && product.stock > 0) return false
 			return true
-		})
+		}).sort((a, b) => String(b._id).localeCompare(String(a._id)))
 
 		filtered.forEach((product) => {
 			data.rows.push({
