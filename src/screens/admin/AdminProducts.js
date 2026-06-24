@@ -42,14 +42,18 @@ const AdminProducts = () => {
 	const importRef = useRef(null)
 
 	const parseCSV = (text) => {
-		const lines = text.split(/\r?\n/).filter((l) => l.trim())
+		// Strip BOM and an optional Excel "sep=;" hint line
+		let lines = text.replace(/^﻿/, '').split(/\r?\n/).filter((l) => l.trim())
+		if (lines.length && /^sep=/i.test(lines[0])) lines = lines.slice(1)
 		if (!lines.length) return []
+		// Auto-detect the delimiter from the header line (handles ; and ,)
+		const delim = lines[0].split('"').filter((_, i) => i % 2 === 0).join('').includes(';') ? ';' : ','
 		const parseLine = (line) => {
 			const out = []; let cur = ''; let q = false
 			for (let i = 0; i < line.length; i++) {
 				const c = line[i]
 				if (q) { if (c === '"') { if (line[i + 1] === '"') { cur += '"'; i++ } else q = false } else cur += c }
-				else { if (c === '"') q = true; else if (c === ',') { out.push(cur); cur = '' } else cur += c }
+				else { if (c === '"') q = true; else if (c === delim) { out.push(cur); cur = '' } else cur += c }
 			}
 			out.push(cur); return out
 		}
@@ -74,20 +78,39 @@ const AdminProducts = () => {
 	}
 
 	const downloadTemplate = () => {
-		const csv = 'id,name,brand,category,price,oldPrice,stock\n66f16667ddbc19cfec415914,PURE PIGMENTS,Togethair,Coiffure,28,0,15\n66f94e81ddbc19cfec4198d9,crème oxygénée,Togethair,Coiffure,9,12,40\n'
+		const csv = 'sep=;\nid;name;brand;category;price;oldPrice;stock\n66f16667ddbc19cfec415914;PURE PIGMENTS;Togethair;Coiffure;28;0;15\n66f94e81ddbc19cfec4198d9;crème oxygénée;Togethair;Coiffure;9;12;40\n'
 		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' })
 		const url = URL.createObjectURL(blob)
 		const a = document.createElement('a'); a.href = url; a.download = 'modele-import-produits.csv'; a.click(); URL.revokeObjectURL(url)
 	}
 
-	const exportCSV = () => {
-		const rows = (products || []).map((p) => ({ id: p._id, name: p.name, brand: p.brand || '', category: p.category || '', price: p.price, oldPrice: p.oldPrice || 0, stock: p.stock }))
+	const buildAndDownloadCSV = (list) => {
+		const rows = (list || []).map((p) => ({ id: p._id, name: p.name, brand: p.brand || '', category: p.category || '', price: p.price, oldPrice: p.oldPrice || 0, stock: p.stock }))
 		const headers = ['id', 'name', 'brand', 'category', 'price', 'oldPrice', 'stock']
-		const csv = [headers.join(','), ...rows.map((r) => headers.map((h) => `"${String(r[h] ?? '').replace(/"/g, '""')}"`).join(','))].join('\n')
+		const csv = 'sep=;\n' + [headers.join(';'), ...rows.map((r) => headers.map((h) => `"${String(r[h] ?? '').replace(/"/g, '""')}"`).join(';'))].join('\n')
 		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' })
 		const url = URL.createObjectURL(blob)
 		const a = document.createElement('a')
 		a.href = url; a.download = 'produits.csv'; a.click(); URL.revokeObjectURL(url)
+	}
+
+	const exportCSV = () => buildAndDownloadCSV(products)
+
+	const [exportingAll, setExportingAll] = useState(false)
+	const exportAllCSV = async () => {
+		setExportingAll(true)
+		try {
+			const config = { headers: { Authorization: localStorage.getItem('token') } }
+			const { data } = await axios.get(`${API_BASE}/api/admin/products?page=1&limit=100000&search=${encodeURIComponent(searchString)}`, config)
+			const all = data?.products || []
+			if (!all.length) { toast.error('Aucun produit à exporter'); return }
+			buildAndDownloadCSV(all)
+			toast.success(`${all.length} produit(s) exporté(s)`)
+		} catch (err) {
+			toast.error(err?.response?.data?.message || "Échec de l'export")
+		} finally {
+			setExportingAll(false)
+		}
 	}
 
 	useEffect(() => {
@@ -221,7 +244,8 @@ const AdminProducts = () => {
 						<div className='card-header d-flex justify-content-between'>
 							<h3 className='mb-0'>Produits</h3>
 							<div style={{ display: 'flex', gap: '10px' }}>
-								<button type='button' className='btn admin-export-btn' onClick={exportCSV}><i className='fa fa-download' aria-hidden='true'></i>&nbsp; Exporter CSV</button>
+								<button type='button' className='btn admin-export-btn' onClick={exportCSV}><i className='fa fa-download' aria-hidden='true'></i>&nbsp; Exporter (page)</button>
+									<button type='button' className='btn admin-export-btn' onClick={exportAllCSV} disabled={exportingAll}><i className={`fa ${exportingAll ? 'fa-spinner fa-spin' : 'fa-download'}`} aria-hidden='true'></i>&nbsp; Exporter tout</button>
 									<button type='button' className='btn admin-export-btn' onClick={() => importRef.current && importRef.current.click()}><i className='fa fa-upload' aria-hidden='true'></i>&nbsp; Importer CSV</button>
 									<input type='file' ref={importRef} accept='.csv' style={{ display: 'none' }} onChange={importCSV} />
 									<button type='button' className='btn admin-export-btn' onClick={downloadTemplate}><i className='fa fa-file-text-o' aria-hidden='true'></i>&nbsp; Modèle CSV</button>
