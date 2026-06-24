@@ -165,11 +165,15 @@ const AdminProductUpdate = () => {
     formData.append("subcategory", subcategory);
     formData.append("isNew", isNew);
     formData.append("code", code);
-    formData.append("sizes", JSON.stringify(sizes));
+    const cleanSizes = sizes.filter(
+      (s) => s.sizeName && s.sizeName.trim() !== "" && s.sizePrice !== ""
+    );
+    const cleanColors = colors.filter((c) => c.name && c.name.trim() !== "");
+    formData.append("sizes", JSON.stringify(cleanSizes));
     formData.append("teints", selectedTeintes);
 
     formData.append("brand", brand);
-    formData.append("colors", JSON.stringify(colors));
+    formData.append("colors", JSON.stringify(cleanColors));
 
     images.forEach((image) => {
       formData.append("files", image);

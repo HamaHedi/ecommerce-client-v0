@@ -116,8 +116,12 @@ const AdminProductAdd = () => {
     formData.append("description", value);
     formData.append("category", category);
     formData.append("oldPrice", oldPrice);
-    formData.append("colors", JSON.stringify(colors));
-    formData.append("sizes", JSON.stringify(sizes));
+    const cleanColors = colors.filter((c) => c.name && c.name.trim() !== "");
+    const cleanSizes = sizes.filter(
+      (s) => s.sizeName && s.sizeName.trim() !== "" && s.sizePrice !== ""
+    );
+    formData.append("colors", JSON.stringify(cleanColors));
+    formData.append("sizes", JSON.stringify(cleanSizes));
     formData.append("teints", selectedTeintes);
 
     formData.append("code", code);
