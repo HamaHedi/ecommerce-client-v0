@@ -101,7 +101,11 @@ const AdminProducts = () => {
 		setExportingAll(true)
 		try {
 			const config = { headers: { Authorization: localStorage.getItem('token') } }
-			const { data } = await axios.get(`${API_BASE}/api/admin/products?page=1&limit=100000&search=${encodeURIComponent(searchString)}`, config)
+			let url = `${API_BASE}/api/admin/products?page=1&limit=100000&search=${encodeURIComponent(searchString)}`
+			if (filterCategory) url += `&category=${encodeURIComponent(filterCategory)}`
+			if (filterBrand) url += `&brand=${encodeURIComponent(filterBrand)}`
+			if (filterStock) url += `&stock=${encodeURIComponent(filterStock)}`
+			const { data } = await axios.get(url, config)
 			const all = data?.products || []
 			if (!all.length) { toast.error('Aucun produit à exporter'); return }
 			buildAndDownloadCSV(all)
@@ -119,7 +123,7 @@ const AdminProducts = () => {
 	}, [dispatch])
 
 	useEffect(() => {
-		dispatch(getAdminProducts(currentPage, searchString))
+		dispatch(getAdminProducts(currentPage, searchString, filterCategory, filterBrand, filterStock))
 
 		if (error) {
 			toast.error(error, {
@@ -145,7 +149,7 @@ const AdminProducts = () => {
 			navigate('/admin/products')
 			dispatch({ type: DELETE_PRODUCT_RESET })
 		}
-	}, [dispatch, error, deleteError, isDeleted, navigate, currentPage, searchString])
+	}, [dispatch, error, deleteError, isDeleted, navigate, currentPage, searchString, filterCategory, filterBrand, filterStock])
 
 	const deleteProductHandler = (id) => {
 		dispatch(deleteProduct(id))
@@ -187,13 +191,9 @@ const AdminProducts = () => {
 			rows: [],
 		}
 
-		const filtered = (products || []).filter((product) => {
-			if (filterCategory && product.category !== filterCategory) return false
-			if (filterBrand && product.brand !== filterBrand) return false
-			if (filterStock === "in" && !(product.stock > 0)) return false
-			if (filterStock === "out" && product.stock > 0) return false
-			return true
-		}).sort((a, b) => String(b._id).localeCompare(String(a._id)))
+		// Category / brand / stock filtering and pagination are handled server-side
+		// (see getAdminProducts), so render the page exactly as the server returns it.
+		const filtered = (products || [])
 
 		filtered.forEach((product) => {
 			data.rows.push({
@@ -262,21 +262,21 @@ const AdminProducts = () => {
 							</div>
 							<div className='admin-filter'>
 								<label>Catégorie</label>
-								<select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)}>
+								<select value={filterCategory} onChange={(e) => { setFilterCategory(e.target.value); setCurrentPage(1) }}>
 									<option value=''>Toutes</option>
 									{allCategory?.map((c) => (<option key={c._id || c.title} value={c.title}>{c.title}</option>))}
 								</select>
 							</div>
 							<div className='admin-filter'>
 								<label>Marque</label>
-								<select value={filterBrand} onChange={(e) => setFilterBrand(e.target.value)}>
+								<select value={filterBrand} onChange={(e) => { setFilterBrand(e.target.value); setCurrentPage(1) }}>
 									<option value=''>Toutes</option>
 									{brands?.map((b) => (<option key={b.id || b.title} value={b.title}>{b.title}</option>))}
 								</select>
 							</div>
 							<div className='admin-filter'>
 								<label>Stock</label>
-								<select value={filterStock} onChange={(e) => setFilterStock(e.target.value)}>
+								<select value={filterStock} onChange={(e) => { setFilterStock(e.target.value); setCurrentPage(1) }}>
 									<option value=''>Tous</option>
 									<option value='in'>En stock</option>
 									<option value='out'>Rupture</option>
