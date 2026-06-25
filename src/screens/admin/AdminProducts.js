@@ -174,6 +174,16 @@ const AdminProducts = () => {
 					sort: 'asc',
 				},
 				{
+					label: 'Marque',
+					field: 'brand',
+					sort: 'asc',
+				},
+				{
+					label: 'Catégorie',
+					field: 'category',
+					sort: 'asc',
+				},
+				{
 					label: 'Price',
 					field: 'price',
 					sort: 'asc',
@@ -206,6 +216,8 @@ const AdminProducts = () => {
 					/>
 				),
 				name: product.name,
+				brand: product.brand || '—',
+				category: product.category || '—',
 				price: `DT ${product.price}`,
 				stock: product.stock,
 				actions: (
