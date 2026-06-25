@@ -229,10 +229,11 @@ const Products = () => {
     setCurrentPage(pageNumber);
   }
 
-  let count = productsCount;
-  if (keyword) {
-    count = filteredProductsCount;
-  }
+  // filteredProductsCount reflects ALL active filters (keyword, category,
+  // brand, price...). Use it whenever it is available so pagination shows the
+  // correct number of pages; fall back to the total count otherwise.
+  const count =
+    filteredProductsCount !== undefined ? filteredProductsCount : productsCount;
 
   const searchHandler = (e) => {
     e.preventDefault();
@@ -647,7 +648,7 @@ const Products = () => {
                     <Pagination
                       activePage={currentPage}
                       itemsCountPerPage={resPerPage}
-                      totalItemsCount={productsCount}
+                      totalItemsCount={count}
                       onChange={setCurrentPageNo}
                       nextPageText={"›"}
                       prevPageText={"‹"}
