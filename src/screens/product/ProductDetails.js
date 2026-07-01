@@ -105,7 +105,7 @@ const ProductDetails = () => {
   };
 
   const addToCart = () => {
-    dispatch(addItemToCart(id, quantity, value, selectedColor, selectedImage));
+    dispatch(addItemToCart(id, quantity, value, selectedColor, selectedImage, selectedVolume));
 
     toast.success(t("Item Added to Cart"), {
       position: toast.POSITION.TOP_RIGHT,
@@ -125,6 +125,7 @@ const ProductDetails = () => {
       `*${product?.name || ""}*`,
       product?.code ? `Code: ${product.code}` : "",
       value?.sizeName ? `Pack/Taille: ${value.sizeName}` : "",
+      selectedVolume?.volume ? `Volume: ${selectedVolume.volume} (Réf: ${selectedVolume.reference})` : "",
       selectedColor ? `Couleur: ${selectedColor}` : "",
       `Quantité: ${quantity}`,
       price ? `Prix: DT ${price}` : "",
@@ -186,8 +187,9 @@ const ProductDetails = () => {
 
   const [value, setValue] = useState();
   const [selectedColor, setColor] = useState();
+  const [selectedVolume, setSelectedVolume] = useState();
 
-  useEffect(() => { setValue(product?.sizes?.[0]); setColor(product?.colors?.[0]?.name); }, [product])
+  useEffect(() => { setValue(product?.sizes?.[0]); setColor(product?.colors?.[0]?.name); setSelectedVolume(product?.volumes?.[0]); }, [product])
 
   const listRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -885,6 +887,35 @@ const ProductDetails = () => {
                           {size?.sizeName}
                         </p>
                         <p>{size?.sizePrice} dt</p>
+                      </div>
+                    ))}
+                  </div>
+                  <hr />
+                </>
+              )}
+              {product?.volumes?.length > 0 && (
+                <>
+                  <h4>{t("VOLUME")}</h4>
+                  <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                    {product?.volumes?.map((vol, index) => (
+                      <div
+                        key={vol?.reference || index}
+                        onClick={() => setSelectedVolume(vol)}
+                        style={{
+                          border: selectedVolume?.reference === vol?.reference ? "2px solid #673995" : "1px solid var(--hairline-strong)",
+                          borderRadius: "12px",
+                          padding: "12px",
+                          textAlign: "center",
+                          cursor: "pointer",
+                          backgroundColor: selectedVolume?.reference === vol?.reference ? "var(--brand-lavender-soft)" : "white",
+                          minWidth: "120px",
+                          transition: "all 0.2s ease",
+                        }}
+                      >
+                        <p style={{ fontWeight: selectedVolume?.reference === vol?.reference ? "bold" : "normal" }}>
+                          {vol?.volume}
+                        </p>
+                        <p style={{ fontSize: "12px", color: "var(--muted, #888)" }}>{t("Réf")}: {vol?.reference}</p>
                       </div>
                     ))}
                   </div>

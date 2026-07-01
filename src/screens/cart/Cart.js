@@ -114,6 +114,12 @@ const Cart = () => {
                                     {item.size}
                                   </span>
                                 )}
+                                {item?.volume && (
+                                  <span className="cart-item-attr">
+                                    {item.volume}
+                                    {item?.volumeRef ? ` (${item.volumeRef})` : ""}
+                                  </span>
+                                )}
                               </div>
 
                               {item?.teint && (

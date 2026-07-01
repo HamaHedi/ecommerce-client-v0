@@ -61,6 +61,28 @@ const AdminProductUpdate = () => {
     setSizes([...sizes, { sizeName: "", sizePrice: "" }]);
   };
 
+  const [volumes, setVolumes] = useState([{ volume: "", reference: "" }]);
+  const handleVolumeChange = (index, volume) => {
+    const updatedVolumes = [...volumes];
+    updatedVolumes[index].volume = volume;
+    setVolumes(updatedVolumes);
+  };
+
+  const handleVolumeReferenceChange = (index, reference) => {
+    const updatedVolumes = [...volumes];
+    updatedVolumes[index].reference = reference;
+    setVolumes(updatedVolumes);
+  };
+
+  const handleRemoveVolumePicker = (index) => {
+    const updatedVolumes = volumes.filter((_, i) => i !== index);
+    setVolumes(updatedVolumes);
+  };
+
+  const handleAddVolumePicker = () => {
+    setVolumes([...volumes, { volume: "", reference: "" }]);
+  };
+
   const handleAddColorPicker = () => {
     setColors([...colors, { name: "", value: "#000000" }]);
   };
@@ -122,6 +144,9 @@ const AdminProductUpdate = () => {
       setOldCertificates(product.certificates);
       setColors(product.colors.map((color) => ({ name: color.name, value: color.value })));
       setSizes(product?.sizes.map((size) => ({ sizeName: size.sizeName, sizePrice: size.sizePrice })));
+      if (product?.volumes?.length) {
+        setVolumes(product.volumes.map((vol) => ({ volume: vol.volume, reference: vol.reference })));
+      }
 
     }
 
@@ -169,7 +194,11 @@ const AdminProductUpdate = () => {
       (s) => s.sizeName && s.sizeName.trim() !== "" && s.sizePrice !== ""
     );
     const cleanColors = colors.filter((c) => c.name && c.name.trim() !== "");
+    const cleanVolumes = volumes.filter(
+      (v) => v.volume && v.volume.trim() !== "" && v.reference && v.reference.trim() !== ""
+    );
     formData.append("sizes", JSON.stringify(cleanSizes));
+    formData.append("volumes", JSON.stringify(cleanVolumes));
     formData.append("teints", selectedTeintes);
 
     formData.append("brand", brand);
@@ -489,6 +518,42 @@ const AdminProductUpdate = () => {
                   ))}
                   <div onClick={handleAddSizePicker} style={{ cursor: "pointer" }}>
                     Add Size
+                  </div>
+                </div>
+                <div style={{ paddingTop: "10px", paddingBottom: "10px" }}>
+                  <span>Volumes</span>
+                  {volumes.map((vol, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "3px",
+                        marginBottom: "8px",
+                      }}
+                    >
+                      <input
+                        type="text"
+                        placeholder="Volume (e.g. 10VOL)"
+                        value={vol.volume}
+                        onChange={(e) => handleVolumeChange(index, e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Volume Reference (e.g. OXT0001)"
+                        value={vol.reference}
+                        onChange={(e) => handleVolumeReferenceChange(index, e.target.value)}
+                      />
+                      <div
+                        onClick={() => handleRemoveVolumePicker(index)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        Remove
+                      </div>
+                    </div>
+                  ))}
+                  <div onClick={handleAddVolumePicker} style={{ cursor: "pointer" }}>
+                    Add Volume
                   </div>
                 </div>
                 {/* <div className="form-group">

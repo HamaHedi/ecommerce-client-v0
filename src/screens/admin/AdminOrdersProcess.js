@@ -161,6 +161,8 @@ const AdminOrdersProcess = () => {
           <th className="text-center">Teint</th>
           <th className="text-center">Color</th>
           <th className="text-center">Size</th>
+          <th className="text-center">Volume</th>
+          <th className="text-center">Reference</th>
         </tr>
       </thead>
       <tbody>
@@ -204,6 +206,12 @@ const AdminOrdersProcess = () => {
             </td>
             <td className="text-center">
               {item?.size && <p className="mb-0">{item.size}</p>}
+            </td>
+            <td className="text-center">
+              {item?.volume && <p className="mb-0">{item.volume}</p>}
+            </td>
+            <td className="text-center">
+              {item?.volumeRef && <p className="mb-0">{item.volumeRef}</p>}
             </td>
           </tr>
         ))}

@@ -52,6 +52,28 @@ const AdminProductAdd = () => {
   const handleAddSizePicker = () => {
     setSizes([...sizes, { sizeName: "", sizePrice: "" }]);
   };
+
+  const [volumes, setVolumes] = useState([{ volume: "", reference: "" }]);
+  const handleVolumeChange = (index, volume) => {
+    const updatedVolumes = [...volumes];
+    updatedVolumes[index].volume = volume;
+    setVolumes(updatedVolumes);
+  };
+
+  const handleVolumeReferenceChange = (index, reference) => {
+    const updatedVolumes = [...volumes];
+    updatedVolumes[index].reference = reference;
+    setVolumes(updatedVolumes);
+  };
+
+  const handleRemoveVolumePicker = (index) => {
+    const updatedVolumes = volumes.filter((_, i) => i !== index);
+    setVolumes(updatedVolumes);
+  };
+
+  const handleAddVolumePicker = () => {
+    setVolumes([...volumes, { volume: "", reference: "" }]);
+  };
   const [colors, setColors] = useState([{ name: "", value: "#000000" }]);
   const handleSwitchChange = (checked) => {
     setIsNew(checked)
@@ -120,8 +142,12 @@ const AdminProductAdd = () => {
     const cleanSizes = sizes.filter(
       (s) => s.sizeName && s.sizeName.trim() !== "" && s.sizePrice !== ""
     );
+    const cleanVolumes = volumes.filter(
+      (v) => v.volume && v.volume.trim() !== "" && v.reference && v.reference.trim() !== ""
+    );
     formData.append("colors", JSON.stringify(cleanColors));
     formData.append("sizes", JSON.stringify(cleanSizes));
+    formData.append("volumes", JSON.stringify(cleanVolumes));
     formData.append("teints", selectedTeintes);
 
     formData.append("code", code);
@@ -452,6 +478,42 @@ const AdminProductAdd = () => {
                   ))}
                   <div onClick={handleAddSizePicker} style={{ cursor: "pointer" }}>
                     Add Size
+                  </div>
+                </div>
+                <div style={{ paddingTop: "10px", paddingBottom: "10px" }}>
+                  <span>Volumes</span>
+                  {volumes.map((vol, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "3px",
+                        marginBottom: "8px",
+                      }}
+                    >
+                      <input
+                        type="text"
+                        placeholder="Volume (e.g. 10VOL)"
+                        value={vol.volume}
+                        onChange={(e) => handleVolumeChange(index, e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Volume Reference (e.g. OXT0001)"
+                        value={vol.reference}
+                        onChange={(e) => handleVolumeReferenceChange(index, e.target.value)}
+                      />
+                      <div
+                        onClick={() => handleRemoveVolumePicker(index)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        Remove
+                      </div>
+                    </div>
+                  ))}
+                  <div onClick={handleAddVolumePicker} style={{ cursor: "pointer" }}>
+                    Add Volume
                   </div>
                 </div>
                 {/* <div className="form-group">

@@ -98,6 +98,12 @@ const OrderDetails = () => {
 												>
 													{item.name}
 												</Link>
+												{item?.volume && (
+													<p className='mb-0 text-muted' style={{ fontSize: '13px' }}>
+														Volume: {item.volume}
+														{item?.volumeRef ? ` (Réf: ${item.volumeRef})` : ''}
+													</p>
+												)}
 											</div>
 
 											<div className='col-4 col-lg-2 mt-4 mt-lg-0'>

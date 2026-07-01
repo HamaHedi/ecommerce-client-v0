@@ -151,6 +151,12 @@ const ConfirmOrder = () => {
 
 									<div className='col-5 col-lg-6'>
 										<Link to={`/product/${item.product}`}>{item.name}</Link>
+										{item?.volume && (
+											<p className='mb-0 text-muted' style={{ fontSize: '13px' }}>
+												Volume: {item.volume}
+												{item?.volumeRef ? ` (Réf: ${item.volumeRef})` : ''}
+											</p>
+										)}
 									</div>
 
 									<div className='col-4 col-lg-4 mt-4 mt-lg-0'>
