@@ -110,15 +110,38 @@ const AdminProductAdd = () => {
   useEffect(() => {
     dispatch(getCategory());
     dispatch(getBrands());
+  }, [dispatch]);
 
-    if (error && error.message) {
+  // The API answers a failed create with either a 422 field map
+  // ({ errors: { category: "..." } }) or a plain { message }. Surface both:
+  // the form is long enough that inline text alone scrolls out of view.
+  useEffect(() => {
+    if (!error) return;
+
+    const fieldErrors = error.errors ? Object.entries(error.errors) : [];
+
+    if (fieldErrors.length) {
+      fieldErrors.forEach(([, message]) =>
+        toast.error(message, {
+          position: toast.POSITION.TOP_RIGHT,
+          className: "m-2",
+        })
+      );
+
+      const firstField = document.getElementById(`${fieldErrors[0][0]}_field`);
+      if (firstField) {
+        firstField.scrollIntoView({ behavior: "smooth", block: "center" });
+        firstField.focus({ preventScroll: true });
+      }
+    } else if (error.message) {
       toast.error(error.message, {
         position: toast.POSITION.TOP_RIGHT,
         className: "m-2",
       });
-      dispatch(clearErrors());
     }
+  }, [error]);
 
+  useEffect(() => {
     if (success) {
       navigate("/admin/products");
       toast.success("Product created successfully", {
@@ -127,10 +150,11 @@ const AdminProductAdd = () => {
       });
       dispatch({ type: NEW_PRODUCT_RESET });
     }
-  }, [dispatch, error, success, navigate]);
+  }, [dispatch, success, navigate]);
   const teinteOptions = [{ title: "Anea", value: "anea" }, { title: "Togethair", value: "togethair" }]
   const submitHandler = (e) => {
     e.preventDefault();
+    dispatch(clearErrors());
 
     const formData = new FormData();
     formData.append("name", name);
@@ -322,14 +346,11 @@ const AdminProductAdd = () => {
                         </option>
                       ))}
                   </select>
-                  {error &&
-                    error.errors &&
-                    error.errors.category &&
-                    !category && (
-                      <small className="form-text text-danger text-left mt-2 mx-1">
-                        {error.errors.category}
-                      </small>
-                    )}
+                  {error && error.errors && error.errors.category && (
+                    <small className="form-text text-danger text-left mt-2 mx-1">
+                      {error.errors.category}
+                    </small>
+                  )}
                 </div>
                 <div className="form-group">
                   <label htmlFor="subcategory_field">Subcategory</label>
@@ -377,7 +398,7 @@ const AdminProductAdd = () => {
                         </option>
                       ))}
                   </select>
-                  {error && error.errors && error.errors.brand && !brand && (
+                  {error && error.errors && error.errors.brand && (
                     <small className="form-text text-danger text-left mt-2 mx-1">
                       {error.errors.brand}
                     </small>
