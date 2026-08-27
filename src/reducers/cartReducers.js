@@ -1,4 +1,5 @@
-import { ADD_TO_CART, REMOVE_ITEM_CART, SAVE_SHIPPING_INFO, CLEAR_CART } from '../constants/cartConstants'
+import { ADD_TO_CART, REMOVE_ITEM_CART, SAVE_SHIPPING_INFO, CLEAR_CART, UPDATE_CART_QTY } from '../constants/cartConstants'
+import { cartLineId } from '../actions/cartActions'
 
 export const cartReducer = (state = { cartItems: [], shippingInfo: {} }, action) => {
     switch (action.type) {
@@ -6,13 +7,16 @@ export const cartReducer = (state = { cartItems: [], shippingInfo: {} }, action)
         case ADD_TO_CART:
             const item = action.payload;
 
-            const isItemExist = state.cartItems.find(i => i.product === item.product)
+            // Deux teintes du même produit sont deux lignes distinctes : on ne
+            // fusionne que si toute la combinaison (produit + teinte + taille +
+            // volume + couleur) est identique.
+            const isItemExist = state.cartItems.find(i => cartLineId(i) === cartLineId(item))
 
             if (isItemExist) {
                 return {
                     ...state,
                     cartItems: state.cartItems.map(i =>
-                        i.product === isItemExist.product ? item : i
+                        cartLineId(i) === cartLineId(isItemExist) ? item : i
                     )
                 }
             }
@@ -22,10 +26,20 @@ export const cartReducer = (state = { cartItems: [], shippingInfo: {} }, action)
                 cartItems: [...state.cartItems, item]
             }
 
+        case UPDATE_CART_QTY:
+            return {
+                ...state,
+                cartItems: state.cartItems.map(i =>
+                    cartLineId(i) === action.payload.lineId
+                        ? { ...i, quantity: action.payload.quantity }
+                        : i
+                )
+            }
+
         case REMOVE_ITEM_CART:
             return {
                 ...state,
-                cartItems: state.cartItems.filter(i => i.product !== action.payload)
+                cartItems: state.cartItems.filter(i => cartLineId(i) !== action.payload)
             }
 
 

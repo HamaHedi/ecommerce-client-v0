@@ -2,7 +2,11 @@ import React, { Fragment } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import { addItemToCart, removeItemFromCart } from "../../actions/cartActions";
+import {
+  cartLineId,
+  removeItemFromCart,
+  updateCartItemQty,
+} from "../../actions/cartActions";
 import { useTranslation } from "react-i18next";
 import "../../styles/checkout.css";
 
@@ -12,24 +16,24 @@ const Cart = () => {
   const { t } = useTranslation("cart");
 
   const { cartItems } = useSelector((state) => state.cart);
-  const removeCartItemHandler = (id) => {
-    dispatch(removeItemFromCart(id));
+  const removeCartItemHandler = (lineId) => {
+    dispatch(removeItemFromCart(lineId));
   };
 
-  const increaseQty = (id, quantity, stock) => {
+  const increaseQty = (lineId, quantity, stock) => {
     const newQty = quantity + 1;
 
     if (newQty > stock) return;
 
-    dispatch(addItemToCart(id, newQty));
+    dispatch(updateCartItemQty(lineId, newQty));
   };
 
-  const decreaseQty = (id, quantity) => {
+  const decreaseQty = (lineId, quantity) => {
     const newQty = quantity - 1;
 
     if (newQty <= 0) return;
 
-    dispatch(addItemToCart(id, newQty));
+    dispatch(updateCartItemQty(lineId, newQty));
   };
 
   const checkoutHandler = () => {
@@ -74,12 +78,12 @@ const Cart = () => {
                         </div>
                       ) : (
                         cartItems.map((item) => (
-                          <div className="cart-item" key={item.product}>
+                          <div className="cart-item" key={cartLineId(item)}>
                             <button
                               className="cart-item-remove"
                               aria-label="Remove item"
                               onClick={() =>
-                                removeCartItemHandler(item.product)
+                                removeCartItemHandler(cartLineId(item))
                               }
                             >
                               <i className="fas fa-times"></i>
@@ -124,7 +128,11 @@ const Cart = () => {
 
                               {item?.teint && (
                                 <div className="cart-item-teint">
-                                  <span>Teinte sélectionnée</span>
+                                  <span>
+                                    {item?.teintRef
+                                      ? `Teinte : ${item.teintName || ""} - ${item.teintRef}`
+                                      : "Teinte sélectionnée"}
+                                  </span>
                                   <img src={item.teint} alt="Selected teint" />
                                 </div>
                               )}
@@ -136,7 +144,7 @@ const Cart = () => {
                                   className="btn btn-sm btn-link px-2"
                                   type="button"
                                   onClick={() =>
-                                    decreaseQty(item.product, item.quantity)
+                                    decreaseQty(cartLineId(item), item.quantity)
                                   }
                                 >
                                   <i className="fa fa-minus" aria-hidden="true"></i>
@@ -154,7 +162,7 @@ const Cart = () => {
                                   type="button"
                                   onClick={() =>
                                     increaseQty(
-                                      item.product,
+                                      cartLineId(item),
                                       item.quantity,
                                       item.stock
                                     )

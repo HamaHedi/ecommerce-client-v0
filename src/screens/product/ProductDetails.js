@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -20,8 +20,8 @@ import { useTranslation } from "react-i18next";
 import { Button, Image, Modal, Tooltip } from "antd";
 import { Radio } from 'antd';
 import "../../styles/productdetails.css";
-import { cendre, chaud, dore, froid, irise, naturel, teinteImages, doré, doréCendre, cuivre, acajou, mat, beige, rouge, rougeCuivre, rougeViolin, brun, superr, metalic, metalicViolet, mix } from "./constants";
-import { beigeIrise, booster, chocolat, coffee, coldBrown, goldenAndCold, mahogany, marron, moka, naturell, ramati, rougee, sand, light, toner, violet, ash } from "./constants2"
+import { getTeintes, getTeintePdf, groupTeintes } from "./teintesData";
+import TeinteList from "../../components/TeinteList";
 import { ReactComponent as FasebookIcon } from "../../components/square-facebook.svg";
 import { ReactComponent as InstagramIcon } from "../../components/instagram.svg";
 import axios from "axios";
@@ -35,14 +35,15 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
-  const [selectedImage, setSelectedImage] = useState(null);
-  const handleImageClick = (image) => {
-    setSelectedImage(image);
-    toast.success(t("teinte sélectionnée"), {
-      position: toast.POSITION.TOP_RIGHT,
-      className: "m-2",
+  // Teintes choisies : { [référence]: quantité }
+  const [teinteQty, setTeinteQty] = useState({});
+  const setTeinteQuantity = (teinte, qty) =>
+    setTeinteQty((prev) => {
+      const next = { ...prev };
+      if (qty > 0) next[teinte.reference] = qty;
+      else delete next[teinte.reference];
+      return next;
     });
-  };
   const { t } = useTranslation("product");
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
@@ -105,12 +106,47 @@ const ProductDetails = () => {
   };
 
   const addToCart = () => {
-    dispatch(addItemToCart(id, quantity, value, selectedColor, selectedImage, selectedVolume));
+    dispatch(addItemToCart(id, quantity, value, selectedColor, undefined, selectedVolume));
 
     toast.success(t("Item Added to Cart"), {
       position: toast.POSITION.TOP_RIGHT,
       className: "m-2",
     });
+  };
+
+  // Nuancier du produit (Anea / Togethair) et son PDF
+  const teintes = getTeintes(product?.teints);
+  const teintePdf = getTeintePdf(product?.teints);
+  const selectedTeintes = teintes
+    .filter((teinte) => teinteQty[teinte.reference] > 0)
+    .map((teinte) => ({ ...teinte, quantity: teinteQty[teinte.reference] }));
+  const totalTeinteUnits = selectedTeintes.reduce(
+    (acc, teinte) => acc + teinte.quantity,
+    0
+  );
+
+  // Chaque teinte devient sa propre ligne de panier.
+  const addTeintesToCart = () => {
+    selectedTeintes.forEach((teinte) =>
+      dispatch(
+        addItemToCart(
+          id,
+          teinte.quantity,
+          value,
+          selectedColor,
+          teinte.img,
+          selectedVolume,
+          teinte
+        )
+      )
+    );
+
+    toast.success(
+      `${selectedTeintes.length} teinte(s) ajoutée(s) au panier`,
+      { position: toast.POSITION.TOP_RIGHT, className: "m-2" }
+    );
+    setTeinteQty({});
+    setVisible(false);
   };
 
   // Build a WhatsApp order message with the product details + a link to this page
@@ -127,7 +163,15 @@ const ProductDetails = () => {
       value?.sizeName ? `Pack/Taille: ${value.sizeName}` : "",
       selectedVolume?.volume ? `Volume: ${selectedVolume.volume} (Réf: ${selectedVolume.reference})` : "",
       selectedColor ? `Couleur: ${selectedColor}` : "",
-      `Quantité: ${quantity}`,
+      ...(selectedTeintes.length
+        ? [
+            "Teintes:",
+            ...selectedTeintes.map(
+              (teinte) =>
+                `• ${teinte.name} - ${teinte.reference} : ${teinte.quantity}`
+            ),
+          ]
+        : [`Quantité: ${quantity}`]),
       price ? `Prix: DT ${price}` : "",
       `Lien: ${window.location.href}`,
     ].filter(Boolean);
@@ -191,33 +235,6 @@ const ProductDetails = () => {
 
   useEffect(() => { setValue(product?.sizes?.[0]); setColor(product?.colors?.[0]?.name); setSelectedVolume(product?.volumes?.[0]); }, [product])
 
-  const listRef = useRef(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
-  const handleMouseDown = (e) => {
-    setIsDragging(true);
-    e.preventDefault();
-    setStartX(e.pageX - (listRef.current?.offsetLeft || 0));
-    setScrollLeft(listRef.current?.scrollLeft || 0);
-  };
-
-  const handleMouseUpOrLeave = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
-    e.preventDefault();
-    const x = e.pageX - (listRef.current?.offsetLeft || 0);
-    const walk = (x - startX) * 1;
-    if (listRef.current) {
-      listRef.current.scrollLeft = scrollLeft - walk;
-    }
-  };
-  const totalImages = 64;
-  const images = Array.from({ length: totalImages }, (_, index) => `${index + 1}.png`);
-  console.log("first,", images)
   return (
     <section className="product-detail my-4" style={{ padding: "4% 5%", paddingTop: "16px" }}>
       {loading ? (
@@ -291,529 +308,119 @@ const ProductDetails = () => {
               )}
 
               <hr />
-              {product?.teints !== undefined && product?.teints !== "undefined" && <div className="teintes-container">
-                <h4>{t("Toutes les teintes")}</h4>
-                <div style={{ display: "flex", flexDirection: "column" }}>  <div onClick={showModal} style={{ marginTop: 10, cursor: "pointer" }}>
-                  Voir Tout                </div>
-                  <div
-                    className={`teintes-scroll-list ${isDragging ? 'dragging' : ''}`}
+              {teintes.length > 0 && (
+                <div className="teintes-container">
+                  <div className="teinte-header">
+                    <h4 className="mb-0">{t("Toutes les teintes")}</h4>
+                    <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                      <button type="button" className="teinte-btn" onClick={showModal}>
+                        <i className="fa fa-th" aria-hidden="true"></i>
+                        Voir toutes les teintes ({teintes.length})
+                      </button>
+                      {teintePdf && (
+                        <a
+                          className="teinte-btn"
+                          href={teintePdf}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
+                          Nuancier {product?.teints} (PDF)
+                        </a>
+                      )}
+                    </div>
+                  </div>
 
-                    style={{ display: 'flex', overflowX: 'scroll', maxWidth: '400px' }}
-                    ref={listRef}
-                    onMouseDown={handleMouseDown}
-                    onMouseLeave={handleMouseUpOrLeave}
-                    onMouseUp={handleMouseUpOrLeave}
-                    onMouseMove={handleMouseMove}
+                  <TeinteList
+                    teintes={teintes}
+                    quantities={teinteQty}
+                    onChange={setTeinteQuantity}
+                    maxHeight={380}
+                  />
+
+                  <div className="teinte-actions">
+                    <span className="teinte-summary">
+                      {selectedTeintes.length === 0 ? (
+                        "Choisissez vos teintes et leurs quantités."
+                      ) : (
+                        <>
+                          <strong>{selectedTeintes.length}</strong> teinte(s) ·{" "}
+                          <strong>{totalTeinteUnits}</strong> unité(s)
+                        </>
+                      )}
+                    </span>
+                    <button
+                      type="button"
+                      className="teinte-btn teinte-btn-primary"
+                      onClick={addTeintesToCart}
+                      disabled={selectedTeintes.length === 0}
+                    >
+                      <i className="fa fa-shopping-cart" aria-hidden="true"></i>
+                      Ajouter au panier
+                    </button>
+                    <button
+                      type="button"
+                      className="teinte-btn teinte-btn-whatsapp"
+                      onClick={orderViaWhatsApp}
+                      disabled={selectedTeintes.length === 0}
+                    >
+                      <i className="fa fa-whatsapp" aria-hidden="true"></i>
+                      Commander sur WhatsApp
+                    </button>
+                  </div>
+
+                  <Modal
+                    title={`Toutes les teintes ${product?.teints || ""}`}
+                    visible={visible}
+                    onCancel={handleCancel}
+                    footer={null}
+                    width={1100}
                   >
-                    {product?.teints === 'Anea' && teinteImages.slice(0, 10).map((src, index) => (
-                      <img
-                        key={index}
-                        src={src}
-                        alt={`Teinte ${index + 1}`}
-                        style={{ width: '60px', height: '60px', marginRight: 10 }}
-                      />
+                    {teintePdf && (
+                      <a
+                        className="teinte-btn"
+                        href={teintePdf}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ marginBottom: 14 }}
+                      >
+                        <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
+                        Ouvrir le nuancier {product?.teints} (PDF)
+                      </a>
+                    )}
+
+                    {groupTeintes(teintes).map((group) => (
+                      <div key={group.name}>
+                        <h5 className="teinte-group-title">{group.name}</h5>
+                        <TeinteList
+                          teintes={group.teintes}
+                          quantities={teinteQty}
+                          onChange={setTeinteQuantity}
+                          searchable={false}
+                          columns={2}
+                          maxHeight={null}
+                        />
+                      </div>
                     ))}
-                    {product?.teints === 'Togethair' && images.slice(0, 10).map((image, index) => (
-                      <img
-                        key={index}
-                        src={`/togethair/${image}`}
-                        alt={`Teinte ${index + 1}`}
-                        style={{ width: '120px', height: '140px' }}
-                      />
-                    ))}
-                  </div></div>
 
-
-
-                <Modal
-                  title="Toutes les Teintes"
-                  visible={visible}
-                  onCancel={handleCancel}
-                  footer={null}
-                  width={1500}
-                >
-                  {product?.teints === 'Anea' && <> <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{naturel?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {naturel.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 100, margin: 10 }}
-                        />
-                      ))}
+                    <div className="teinte-actions">
+                      <span className="teinte-summary">
+                        <strong>{selectedTeintes.length}</strong> teinte(s) ·{" "}
+                        <strong>{totalTeinteUnits}</strong> unité(s) sélectionnée(s)
+                      </span>
+                      <button
+                        type="button"
+                        className="teinte-btn teinte-btn-primary"
+                        onClick={addTeintesToCart}
+                        disabled={selectedTeintes.length === 0}
+                      >
+                        <i className="fa fa-shopping-cart" aria-hidden="true"></i>
+                        Ajouter au panier
+                      </button>
                     </div>
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{froid?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {froid.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 100, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{chaud?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {chaud.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 100, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{cendre?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {cendre.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 100, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{dore?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {dore.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 100, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{irise?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {irise.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 100, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{doré?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {doré.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 100, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{doréCendre?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {doréCendre.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 100, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{cuivre?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {cuivre.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 100, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{acajou?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {acajou.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 100, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{mat?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {mat.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 100, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{beige?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {beige.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 100, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{rouge?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {rouge.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 100, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{rougeCuivre?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {rougeCuivre.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 100, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{rougeViolin?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {rougeViolin.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 100, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{brun?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {brun.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 100, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{superr?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {superr.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 100, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{metalic?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {metalic.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 100, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{metalicViolet?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {metalicViolet.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 100, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{mix?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {mix.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 100, margin: 10 }}
-                        />
-                      ))}
-                    </div></>}
-
-
-
-
-                  {product?.teints === "Togethair" && <>
-
-                    <div style={{ display: "flex", flexWrap: "wrap" }}>  {images.map((image, index) => (
-                      <img
-                        key={index}
-                        src={`/togethair/${image}`}
-                        alt={`image-${index + 1}`}
-                        style={{ width: 140, height: 180, margin: 10, cursor: 'pointer' }}
-                        onClick={() => handleImageClick(`/togethair/${image}`)}
-
-                      />
-                    ))}</div>
-
-                    {/* <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{beigeIrise?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {beigeIrise.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 140, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{booster?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {booster.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 140, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{chocolat?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {chocolat.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 140, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{coffee.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {coffee.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 140, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{coldBrown?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {coldBrown.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 140, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{goldenAndCold?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {goldenAndCold.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 140, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{mahogany?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {mahogany.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 140, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{marron?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {marron.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 140, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{moka?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {moka.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 140, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{naturell?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {naturell.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 140, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{ramati?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {ramati.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 140, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{rougee?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {rougee.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 140, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{sand?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {sand.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 140, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{light?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {light.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 140, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{toner?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {toner.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 140, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{violet?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {violet.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 140, margin: 10 }}
-                        />
-                      ))}
-                    </div>
-                    <span style={{ fontSize: "16px", fontWeight: "600", fontFamily: "inherit" }}>{ash?.name}</span>
-                    <div className="teintes-modal-grid" style={{ display: 'flex', flexWrap: 'wrap' }}>
-
-                      {ash.colors.map((src, index) => (
-                        <img
-                          key={index}
-                          src={src}
-                          alt={`Teinte ${index + 1}`}
-                          style={{ width: 100, height: 140, margin: 10 }}
-                        />
-                      ))}
-                    </div> */}
-                  </>}
-
-
-
-
-                </Modal>
-              </div>}
+                  </Modal>
+                </div>
+              )}
 
 
 
@@ -853,17 +460,6 @@ const ProductDetails = () => {
 
                 </div>              <hr />
               </>}
-              {selectedImage && (
-                <div style={{ marginTop: 20 }}>
-                  <h4>Teinte sélectionnée
-                  </h4>
-                  <img
-                    src={selectedImage}
-                    alt="Selected Image"
-                    style={{ width: 150, height: "auto" }}
-                  />
-                </div>
-              )}
               {product?.sizes?.length > 0 && (
                 <>
                   <h4>{t("PACK/SIZE")}</h4>
