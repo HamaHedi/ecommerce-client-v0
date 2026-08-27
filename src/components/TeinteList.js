@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import { Image } from "antd";
 import "../styles/teintes.css";
 
 // Liste de teintes : mèche + « nom - référence » + sélecteur de quantité.
@@ -65,18 +66,29 @@ const TeinteList = ({
 				{filtered.length === 0 ? (
 					<p className="teinte-empty">{emptyLabel}</p>
 				) : (
-					filtered.map((teinte) => {
+					// Cliquer une mèche ouvre la visionneuse zoomable d'antd ;
+					// le groupe permet de passer d'une teinte à l'autre sans fermer.
+					<Image.PreviewGroup>
+					{filtered.map((teinte) => {
 						const qty = Number(quantities[teinte.reference] || 0);
 						return (
 							<div
 								className={`teinte-row ${qty > 0 ? "is-selected" : ""}`}
 								key={`${teinte.reference}-${teinte.img}`}
 							>
-								<img
-									className="teinte-swatch"
+								<Image
 									src={teinte.img}
 									alt={`${teinte.name} ${teinte.reference}`}
+									rootClassName="teinte-swatch-wrap"
+									className="teinte-swatch"
 									loading="lazy"
+									preview={{
+										mask: (
+											<span className="teinte-zoom-mask">
+												<i className="fa fa-search-plus" aria-hidden="true"></i>
+											</span>
+										),
+									}}
 								/>
 
 								<span className="teinte-label">
@@ -104,7 +116,8 @@ const TeinteList = ({
 								</div>
 							</div>
 						);
-					})
+					})}
+					</Image.PreviewGroup>
 				)}
 			</div>
 		</div>
