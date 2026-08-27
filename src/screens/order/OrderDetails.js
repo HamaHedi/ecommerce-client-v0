@@ -80,8 +80,11 @@ const OrderDetails = () => {
 							<hr />
 							<div className='cart-item my-1'>
 								{orderItems &&
-									orderItems.map((item) => (
-										<div key={item.product} className='row my-5'>
+									orderItems.map((item, index) => (
+										<div
+											key={`${item.product}-${item.teintRef || ''}-${index}`}
+											className='row my-5'
+										>
 											<div className='col-4 col-lg-2'>
 												<img
 													src={'https://api.lagha.shop/api/' + item.image}
@@ -102,6 +105,12 @@ const OrderDetails = () => {
 													<p className='mb-0 text-muted' style={{ fontSize: '13px' }}>
 														Volume: {item.volume}
 														{item?.volumeRef ? ` (Réf: ${item.volumeRef})` : ''}
+													</p>
+												)}
+												{item?.teintRef && (
+													<p className='mb-0 text-muted' style={{ fontSize: '13px' }}>
+														Teinte: {item?.teintName ? `${item.teintName} - ` : ''}
+														<b>{item.teintRef}</b>
 													</p>
 												)}
 											</div>

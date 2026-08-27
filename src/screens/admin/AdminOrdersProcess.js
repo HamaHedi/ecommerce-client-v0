@@ -166,8 +166,8 @@ const AdminOrdersProcess = () => {
         </tr>
       </thead>
       <tbody>
-        {orderItems.map((item) => (
-          <tr key={item.product}>
+        {orderItems.map((item, index) => (
+          <tr key={`${item.product}-${item.teintRef || ''}-${index}`}>
             <td className="text-center">
               <img
                 src={
@@ -195,10 +195,16 @@ const AdminOrdersProcess = () => {
               {item?.teint && (
                 <img
                   src={item?.teint}
-                  alt="Selected Image"
+                  alt={item?.teintRef ? `Teinte ${item.teintRef}` : 'Teinte'}
                   className="img-fluid"
                   style={{ maxWidth: '150px', height: 'auto' }}
                 />
+              )}
+              {item?.teintRef && (
+                <p className="mb-0 mt-1">
+                  {item?.teintName ? `${item.teintName} - ` : ''}
+                  <b>{item.teintRef}</b>
+                </p>
               )}
             </td>
             <td className="text-center">

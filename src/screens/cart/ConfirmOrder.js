@@ -140,10 +140,10 @@ const ConfirmOrder = () => {
 					<hr />
 					<h4 className='mt-4'>{t("Your Cart Items")}:</h4>
 
-					{cartItems.map((item) => (
-						<Fragment>
+					{cartItems.map((item, index) => (
+						<Fragment key={`${item.product}-${item.teintRef || ''}-${index}`}>
 							<hr />
-							<div className='cart-item my-1' key={item.product}>
+							<div className='cart-item my-1'>
 								<div className='row'>
 									<div className='col-4 col-lg-2'>
 										<img src={'https://api.lagha.shop/' + item.image} alt='Laptop' height='45' width='65' />
@@ -155,6 +155,12 @@ const ConfirmOrder = () => {
 											<p className='mb-0 text-muted' style={{ fontSize: '13px' }}>
 												Volume: {item.volume}
 												{item?.volumeRef ? ` (Réf: ${item.volumeRef})` : ''}
+											</p>
+										)}
+										{item?.teintRef && (
+											<p className='mb-0 text-muted' style={{ fontSize: '13px' }}>
+												Teinte: {item?.teintName ? `${item.teintName} - ` : ''}
+												<b>{item.teintRef}</b>
 											</p>
 										)}
 									</div>
