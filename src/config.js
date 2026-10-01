@@ -13,10 +13,10 @@ export const authHeaders = () => ({
 
 // Tunisian governorates with delivery fees (DT). Tune as needed.
 export const GOVERNORATES = [
-  { name: "Tunis", fee: 7 },
-  { name: "Ariana", fee: 7 },
-  { name: "Ben Arous", fee: 7 },
-  { name: "Manouba", fee: 7 },
+  { name: "Tunis", fee: 8 },
+  { name: "Ariana", fee: 8 },
+  { name: "Ben Arous", fee: 8 },
+  { name: "Manouba", fee: 8 },
   { name: "Nabeul", fee: 8 },
   { name: "Zaghouan", fee: 8 },
   { name: "Bizerte", fee: 8 },
